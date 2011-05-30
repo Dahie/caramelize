@@ -17,11 +17,12 @@ Jeweler::Tasks.new do |gem|
   gem.name = "caramelize"
   gem.homepage = "http://github.com/Dahie/caramelize"
   gem.license = "MIT"
-  gem.summary = %Q{TODO: one-line summary of your gem}
-  gem.description = %Q{TODO: longer description of your gem}
+  gem.summary = "Abstract wiki convert to migrate your data from one wiki software to another"
+  gem.description = "By defining the access from the input to the output wiki you can migrate any wiki." # TODO
   gem.email = "mail@danielsenff.de"
   gem.authors = ["Dahie"]
   # dependencies defined in Gemfile
+  gem.executables = ['caramelize'] # note, it's the file name relative to `bin/`, not the project root
 end
 Jeweler::RubygemsDotOrgTasks.new
 
