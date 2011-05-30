@@ -1,6 +1,6 @@
 class Page
 
-  attr_accessor :title, :body, :id, :syntax, :latest, :time
+  attr_accessor :title, :body, :id, :syntax, :latest, :time, :message
 
   def initialize page
     @id =      page["id"]
