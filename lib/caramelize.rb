@@ -1,12 +1,13 @@
 #!/usr/bin/env ruby
 
-File.expand_path(File.dirname(__FILE__) + "/../lib")
+#File.expand_path(File.dirname(__FILE__) + "/../lib")
+$LOAD_PATH.unshift( File.join( File.dirname(__FILE__), 'caramelize' ) )
 require 'mysql2'
 require 'grit'
 require 'gollum'
-require_relative "caramelize/page"
-require_relative "caramelize/wiki"
-
+require "page"
+require "wiki"
+require "gollumoutput"
 
   
 
@@ -40,37 +41,18 @@ revisions = read_pages("SELECT * FROM wikka_pages;")
 
 wiki = Wiki.new(revisions)
 
-lemma = wiki.revisions_by_title "dahie"
-for page in lemma
-  puts page.time
-end
+#lemma = wiki.revisions_by_title "dahie"
+#for page in lemma
+#  puts page.time
+#end
 
 # initiate new wiki
 
-def init_wiki repo_name
-  # TODO use sanitized name as wiki-repository-title
-  repo = Grit::Repo.init(repo_name) unless File.exists?(repo_name)
-  new_wiki = Gollum::Wiki.new(repo_name)
-  new_wiki  
-end
-
-gollum = init_wiki "wiki.git"
+output_wiki = GollumOutput.new('wiki.git')
 
 # commit page revisions to new wiki
 
-for page in wiki.revisions
-  puts page.title if page.latest?
-  commit = {:message => page.message,
-           #:name => 'Tom Preston-Werner'
-  }
-  gollum_page = gollum.page(page.title)
-  if gollum_page
-    # TODO update time?
-    gollum.update_page(gollum_page, gollum_page.name, gollum_page.format, page.body, commit)
-  else
-    gollum.write_page(page.title, :markdown, page.body, commit)
-  end
-end
+output_wiki.commit_history revisions
 
 # take latest revisions
 

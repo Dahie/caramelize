@@ -1,0 +1,4 @@
+class Output
+  
+  
+end
