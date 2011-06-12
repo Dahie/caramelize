@@ -10,9 +10,11 @@ doc
 
 # bundler
 .bundle
+Gemfile.lock
+*.gem
 
 # jeweler generated
-pkg
+pkg/*
 
 # Have editor/IDE/OS specific files you need to ignore? Consider using a global gitignore: 
 #
@@ -34,7 +36,7 @@ pkg
 #tmtags
 
 # For Komodo Edit
-*.komodoproject
+#*.komodoproject
 
 # For emacs:
 #*~

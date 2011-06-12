@@ -1,5 +1,5 @@
 #Encoding: UTF-8
-#module Caramelize
+module Caramelize
   class GollumOutput
     
     def initialize wiki_path
@@ -30,4 +30,4 @@
       end
     end
   end
-#end
+end
