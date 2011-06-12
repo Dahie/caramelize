@@ -1,7 +1,7 @@
 module Caramelize
   class Page
   
-    attr_accessor :title, :body, :id, :syntax, :latest, :time, :message
+    attr_accessor :title, :body, :id, :syntax, :latest, :time, :message, :author
   
     def initialize page
       @id =      page["id"]
