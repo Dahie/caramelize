@@ -14,9 +14,18 @@ module Caramelize
         
         gollum_page = @gollum.page(page.title)
         message = page.message.empty? ? "Edit in page #{page.title}" : page.message
+        
+        if page.author
+          author = page.author   
+        else
+          author = Author.new
+          author.name = page.author_name
+          author.email = "mail@example.com"
+        end
+        
         commit = {:message => message,
-                 :name => page.author.name,
-                 :email => page.author.email,
+                 :name => author.name,
+                 :email => author.email,
                  :authored_date => page.time,
                  :committed_date => page.time
         }

@@ -11,29 +11,25 @@ module Caramelize
       sql = "SELECT id, title FROM wiki_pages;"
       revisions = []
       results_pages = database.query(sql)
-      results_pages.each do |row|
-        page_id = row["id"]
-        results_contents = database.query("SELECT * FROM wiki_content_versions WHERE page_id='#{page_id}';")
+      results_pages.each do |row_page|
+        results_contents = database.query("SELECT * FROM wiki_content_versions WHERE page_id='#{row_page["id"]}';")
         results_contents.each do |row_content|
-          puts row_content["updated_on"]
+          author = @authors[row_content["author_id"]] ? @authors[row_content["author_id"]] : nil
           page = Page.new({:id => row_content["id"],
-                            :title => row["title"],
+                            :title => row_page["title"],
                             :body => row_content["data"],
                             :syntax => 'textile',
                             :latest => false,
                             :time => row_content["updated_on"],
-                            :message => row_content["comments"]})
-          
-          page.author = @authors[row["author_id"]]
+                            :message => row_content["comments"],
+                            :author => author,
+                            :author_name => author.name})
           revisions << page
-          
         end
-        
-        
       end
       revisions.sort! { |a,b| a.time <=> b.time }
       
-      # find latest revision for each limit
+      # TODO find latest revision for each limit
       
       revisions
     end
@@ -44,9 +40,9 @@ module Caramelize
       results = database.query(sql)
       results.each do |row|
         author = Author.new
-        #author.id    = row["id"]
-        #author.name  = row["login"]
-        #author.email = row["mail"]
+        author.id    = row["id"]
+        author.name  = row["login"]
+        author.email = row["mail"]
         @authors[author.id] = author
       end
       @authors

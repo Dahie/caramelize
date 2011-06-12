@@ -12,14 +12,16 @@ module Caramelize
       revisions = []
       results = database.query(sql)
       results.each do |row|
+        author = @authors[row["user"]]
         page = Page.new({:id => row_content["id"],
-                            :title => row["tag"],
-                            :body => row["body"],
-                            :syntax => 'wikka',
-                            :latest => row["latest"] == "Y",
-                            :time => row["time"],
-                            :message => row["note"]})
-        page.author = @authors[row[:user]]
+                            :title =>   row["tag"],
+                            :body =>    row["body"],
+                            :syntax =>  'wikka',
+                            :latest =>  row["latest"] == "Y",
+                            :time =>    row["time"],
+                            :message => row["note"],
+                            :author =>  author,
+                            :author_name => row["user"]})
         revisions << page
       end
       revisions.sort! { |a,b| a.time <=> b.time }
@@ -32,9 +34,9 @@ module Caramelize
       results = database.query(sql)
       results.each do |row|
         author = Author.new
-        #author.id    = row["id"]
-        #author.name  = row["name"]
-        #author.email = row["email"]
+        author.id    = row["id"]
+        author.name  = row["name"]
+        author.email = row["email"]
         @authors[author.name] = author
       end
       @authors
