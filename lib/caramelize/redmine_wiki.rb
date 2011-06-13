@@ -1,6 +1,6 @@
 #Encoding: UTF-8
 module Caramelize
-  class RedmineWiki
+  class RedmineWiki < Wiki
     include DatabaseConnector
     
     def initialize options={}
@@ -9,14 +9,19 @@ module Caramelize
     
     def read_pages
       sql = "SELECT id, title FROM wiki_pages;"
-      revisions = []
+      @revisions = []
+      @titles = []
+      @latest_revisions = {}
       results_pages = database.query(sql)
       results_pages.each do |row_page|
-        results_contents = database.query("SELECT * FROM wiki_content_versions WHERE page_id='#{row_page["id"]}';")
+        results_contents = database.query("SELECT * FROM wiki_content_versions WHERE page_id='#{row_page["id"]}' ORDER BY updated_on;")
+        title = row_page["title"]
+        @titles << title
+        
         results_contents.each do |row_content|
           author = @authors[row_content["author_id"]] ? @authors[row_content["author_id"]] : nil
           page = Page.new({:id => row_content["id"],
-                            :title => row_page["title"],
+                            :title => title,
                             :body => row_content["data"],
                             :syntax => 'textile',
                             :latest => false,
@@ -24,14 +29,18 @@ module Caramelize
                             :message => row_content["comments"],
                             :author => author,
                             :author_name => author.name})
-          revisions << page
+          @revisions << page
+          @latest_revisions[title] = page
         end
       end
-      revisions.sort! { |a,b| a.time <=> b.time }
+      @titles.uniq!
+      @latest_revisions.each { |rev| rev[1].set_latest }
+      @revisions.sort! { |a,b| a.time <=> b.time }
+      
       
       # TODO find latest revision for each limit
       
-      revisions
+      @revisions
     end
     
     def read_authors

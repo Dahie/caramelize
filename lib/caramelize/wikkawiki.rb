@@ -1,6 +1,6 @@
 #Encoding: UTF-8
 module Caramelize
-  class WikkaWiki
+  class WikkaWiki < Wiki
     include DatabaseConnector
     
     def initialize options={}
@@ -8,12 +8,14 @@ module Caramelize
     end
     
     def read_pages
-      sql = "SELECT * FROM wikka_pages;"
-      revisions = []
+      sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
+      @revisions = []
+      @titles = []
       results = database.query(sql)
       results.each do |row|
+        @titles << row["tag"]
         author = @authors[row["user"]]
-        page = Page.new({:id => row_content["id"],
+        page = Page.new({:id => row["id"],
                             :title =>   row["tag"],
                             :body =>    row["body"],
                             :syntax =>  'wikka',
@@ -22,19 +24,21 @@ module Caramelize
                             :message => row["note"],
                             :author =>  author,
                             :author_name => row["user"]})
-        revisions << page
+        @revisions << page
       end
-      revisions.sort! { |a,b| a.time <=> b.time }
-      revisions
+      @titles.uniq!
+      #@revisions.sort! { |a,b| a.time <=> b.time }
+      
+      @revisions
     end
     
     def read_authors
-      sql = "SELECT id, name, email FROM wikka_users;"
+      sql = "SELECT name, email FROM wikka_users;"
       @authors = {}
       results = database.query(sql)
       results.each do |row|
         author = Author.new
-        author.id    = row["id"]
+        #author.id    = row["id"]
         author.name  = row["name"]
         author.email = row["email"]
         @authors[author.name] = author

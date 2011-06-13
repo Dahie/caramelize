@@ -19,6 +19,10 @@ module Caramelize
       @latest
     end
     
+    def set_latest
+      @latest = true
+    end
+    
     def to_s
       @title
     end

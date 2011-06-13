@@ -5,13 +5,15 @@ $LOAD_PATH.unshift( File.join( File.dirname(__FILE__), 'caramelize' ) )
 require 'mysql2'
 require 'grit'
 require 'gollum'
+
 require 'ext'
 require 'database_connector'
+require "wiki"
 require 'wikkawiki'
 require 'redmine_wiki'
 require 'author'
 require "page"
-require "wiki"
+
 require "gollumoutput"
 
 module Caramelize  
@@ -20,20 +22,17 @@ module Caramelize
   
   # establich connection to wiki
   
-  
   # TODO outsource to config
   
-  
+  original_wiki = WikkaWiki.new(:host => "localhost", :username => "root", :database => "wikka")
+  #original_wiki = RedmineWiki.new(:host => "localhost", :username => "root", :database => "redmine_development")
   
   
   # read page revisions from wiki
   # store page revisions
-  #original_wiki = WikkaWiki.new(:host => "localhost", :username => "root", :database => "wikka")
-  original_wiki = RedmineWiki.new(:host => "localhost", :username => "root", :database => "redmine_development")
+  
   @authors = original_wiki.read_authors
   @revisions = original_wiki.read_pages
-  
-  wiki = Caramelize::Wiki.new(@revisions)
   
   #lemma = wiki.revisions_by_title "dahie"
   #for page in lemma
