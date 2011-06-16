@@ -20,9 +20,13 @@ Clone this repository and start building.
     $ gem build caramelize.gemspec
     
 Now to build the gem do 
+
     $ rake build
+
 or
+
     $ rake install
+
 to install the new gem right to the system.
 
 ### Use
