@@ -7,6 +7,7 @@ module Caramelize
       @options = options
     end
     
+    # after calling this action, I expect the @titles and @revisions to be filled
     def read_pages
       sql = "SELECT id, title FROM wiki_pages;"
       @revisions = []

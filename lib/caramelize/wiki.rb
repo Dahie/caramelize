@@ -8,16 +8,25 @@ module Caramelize
     #end
     
     def revisions_by_title title
-      if @titles[title]
+      if @titles.index title
         # new array only containing pages by this name sorted by time
         # TODO this is probably bad for renamed pages if supported
         return @revisions.reject { |revision| revision.title != title }.sort { |x,y| x.time <=> y.time }
       end
     end
     
-    def latest_revisions
+    def convert_syntax?
       # TODO
-      @revisions
+      true
+    end
+    
+    def latest_revisions
+      @latest_revisions = []
+      for title in @titles
+        # pick first revision by descending date
+        @latest_revisions << revisions_by_title(title).last
+      end
+      @latest_revisions
     end
   end
 end
