@@ -16,6 +16,7 @@ Gem::Specification.new do |s|
   s.bindir = 'bin'
   
   s.add_dependency('mysql2')
+  s.add_dependency('cmdparse')
   s.add_dependency('gollum', '>= 1.3.0') # grit dependency implicit through gollum
 
   s.rubyforge_project = "caramelize"

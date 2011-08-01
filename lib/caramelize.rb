@@ -6,6 +6,7 @@ require 'mysql2'
 require 'grit'
 require 'gollum'
 require 'optparse'
+require 'cmdparse'
 
 require 'ext'
 require 'database_connector'
