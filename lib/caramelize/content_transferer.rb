@@ -1,5 +1,8 @@
 #Encoding: UTF-8
 
+require 'gollum'
+require 'grit'
+
 module Caramelize
   autoload :Wiki, 'caramelize/wiki'
   autoload :WikkaWiki, 'caramelize/wikkawiki'
@@ -12,24 +15,7 @@ module Caramelize
   
   class ContentTransferer
     
-    def initialize
-      
-    end
-    
-    def execute
-      
-      time_start = Time.now
-  
-      # establich connection to wiki
-      
-      # TODO outsource to config
-      
-      #original_wiki = WikkaWiki.new(:host => "localhost", :username => "root", :database => "wikka")
-      #original_wiki = RedmineWiki.new(:host => "localhost", :username => "root", :database => "redmine_development")
-      
-      original_wiki = WikkaWiki.new(:host => "db2.variomedia.de", :username => "u16283", :database => "db16283", :password => 'SNnYhn363v')
-      #original_wiki = RedmineWiki.new(:host => "db4.variomedia.de", :username => "u22507", :database => "db22507", :password => 'crepped67')
-      
+    def self.execute original_wiki, options={}
       
       # read page revisions from wiki
       # store page revisions
@@ -72,11 +58,6 @@ module Caramelize
       #for page in lemma
       #  puts page.time
       #end
-      
-      
-      time_end = Time.now
-      
-      puts "Time required: #{time_end - time_start} s" 
       
     end
   end

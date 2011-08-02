@@ -14,8 +14,7 @@ module Caramelize::CLI
 
     # Transfer Wiki contents
     def execute(args)
-      # TODO 
-      commandparser.create_website.render
+      commandparser.transfer_content
     end
 
   end

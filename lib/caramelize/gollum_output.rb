@@ -1,4 +1,5 @@
 #Encoding: UTF-8
+
 module Caramelize
   class GollumOutput
     

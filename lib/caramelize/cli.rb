@@ -1,3 +1,6 @@
+require 'cmdparse'
+require 'caramelize/version'
+
 module Caramelize
   module CLI
     
@@ -33,30 +36,46 @@ module Caramelize
         end
         self.add_command(CmdParse::HelpCommand.new)
         self.add_command(CmdParse::VersionCommand.new)
+        self.add_command(CLI::RunCommand.new)
+        self.add_command(CLI::RunCommand.new)
       end
 
-      # Utility method for sub-commands to create the correct Webgen::Website object.
+      # Utility method for sub-commands to create a default config file
       def create_config
-        if !defined?(@website)
-          @config = Webgen::Website.new(@directory) do |config|
-            config['logger.mask'] = @log_filter
-          end
-        end
-        @config
+        # TODO create dummy config
+        #if !defined?(@website)
+          #@config = Webgen::Website.new(@directory) do |config|
+          #  config['logger.mask'] = @log_filter
+          #end
+        #end
+        #@config
       end
 
       # Utility method for sub-commands to transfer wiki contents
       def transfer_content
-        if !defined?(@content_transferer)
-          @content_transferer = ContentTransferer.new config
-        end
-        @content_transferer.execute
+        # TODO maybe move to mixin
+        
+        time_start = Time.now
+        
+        # TODO outsource to config
+      
+        #original_wiki = WikkaWiki.new(:host => "localhost", :username => "root", :database => "wikka")
+        #original_wiki = RedmineWiki.new(:host => "localhost", :username => "root", :database => "redmine_development")
+      
+        original_wiki = WikkaWiki.new(:host => "db2.variomedia.de", :username => "u16283", :database => "db16283", :password => 'SNnYhn363v')
+        #original_wiki = RedmineWiki.new(:host => "db4.variomedia.de", :username => "u22507", :database => "db22507", :password => 'crepped67')
+        
+        ContentTransferer.execute original_wiki
+        
+        time_end = Time.now
+        
+        puts "Time required: #{time_end - time_start} s" if options[:verbose]
       end
 
       # :nodoc:
       def parse(argv = ARGV)
-        Webgen::CLI.constants.select {|c| c =~ /.+Command$/ }.each do |c|
-          self.add_command(Webgen::CLI.const_get(c).new, (c.to_s == 'RunCommand' ? true : false))
+        Caramelize::CLI.constants.select {|c| c =~ /.+Command$/ }.each do |c|
+          self.add_command(Caramelize::CLI.const_get(c).new, (c.to_s == 'RunCommand' ? false : false)) # set runcommand as default
         end
         super
       end

@@ -1,5 +1,8 @@
 #Encoding: UTF-8
 module Caramelize
+  autoload :DatabaseConnector, 'caramelize/database_connector'
+  autoload :Wikka2MarkdownConverter, 'caramelize/wikka2markdown_converter'
+  
   class RedmineWiki < Wiki
     include DatabaseConnector
     

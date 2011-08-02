@@ -1,3 +1,5 @@
+require 'mysql2'
+
 module Caramelize
   module DatabaseConnector
   

@@ -2,7 +2,6 @@
 
 #File.expand_path(File.dirname(__FILE__) + "/../lib")
 $LOAD_PATH.unshift( File.join( File.dirname(__FILE__), 'caramelize' ) )
-require 'mysql2'
 require 'grit'
 require 'gollum'
 require 'optparse'

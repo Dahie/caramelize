@@ -1,7 +1,6 @@
 #Encoding: UTF-8
 
-require 'webgen/cli'
-require 'webgen/websitemanager'
+require 'caramelize/cli'
 
 module Caramelize::CLI
 
@@ -10,7 +9,7 @@ module Caramelize::CLI
 
     def initialize #:nodoc:
       super('create', false)
-      self.description = Utils.format("If the verbosity level is set to verbose, the created files are listed.")
+      #self.description = Utils.format("If the verbosity level is set to verbose, the created files are listed.")
       self.short_desc = 'Create a default config file for caramelize'
       self.options = CmdParse::OptionParserWrapper.new do |opts|
         opts.separator "Arguments:"
