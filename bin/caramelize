@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-#require 'caramelize'
-
 	# If we are given filenames, convert each file 
 	
 require 'caramelize/cli'

@@ -6,9 +6,6 @@ module Caramelize
   class RedmineWiki < Wiki
     include DatabaseConnector
     
-    def initialize options={}
-      @options = options
-    end
     
     # after calling this action, I expect the @titles and @revisions to be filled
     def read_pages
@@ -45,6 +42,11 @@ module Caramelize
       # TODO find latest revision for each limit
       
       @revisions
+    end
+    
+      def convert_syntax?
+      # TODO
+      false
     end
     
     def read_authors

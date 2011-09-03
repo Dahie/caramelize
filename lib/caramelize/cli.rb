@@ -36,10 +36,16 @@ module Caramelize
         end
         self.add_command(CmdParse::HelpCommand.new)
         self.add_command(CmdParse::VersionCommand.new)
-        self.add_command(CLI::RunCommand.new)
-        self.add_command(CLI::RunCommand.new)
       end
 
+      KNOWN_CONFIG_LOCATIONS = ['config/caramel.rb', "config/caramel.config", "caramel.rb", "src/caramel.rb"]
+
+      # Finds the configuration file, if it exists in a known location.
+      def detect_configuration_file(config_path = nil)
+        possible_files = KNOWN_CONFIG_LOCATIONS
+        possible_files.detect{|f| File.exists?(f)}
+      end
+      
       # Utility method for sub-commands to create a default config file
       def create_config
         # TODO create dummy config
@@ -58,18 +64,20 @@ module Caramelize
         time_start = Time.now
         
         # TODO outsource to config
-      
-        #original_wiki = WikkaWiki.new(:host => "localhost", :username => "root", :database => "wikka")
-        #original_wiki = RedmineWiki.new(:host => "localhost", :username => "root", :database => "redmine_development")
-      
-        original_wiki = WikkaWiki.new(:host => "db2.variomedia.de", :username => "u16283", :database => "db16283", :password => 'SNnYhn363v')
-        #original_wiki = RedmineWiki.new(:host => "db4.variomedia.de", :username => "u22507", :database => "db22507", :password => 'crepped67')
+        file = detect_configuration_file
+        if file && File.exists?(file)
+          instance_eval(File.read(file), file || '<eval>')
+          original_wiki = input_wiki
+          
+          ContentTransferer.execute original_wiki, {:verbosity => @verbosity}
+          
+          time_end = Time.now
+          
+          puts "Time required: #{time_end - time_start} s" if @verbosity
+        else
+          puts "No config file found."
+        end
         
-        ContentTransferer.execute original_wiki
-        
-        time_end = Time.now
-        
-        puts "Time required: #{time_end - time_start} s" if options[:verbose]
       end
 
       # :nodoc:

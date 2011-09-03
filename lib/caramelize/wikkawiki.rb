@@ -7,10 +7,6 @@ module Caramelize
     include DatabaseConnector
     include Wikka2MarkdownConverter
     
-    def initialize options={}
-      @options = options
-    end
-    
     # after calling this action, I expect the @titles and @revisions to be filled
     def read_pages
       sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"

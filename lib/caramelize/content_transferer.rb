@@ -20,7 +20,7 @@ module Caramelize
       # read page revisions from wiki
       # store page revisions
       
-      @authors = original_wiki.read_authors
+      original_wiki.read_authors
       @revisions = original_wiki.read_pages
       
       # initiate new wiki

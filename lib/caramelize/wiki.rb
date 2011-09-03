@@ -1,11 +1,16 @@
 module Caramelize
+  autoload :DatabaseConnector, 'caramelize/database_connector'
   class Wiki
-    
+    include DatabaseConnector
     attr_accessor :revisions, :wiki_title, :titles, :description
     
     #def initialize revisions
     #  @revisions = revisions
     #end
+    
+    def initialize options={}
+      @options = options
+    end
     
     def revisions_by_title title
       if @titles.index title
@@ -13,6 +18,11 @@ module Caramelize
         # TODO this is probably bad for renamed pages if supported
         return @revisions.reject { |revision| revision.title != title }.sort { |x,y| x.time <=> y.time }
       end
+    end
+    
+    # return an empty array in case this action was not overridden
+    def read_authors
+      return []
     end
     
     def convert_syntax?
