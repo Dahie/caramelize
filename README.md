@@ -31,14 +31,20 @@ to install the new gem right to the system.
 
 ### Use
 
-The configuration options are not yet implemented.
+    $ caramelize create --config=config.rb 
 
-    $ caramelize 
-Will execute a static conversion based on currently hardcoded config data.
+Creates a template configuration file. This includes documentation on how to use the preset Wiki-connectors and how to write addition customized connectors.
 
-    $ caramelize --help
-Returns help information
 
+    $ caramelize run 
+    
+Will execute a wiki migration based on a found configuration file. These are found in predefined paths.
+
+    $ caramelize help
+Returns help information.
+
+	$ caramelize version
+Returns version and release information.
 
 ## Contributing to caramelize
  
