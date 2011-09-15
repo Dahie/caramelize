@@ -12,9 +12,10 @@ module Caramelize
   autoload :Author, 'caramelize/author'
   autoload :Page, 'caramelize/page'
   
-  
+  # Controller for the content migration
   class ContentTransferer
     
+    # Execute the content migration
     def self.execute original_wiki, options={}
       
       # read page revisions from wiki
@@ -31,13 +32,13 @@ module Caramelize
       
       output_wiki.commit_history @revisions
       
+      # if wiki needs to convert sytax, do so
       if original_wiki.convert_syntax?
         puts "latest revisions:"
         # take each latest revision
         for rev in original_wiki.latest_revisions
           puts "Updated syntax: #{rev.title} #{rev.time}"
-          # parse syntax
-          # convert to new syntax
+          # parse markup & convert to new syntax
           body_new = original_wiki.convert2markdown rev.body
           unless body_new == rev.body
             rev.body = body_new
@@ -50,6 +51,12 @@ module Caramelize
           end
         end  
       end
+      
+      
+      #lemma = wiki.revisions_by_title "dahie"
+      #for page in lemma
+      #  puts page.time
+      #end
       
     end
   end

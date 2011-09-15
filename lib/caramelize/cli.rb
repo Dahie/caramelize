@@ -51,7 +51,6 @@ module Caramelize
         
         time_start = Time.now
         
-        # TODO outsource to config
         file = detect_configuration_file
         if file && File.exists?(file)
           instance_eval(File.read(file), file || '<eval>')

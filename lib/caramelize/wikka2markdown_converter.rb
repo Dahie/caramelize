@@ -13,11 +13,10 @@ module Caramelize
       #str.gsub!(/(===)(.*?)(===)/) {|s| '`' + $2 + '`'}   #code
       str.gsub!(/(__)(.*?)(__)/) {|s| '<u>' + $2 + '</u>'}   #underline
       
-      str.gsub!(/(.*?)(\n\t-)(.*?)/) {|s| $1 + '\n' + $3 }   #list
+      #str.gsub!(/(.*?)(\n\t-)(.*?)/) {|s| $1 + '\n' + $3 }   #list
       
       str.gsub!(/(\t-)(.*?)/) {|s| '*' + $2 }   #list
       #str.gsub!(/(----)/) {|s| '~~~~'}   #seperator
-      
       
       
       # TODO more syntax conversion for links and images
