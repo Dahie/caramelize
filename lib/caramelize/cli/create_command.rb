@@ -29,10 +29,11 @@ module Caramelize::CLI
         begin
           
           # TODO create dummy config file
+          puts "Configuration file written to caramel.rb"
           
         rescue
-          require 'fileutils'
-          FileUtils.rm_rf(args[0])
+#          require 'fileutils'
+#          FileUtils.rm_rf(args[0])
           raise
         end
         if commandparser.verbosity == :verbose

@@ -4,10 +4,6 @@ module Caramelize
     include DatabaseConnector
     attr_accessor :revisions, :wiki_title, :titles, :description
     
-    #def initialize revisions
-    #  @revisions = revisions
-    #end
-    
     def initialize options={}
       @options = options
     end
@@ -26,8 +22,7 @@ module Caramelize
     end
     
     def convert_syntax?
-      # TODO
-      true
+      @options[:syntax] == :markdown
     end
     
     def latest_revisions

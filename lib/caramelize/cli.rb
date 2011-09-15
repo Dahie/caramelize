@@ -30,7 +30,7 @@ module Caramelize
         self.program_version = Caramelize::VERSION
         self.options = CmdParse::OptionParserWrapper.new do |opts|
           opts.separator "Global options:"
-          opts.on("--config DIR", "-d", String, "The config file (default: caramel.conf)") {|p| @directory = p}
+          opts.on("--config DIR", "-d", String, "The config file (default: caramel.rb)") {|p| @directory = p}
           opts.on("--verbose", "-v", "Print more output") { @verbosity = :verbose }
           opts.on("--quiet", "-q", "No output") { @verbosity = :quiet }
         end
@@ -46,20 +46,8 @@ module Caramelize
         possible_files.detect{|f| File.exists?(f)}
       end
       
-      # Utility method for sub-commands to create a default config file
-      def create_config
-        # TODO create dummy config
-        #if !defined?(@website)
-          #@config = Webgen::Website.new(@directory) do |config|
-          #  config['logger.mask'] = @log_filter
-          #end
-        #end
-        #@config
-      end
-
       # Utility method for sub-commands to transfer wiki contents
       def transfer_content
-        # TODO maybe move to mixin
         
         time_start = Time.now
         

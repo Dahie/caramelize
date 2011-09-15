@@ -31,8 +31,6 @@ module Caramelize
       
       output_wiki.commit_history @revisions
       
-      # 
-      
       if original_wiki.convert_syntax?
         puts "latest revisions:"
         # take each latest revision
@@ -52,12 +50,6 @@ module Caramelize
           end
         end  
       end
-      
-      
-      #lemma = wiki.revisions_by_title "dahie"
-      #for page in lemma
-      #  puts page.time
-      #end
       
     end
   end
