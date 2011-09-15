@@ -31,7 +31,7 @@ to install the new gem right to the system.
 
 ### Use
 
-    $ caramelize create --config=config.rb 
+    $ caramelize create <directory> 
 
 Creates a template configuration file. This includes documentation on how to use the preset Wiki-connectors and how to write addition customized connectors.
 

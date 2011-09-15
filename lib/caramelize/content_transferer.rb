@@ -51,14 +51,6 @@ module Caramelize
           end
         end  
       end
-      
-      
-      #lemma = wiki.revisions_by_title "dahie"
-      #for page in lemma
-      #  puts page.time
-      #end
-      
     end
   end
-  
 end
