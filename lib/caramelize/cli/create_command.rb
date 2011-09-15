@@ -33,15 +33,16 @@ module Caramelize::CLI
           puts "Created new configuration file: caramelize.rb"
           #puts args[0]
           require 'fileutils'
-          FileUtils.copy("caramelize/caramel.rb", args[0])
+          
+          FileUtils.cp(File.dirname(__FILE__) +"/../caramel.rb", args[0])
           
           #File.open('caremelize.rb',"w+") do |f|
           #  f << "query_data"
           #end
           
         rescue
-          require 'fileutils'
-          FileUtils.rm_rf(args[0])
+          #require 'fileutils'
+          #FileUtils.rm_rf(args[0])
           raise
         end
         if commandparser.verbosity == :verbose
