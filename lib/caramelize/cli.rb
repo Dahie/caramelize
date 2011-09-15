@@ -2,12 +2,13 @@ require 'cmdparse'
 require 'caramelize/version'
 
 module Caramelize
+  autoload :ContentTransferer, 'caramelize/content_transferer'
   module CLI
     
     # Namespace for all classes that act as CLI commands.
     autoload :RunCommand, 'caramelize/cli/run_command'
     autoload :CreateCommand, 'caramelize/cli/create_command'
-    autoload :ContentTransferer, 'caramelize/content_transferer'
+    
   
     # This is the command parser class used for handling the webgen command line interface. After
     # creating an instance, the inherited #parse method can be used for parsing the command line
