@@ -21,8 +21,8 @@ module Caramelize
       return []
     end
     
-    def convert_syntax?
-      @options[:syntax] == :markdown
+    def convert_syntax? to_markup
+      @options[:markup] == to_markup
     end
     
     def latest_revisions

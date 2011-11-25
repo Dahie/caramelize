@@ -8,7 +8,6 @@ module Caramelize
   autoload :WikkaWiki, 'caramelize/wiki/wikkawiki'
   autoload :RedmineWiki, 'caramelize/wiki/redmine_wiki'
   autoload :GollumOutput, 'caramelize/gollum_output'
-  autoload :Wikka2MarkdownConverter, 'wiki/wikka2markdown_converter'
   autoload :Author, 'caramelize/author'
   autoload :Page, 'caramelize/page'
   
@@ -16,7 +15,10 @@ module Caramelize
   class ContentTransferer
     
     # Execute the content migration
-    def self.execute original_wiki, options={}
+    def self.execute(original_wiki, options={})
+      
+      options[:markup] = :markdown            if !options[:markup]
+      options[:default_author] = "Caramelize" if !options[:default_author]
       
       # read page revisions from wiki
       # store page revisions
@@ -25,29 +27,33 @@ module Caramelize
       @revisions = original_wiki.read_pages
       
       # initiate new wiki
-      
       output_wiki = GollumOutput.new('wiki.git')
       
       # commit page revisions to new wiki
-      
       output_wiki.commit_history @revisions
       
-      # if wiki needs to convert sytax, do so
-      if original_wiki.convert_syntax?
+      # if wiki needs to convert syntax, do so
+      if original_wiki.convert_syntax? options[:markup]
         puts "latest revisions:"
         # take each latest revision
         for rev in original_wiki.latest_revisions
           puts "Updated syntax: #{rev.title} #{rev.time}"
+          
           # parse markup & convert to new syntax
-          body_new = original_wiki.convert2markdown rev.body
+          if options[:markup] == :markdown
+            body_new = original_wiki.to_markdown rev.body
+          else
+            body_new = original_wiki.to_textile rev.body
+          end
+            
           unless body_new == rev.body
             rev.body = body_new
-            rev.author_name = "Caramelize"
+            rev.author_name = options[:markup]
             rev.time = Time.now
             rev.author = nil
             
             # commit as latest page revision
-            output_wiki.commit_revision rev  
+            output_wiki.commit_revision rev, options
           end
         end  
       end

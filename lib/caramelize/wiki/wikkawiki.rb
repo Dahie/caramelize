@@ -1,11 +1,11 @@
 #Encoding: UTF-8
 module Caramelize
   autoload :DatabaseConnector, 'caramelize/database_connector'
-  autoload :Wikka2MarkdownConverter, 'caramelize/wikka2markdown_converter'
+  autoload :WikkaConverter, 'caramelize/wikka_converter'
   
   class WikkaWiki < Wiki
     include DatabaseConnector
-    include Wikka2MarkdownConverter
+    include WikkaConverter
     
     # after calling this action, I expect the @titles and @revisions to be filled
     def read_pages
@@ -19,7 +19,7 @@ module Caramelize
         page = Page.new({:id => row["id"],
                             :title =>   row["tag"],
                             :body =>    row["body"],
-                            :syntax =>  'wikka',
+                            :markup =>  :wikka,
                             :latest =>  row["latest"] == "Y",
                             :time =>    row["time"],
                             :message => row["note"],

@@ -9,7 +9,7 @@ def customized_wiki
   
   # This example is a reimplementation of the WikkaWiki-Connector. 
   # To connect to WikkaWiki, I suggest to use the predefined Connector below.
-  wiki = Caramelize::Wiki.new(:host => "localhost", :username => "user", :database => "database_name", :password => 'admin_gnihihihi', :syntax => :wikka)
+  wiki = Caramelize::Wiki.new(:host => "localhost", :username => "user", :database => "database_name", :password => 'admin_gnihihihi', :markup => :wikka)
   wiki.instance_eval do
     def read_pages
       sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
@@ -21,7 +21,7 @@ def customized_wiki
         page = Page.new({:id => row["id"],
                             :title =>   row["tag"],
                             :body =>    row["body"],
-                            :syntax =>  'wikka',
+                            :markup =>  'wikka',
                             :latest =>  row["latest"] == "Y",
                             :time =>    row["time"],
                             :message => row["note"],

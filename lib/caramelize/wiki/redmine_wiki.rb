@@ -1,7 +1,6 @@
 #Encoding: UTF-8
 module Caramelize
   autoload :DatabaseConnector, 'caramelize/database_connector'
-  autoload :Wikka2MarkdownConverter, 'caramelize/wikka2markdown_converter'
   
   class RedmineWiki < Wiki
     include DatabaseConnector
@@ -24,7 +23,7 @@ module Caramelize
           page = Page.new({:id => row_content["id"],
                             :title => title,
                             :body => row_content["data"],
-                            :syntax => 'textile',
+                            :markup => :textile,
                             :latest => false,
                             :time => row_content["updated_on"],
                             :message => row_content["comments"],
@@ -42,11 +41,6 @@ module Caramelize
       # TODO find latest revision for each limit
       
       @revisions
-    end
-    
-      def convert_syntax?
-      # TODO
-      false
     end
     
     def read_authors

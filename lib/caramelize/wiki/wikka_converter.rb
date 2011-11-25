@@ -1,8 +1,8 @@
 module Caramelize
-  module Wikka2MarkdownConverter
+  module WikkaConverter
     
     # take an input stream and convert all wikka syntax to markdown syntax
-    def convert2markdown str
+    def to_markdown str
       str.gsub!(/(======)(.*?)(======)/ ) {|s| '# ' + $2 } #h1
       str.gsub!(/(=====)(.*?)(=====)/) {|s| '## ' + $2 }   #h2
       str.gsub!(/(====)(.*?)(====)/) {|s| '### ' + $2 }   #h3
