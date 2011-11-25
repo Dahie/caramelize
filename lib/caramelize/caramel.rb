@@ -1,6 +1,6 @@
-require 'caramelize/wiki'
-require 'caramelize/wikkawiki'
-require 'caramelize/redmine_wiki'
+require 'caramelize/wiki/wiki'
+require 'caramelize/wiki/wikkawiki'
+require 'caramelize/wiki/redmine_wiki'
 
 # Within this method you can define your own Wiki-Connectors to Wikis not supported by default in this software
 

@@ -4,11 +4,11 @@ require 'gollum'
 require 'grit'
 
 module Caramelize
-  autoload :Wiki, 'caramelize/wiki'
-  autoload :WikkaWiki, 'caramelize/wikkawiki'
-  autoload :RedmineWiki, 'caramelize/redmine_wiki'
+  autoload :Wiki, 'caramelize/wiki/wiki'
+  autoload :WikkaWiki, 'caramelize/wiki/wikkawiki'
+  autoload :RedmineWiki, 'caramelize/wiki/redmine_wiki'
   autoload :GollumOutput, 'caramelize/gollum_output'
-  autoload :Wikka2MarkdownConverter, 'wikka2markdown_converter'
+  autoload :Wikka2MarkdownConverter, 'wiki/wikka2markdown_converter'
   autoload :Author, 'caramelize/author'
   autoload :Page, 'caramelize/page'
   
