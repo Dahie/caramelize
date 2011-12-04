@@ -25,7 +25,7 @@ module Caramelize
       def initialize 
         super(true)
         @directory = nil
-        @verbosity = :normal
+        @verbosity = :verbose
 
         self.program_name = "caramelize"
         self.program_version = Caramelize::VERSION
@@ -49,7 +49,6 @@ module Caramelize
       
       # Utility method for sub-commands to transfer wiki contents
       def transfer_content
-        
         time_start = Time.now
         
         file = detect_configuration_file
@@ -61,7 +60,7 @@ module Caramelize
           
           time_end = Time.now
           
-          puts "Time required: #{time_end - time_start} s" if @verbosity
+          puts "Time required: #{time_end - time_start} s" if @verbosity == :verbose
         else
           puts "No config file found."
         end

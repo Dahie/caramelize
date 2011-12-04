@@ -4,7 +4,7 @@ module Caramelize
   class GollumOutput
     
     def supported_markup 
-      {:markdown, :textile}
+      [:markdown, :textile]
     end
     
     # Initialize a new gollum-wiki-repository at the given path.
@@ -16,8 +16,7 @@ module Caramelize
     
     # Commit the given page into the gollum-wiki-repository.
     def commit_revision(page,options={}) 
-      options[:markup] => :markdown if options[:markup] 
-      gollum_page = @gollum.page(page.title)
+      options[:markup] = :markdown if options[:markup].nil? 
       message = page.message.empty? ? "Edit in page #{page.title}" : page.message
         
       if page.author
@@ -28,12 +27,15 @@ module Caramelize
         author.email = "mail@example.com"
       end
       
+      
       commit = {:message => message,
                :name => author.name,
                :email => author.email,
                :authored_date => page.time,
                :committed_date => page.time
       }
+      
+      gollum_page = @gollum.page(page.title)
       if gollum_page
         @gollum.update_page(gollum_page, gollum_page.name, gollum_page.format, page.body, commit)
       else
@@ -43,12 +45,11 @@ module Caramelize
     end
     
     # Commit all revisions of the given history into this gollum-wiki-repository.
-    def commit_history(revisions, options{})
-      options = {} if options.empty?
+    def commit_history(revisions, options={})
       revisions.each_with_index do |page, index|
-        puts "(#{index+1}/#{revisions.count}) #{page.time}  #{page.title}" 
+        puts "(#{index+1}/#{revisions.count}) #{page.time}  #{page.title}" if options[:verbosity] == :verbose
         
-        commit_page(page, options)
+        commit_revision(page, options)
       end
     end
     

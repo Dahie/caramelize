@@ -37,7 +37,7 @@ module Caramelize
         puts "latest revisions:"
         # take each latest revision
         for rev in original_wiki.latest_revisions
-          puts "Updated syntax: #{rev.title} #{rev.time}"
+          puts "Updated syntax: #{rev.title} #{rev.time}" 
           
           # parse markup & convert to new syntax
           if options[:markup] == :markdown

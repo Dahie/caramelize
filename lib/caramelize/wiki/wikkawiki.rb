@@ -1,7 +1,7 @@
 #Encoding: UTF-8
 module Caramelize
   autoload :DatabaseConnector, 'caramelize/database_connector'
-  autoload :WikkaConverter, 'caramelize/wikka_converter'
+  autoload :WikkaConverter, 'caramelize/wiki/wikka_converter'
   
   class WikkaWiki < Wiki
     include DatabaseConnector
