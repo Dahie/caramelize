@@ -41,7 +41,7 @@ module Caramelize::CLI
         #FileUtils.rm_rf(args[0])
         raise
       end
-      if commandparser.verbosity == :verbose
+      if commandparser.verbosity == :normal
         puts "Created new configuration file: #{target_file}"
         #puts paths.sort.join("\n")
       end

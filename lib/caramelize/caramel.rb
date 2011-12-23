@@ -2,6 +2,8 @@ require 'caramelize/wiki/wiki'
 require 'caramelize/wiki/wikkawiki'
 require 'caramelize/wiki/redmine_wiki'
 
+## Example caramelize configuration file
+
 # Within this method you can define your own Wiki-Connectors to Wikis not supported by default in this software
 
 # Note, if you want to activate this, you need to uncomment the line below.
@@ -48,11 +50,17 @@ end
 def predefined_wiki
   
   # For connection to a WikkaWiki-Database use this Connector
-  #return Caramelize::WikkaWiki.new(:host => "localhost", :username => "root", :database => "wikka")
+  #return Caramelize::WikkaWiki.new(:host => "localhost", 
+  #      :username => "root",
+  #      :password => "root", 
+  #      :database => "wikka")
   
   
   # For connection to a Redmine-Database use this Connector
-  return Caramelize::RedmineWiki.new(:host => "localhost", :username => "root", :database => "redmine_development")
+  return Caramelize::RedmineWiki.new(:host => "localhost", 
+        :username => "root", 
+        :password => "root",
+        :database => "redmine_development")
 end
 
 

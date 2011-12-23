@@ -15,7 +15,7 @@ module Caramelize
     end
     
     # Commit the given page into the gollum-wiki-repository.
-    def commit_revision(page,options={}) 
+    def commit_revision(page, options={}) 
       options[:markup] = :markdown if options[:markup].nil? 
       message = page.message.empty? ? "Edit in page #{page.title}" : page.message
         
@@ -47,7 +47,7 @@ module Caramelize
     # Commit all revisions of the given history into this gollum-wiki-repository.
     def commit_history(revisions, options={})
       revisions.each_with_index do |page, index|
-        puts "(#{index+1}/#{revisions.count}) #{page.time}  #{page.title}" if options[:verbosity] == :verbose
+        puts "(#{index+1}/#{revisions.count}) #{page.time}  #{page.title}" if options[:verbosity] == :normal
         
         commit_revision(page, options)
       end

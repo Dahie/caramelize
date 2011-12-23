@@ -27,17 +27,17 @@ module Caramelize
       @revisions = original_wiki.read_pages
       
       # initiate new wiki
-      output_wiki = GollumOutput.new('wiki.git')
+      output_wiki = GollumOutput.new('wiki.git') # TODO make wiki_path an option
       
       # commit page revisions to new wiki
-      output_wiki.commit_history @revisions
+      output_wiki.commit_history @revisions, options
       
       # if wiki needs to convert syntax, do so
       if original_wiki.convert_syntax? options[:markup]
-        puts "latest revisions:"
+        puts "latest revisions:" if options[:verbosity] == :verbose
         # take each latest revision
         for rev in original_wiki.latest_revisions
-          puts "Updated syntax: #{rev.title} #{rev.time}" 
+          puts "Updated syntax: #{rev.title} #{rev.time}"  if options[:verbosity] == :verbose
           
           # parse markup & convert to new syntax
           if options[:markup] == :markdown
@@ -57,6 +57,6 @@ module Caramelize
           end
         end  
       end
-    end
+    end # end execute
   end
 end

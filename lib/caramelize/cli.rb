@@ -22,7 +22,7 @@ module Caramelize
       # Create a new CommandParser class. T
       def initialize 
         super(true)
-        @verbosity = :verbose
+        @verbosity = :normal
 
         self.program_name = "caramelize"
         self.program_version = Caramelize::VERSION
@@ -40,14 +40,16 @@ module Caramelize
       # Finds the configuration file, if it exists in a known location.
       def detect_configuration_file(config_path = nil)
         possible_files = KNOWN_CONFIG_LOCATIONS
+        possible_files << config_path if config_path
         possible_files.detect{|f| File.exists?(f)}
       end
       
       # Utility method for sub-commands to transfer wiki contents
-      def transfer_content
+      def transfer_content config_file = ""
         time_start = Time.now
         
-        file = detect_configuration_file
+        file = detect_configuration_file config_file
+        puts "Read config file: #{file}" if @verbosity == :verbose
         if file && File.exists?(file)
           instance_eval(File.read(file), file || '<eval>')
           original_wiki = input_wiki
