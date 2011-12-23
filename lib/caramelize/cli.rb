@@ -1,3 +1,4 @@
+#Encoding: UTF-8
 require 'cmdparse'
 require 'caramelize/version'
 
@@ -15,23 +16,18 @@ module Caramelize
     # arguments and executing the requested command.
     class CommandParser < CmdParse::CommandParser
 
-      # The website directory. Default: the current working directory.
-      attr_reader :directory
-
       # The verbosity level. Default: <tt>:normal</tt>
       attr_reader :verbosity
 
       # Create a new CommandParser class. T
       def initialize 
         super(true)
-        @directory = nil
         @verbosity = :verbose
 
         self.program_name = "caramelize"
         self.program_version = Caramelize::VERSION
         self.options = CmdParse::OptionParserWrapper.new do |opts|
           opts.separator "Global options:"
-          opts.on("--config DIR", "-d", String, "The config file (default: caramel.rb)") {|p| @directory = p}
           opts.on("--verbose", "-v", "Print more output") { @verbosity = :verbose }
           opts.on("--quiet", "-q", "No output") { @verbosity = :quiet }
         end
