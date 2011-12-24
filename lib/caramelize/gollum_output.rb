@@ -47,7 +47,9 @@ module Caramelize
     # Commit all revisions of the given history into this gollum-wiki-repository.
     def commit_history(revisions, options={})
       revisions.each_with_index do |page, index|
-        puts "(#{index+1}/#{revisions.count}) #{page.time}  #{page.title}" if options[:verbosity] == :normal
+        if options[:verbosity] == :normal || options[:verbosity] == :verbose
+          puts "(#{index+1}/#{revisions.count}) #{page.time}  #{page.title}" 
+        end
         
         commit_revision(page, options)
       end

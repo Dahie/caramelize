@@ -34,7 +34,8 @@ module Caramelize
       
       # if wiki needs to convert syntax, do so
       if original_wiki.convert_syntax? options[:markup]
-        puts "latest revisions:" if options[:verbosity] == :verbose
+        puts options[:verbosity]
+        puts "latest revisions:" if options[:verbosity] == :verbose 
         # take each latest revision
         for rev in original_wiki.latest_revisions
           puts "Updated syntax: #{rev.title} #{rev.time}"  if options[:verbosity] == :verbose
