@@ -8,8 +8,6 @@ In the future more target wiki system may be added. For the moment export is sup
 
 ### Building
 
-For the moment caramelize is not yet stable and not released to any gemsites.
-
 To try it you require bundler to build it.
 
     $ gem bundler install
@@ -31,20 +29,31 @@ to install the new gem right to the system.
 
 ### Use
 
-    $ caramelize create <directory> 
+    $ caramelize create 
 
-Creates a template configuration file. This includes documentation on how to use the preset Wiki-connectors and how to write addition customized connectors.
-
+Creates a template configuration file "caramel.rb". This includes documentation on how to use the preset Wiki-connectors and how to write addition customized connectors.
 
     $ caramelize run 
     
 Will execute a wiki migration based on a found configuration file. These are found in predefined paths.
 
     $ caramelize help
+    
 Returns help information.
 
 	$ caramelize version
+	
 Returns version and release information.
+
+### Options
+
+$ caramelize create --config my_caramel_configuration.rb
+
+Creates an example config with the given name.
+
+$ caramelize run --config my_caramel_configuration.rb
+
+Executes the given configuration.
 
 ## Contributing to caramelize
  
