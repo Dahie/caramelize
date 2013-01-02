@@ -21,8 +21,8 @@ module Caramelize
       return []
     end
     
-    def convert_syntax? to_markup
-      @options[:markup] == to_markup
+    def convert_markup? to_markup
+      markup != to_markup
     end
     
     def latest_revisions
@@ -32,6 +32,10 @@ module Caramelize
         @latest_revisions << revisions_by_title(title).last
       end
       @latest_revisions
+    end
+
+    def markup
+      @options[:markup]
     end
   end
 end

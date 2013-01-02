@@ -15,18 +15,17 @@ module Caramelize
     end
     
     # Commit the given page into the gollum-wiki-repository.
-    def commit_revision(page, options={}) 
-      options[:markup] = :markdown if options[:markup].nil? 
+    # Make sure the target markup is correct before calling this method.
+    def commit_revision(page, markup) 
       message = page.message.empty? ? "Edit in page #{page.title}" : page.message
         
       if page.author
-        author = page.author   
+        author = page.author
       else
         author = Author.new
         author.name = page.author_name
         author.email = "mail@example.com"
       end
-      
       
       commit = {:message => message,
                :name => author.name,
@@ -39,19 +38,19 @@ module Caramelize
       if gollum_page
         @gollum.update_page(gollum_page, gollum_page.name, gollum_page.format, page.body, commit)
       else
-        # OPTIMIZE support not just markdown
-        @gollum.write_page(page.title, options[:markup], page.body, commit)
+        @gollum.write_page(page.title, markup, page.body, commit)
       end
     end
     
     # Commit all revisions of the given history into this gollum-wiki-repository.
     def commit_history(revisions, options={})
+      options[:markup] = :markdown if options[:markup].nil? # target markup
       revisions.each_with_index do |page, index|
         if options[:verbosity] == :normal || options[:verbosity] == :verbose
           puts "(#{index+1}/#{revisions.count}) #{page.time}  #{page.title}" 
         end
         
-        commit_revision(page, options)
+        commit_revision(page, options[:markup])
       end
     end
     

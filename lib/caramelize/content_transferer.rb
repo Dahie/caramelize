@@ -29,13 +29,17 @@ module Caramelize
       # initiate new wiki
       output_wiki = GollumOutput.new('wiki.git') # TODO make wiki_path an option
       
+      # TODO ask if we should replace existing paths
+
       # commit page revisions to new wiki
       output_wiki.commit_history @revisions, options
       
       # if wiki needs to convert syntax, do so
-      if original_wiki.convert_syntax? options[:markup]
-        puts options[:verbosity]
-        puts "latest revisions:" if options[:verbosity] == :verbose 
+      puts "From markup: " + original_wiki.markup.to_s if options[:verbosity] == :verbose
+      puts "To markup: " + options[:markup].to_s if options[:verbosity] == :verbose
+      if original_wiki.convert_markup? options[:markup] # is wiki in target markup
+        
+        puts "Latest revisions:" if options[:verbosity] == :verbose
         # take each latest revision
         for rev in original_wiki.latest_revisions
           puts "Updated syntax: #{rev.title} #{rev.time}"  if options[:verbosity] == :verbose
@@ -46,15 +50,20 @@ module Caramelize
           else
             body_new = original_wiki.to_textile rev.body
           end
-            
-          unless body_new == rev.body
+          
+          if body_new.start_with?('Einige interessante')
+            puts rev.body
+            puts body_new
+          end
+
+          unless body_new.eql? rev.body
             rev.body = body_new
             rev.author_name = options[:markup]
             rev.time = Time.now
             rev.author = nil
             
             # commit as latest page revision
-            output_wiki.commit_revision rev, options
+            output_wiki.commit_revision rev, options[:markup]
           end
         end  
       end
