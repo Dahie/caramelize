@@ -14,9 +14,9 @@ module Caramelize
       #str.gsub!(/(===)(.*?)(===)/) {|s| '`' + $2 + '`'}   #code
       body.gsub!(/(__)(.*?)(__)/) {|s| '<u>' + $2 + '</u>'}   #underline
       
-      body.gsub!(/(.*?)(\n\t-)(.*?)/) {|s| $1 + '\n' + $3 }   #list
+      #body.gsub!(/(.*?)(\n\t-)(.*?)/) {|s| $1 + $3 }   #list
       
-      body.gsub!(/(\t-)(.*?)/) {|s| '*' + $2 }   #list
+      body.gsub!(/(\t-)(.*)/) {|s| '*' + $2 }   #list
       #str.gsub!(/(----)/) {|s| '~~~~'}   #seperator
 
 
