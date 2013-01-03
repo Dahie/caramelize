@@ -13,10 +13,16 @@ module Caramelize
       body.gsub!(/(\/\/)(.*?)(\/\/)/) {|s| '_' + $2 + '_' }   #italic
       #str.gsub!(/(===)(.*?)(===)/) {|s| '`' + $2 + '`'}   #code
       body.gsub!(/(__)(.*?)(__)/) {|s| '<u>' + $2 + '</u>'}   #underline
+      body.gsub!(/(---)/, '  ')   #forced linebreak
       
       #body.gsub!(/(.*?)(\n\t-)(.*?)/) {|s| $1 + $3 }   #list
       
-      body.gsub!(/(\t-)(.*)/) {|s| '*' + $2 }   #list
+      body.gsub!(/(\t-)(.*)/, '*\2')    # unordered list
+      body.gsub!(/(~-)(.*)/, '*\2')     # unordered list
+      # TODO ordered lists
+
+      # TODO images: ({{image)(url\=?)?(.*)(}})
+
       #str.gsub!(/(----)/) {|s| '~~~~'}   #seperator
 
 
