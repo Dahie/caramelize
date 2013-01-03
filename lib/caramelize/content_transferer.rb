@@ -50,11 +50,6 @@ module Caramelize
           else
             body_new = original_wiki.to_textile rev.body
           end
-          
-          if body_new.start_with?('Einige interessante')
-            puts rev.body
-            puts body_new
-          end
 
           unless body_new.eql? rev.body
             rev.body = body_new
