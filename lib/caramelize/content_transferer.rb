@@ -32,7 +32,11 @@ module Caramelize
       # TODO ask if we should replace existing paths
 
       # commit page revisions to new wiki
-      output_wiki.commit_history @revisions, options
+      output_wiki.commit_history(@revisions, options) do |page, index|
+        if options[:verbosity] == :normal || options[:verbosity] == :verbose
+          puts "(#{index+1}/#{@revisions.count}) #{page.time} #{page.title}"
+        end
+      end
       
       # if wiki needs to convert syntax, do so
       puts "From markup: " + original_wiki.markup.to_s if options[:verbosity] == :verbose

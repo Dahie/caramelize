@@ -43,13 +43,11 @@ module Caramelize
     end
     
     # Commit all revisions of the given history into this gollum-wiki-repository.
-    def commit_history(revisions, options={})
+    def commit_history(revisions, options={}, &block)
       options[:markup] = :markdown if options[:markup].nil? # target markup
       revisions.each_with_index do |page, index|
-        if options[:verbosity] == :normal || options[:verbosity] == :verbose
-          puts "(#{index+1}/#{revisions.count}) #{page.time}  #{page.title}" 
-        end
-        
+        # call debug output from outside
+        block.call(page, index) if block_given?
         commit_revision(page, options[:markup])
       end
     end
