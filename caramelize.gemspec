@@ -10,13 +10,14 @@ Gem::Specification.new do |s|
   s.authors     = ["Daniel Senff"]
   s.email       = ["mail@danielsenff.de"]
   s.homepage    = "http://github.com/Dahie/caramelize"
-  s.summary     = %q{Abstract wiki convert to migrate your data from one wiki software to another}
-  s.description = %q{By defining the access from the input to the output wiki you can migrate any wiki.}
+  s.summary     = %q{Flexible and modular wiki conversion tool}
+  s.description = %q{By defining the connectors from the input wiki you can migrate any wiki to git-based Gollum wiki repositories.}
   
   s.bindir = 'bin'
   
   s.add_dependency('mysql2')
   s.add_dependency('cmdparse')
+  s.add_dependency('ruby-progressbar')
   s.add_dependency('gollum', '>= 1.3.0') # grit dependency implicit through gollum
 
   s.rubyforge_project = "caramelize"
