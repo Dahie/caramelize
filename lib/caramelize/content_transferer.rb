@@ -2,6 +2,7 @@
 
 require 'gollum'
 require 'grit'
+require 'ruby-progressbar'
 
 module Caramelize
   autoload :Wiki, 'caramelize/wiki/wiki'
@@ -19,34 +20,41 @@ module Caramelize
       
       options[:markup] = :markdown            if !options[:markup]
       options[:default_author] = "Caramelize" if !options[:default_author]
-      
+
       # read page revisions from wiki
       # store page revisions
-      
       original_wiki.read_authors
       @revisions = original_wiki.read_pages
-      
       # initiate new wiki
       output_wiki = GollumOutput.new('wiki.git') # TODO make wiki_path an option
       
+      # setup progressbar
+      progress_revisions = ProgressBar.create(:title => "Revisions", :total => @revisions.count, :format => '%a %B %p%% %t')
+
       # TODO ask if we should replace existing paths
 
       # commit page revisions to new wiki
       output_wiki.commit_history(@revisions, options) do |page, index|
-        if options[:verbosity] == :normal || options[:verbosity] == :verbose
+        if options[:verbosity] == :verbose
           puts "(#{index+1}/#{@revisions.count}) #{page.time} #{page.title}"
+        else
+          progress_revisions.increment
         end
       end
-      
+
       # if wiki needs to convert syntax, do so
       puts "From markup: " + original_wiki.markup.to_s if options[:verbosity] == :verbose
       puts "To markup: " + options[:markup].to_s if options[:verbosity] == :verbose
       if original_wiki.convert_markup? options[:markup] # is wiki in target markup
         
+        #setup progress for markup conversion
+        progress_markup = ProgressBar.create(:title => "Markup", :total => original_wiki.latest_revisions.count, :format => '%a %B %p%% %t')
+
         puts "Latest revisions:" if options[:verbosity] == :verbose
         # take each latest revision
         for rev in original_wiki.latest_revisions
           puts "Updated syntax: #{rev.title} #{rev.time}"  if options[:verbosity] == :verbose
+          progress_markup.increment
           
           # parse markup & convert to new syntax
           if options[:markup] == :markdown
@@ -64,7 +72,7 @@ module Caramelize
             # commit as latest page revision
             output_wiki.commit_revision rev, options[:markup]
           end
-        end  
+        end
       end
     end # end execute
   end
