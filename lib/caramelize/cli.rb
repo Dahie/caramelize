@@ -39,8 +39,9 @@ module Caramelize
 
       # Finds the configuration file, if it exists in a known location.
       def detect_configuration_file(config_path = nil)
-        possible_files = KNOWN_CONFIG_LOCATIONS
+        possible_files = []
         possible_files << config_path if config_path
+        possible_files |= KNOWN_CONFIG_LOCATIONS
         possible_files.detect{|f| File.exists?(f)}
       end
       
