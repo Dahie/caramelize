@@ -5,6 +5,10 @@ module Caramelize
   class RedmineWiki < Wiki
     include DatabaseConnector
     
+    def initialize options={}
+      super(options)
+      options[:markup] = :textile
+    end
     
     # after calling this action, I expect the @titles and @revisions to be filled
     def read_pages

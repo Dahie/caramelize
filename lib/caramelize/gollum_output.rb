@@ -3,7 +3,7 @@
 module Caramelize
   class GollumOutput
     
-    def supported_markup 
+    def supported_markup
       [:markdown, :textile]
     end
     
@@ -16,7 +16,7 @@ module Caramelize
     
     # Commit the given page into the gollum-wiki-repository.
     # Make sure the target markup is correct before calling this method.
-    def commit_revision(page, markup) 
+    def commit_revision(page, markup)
       message = page.message.empty? ? "Edit in page #{page.title}" : page.message
         
       if page.author
