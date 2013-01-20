@@ -12,14 +12,39 @@ module Caramelize
     
     # after calling this action, I expect the @titles and @revisions to be filled
     def read_pages
-      sql = "SELECT id, title FROM wiki_pages;"
       @revisions = []
       @titles = []
       @latest_revisions = {}
-      results_pages = database.query(sql)
+
+      # get all projects
+      results_projects = database.query("SELECT id, identifier, name FROM projects;")
+
+
+      results_wikis = database.query("SELECT id, project_id FROM wikis;")
+
+      results_pages = database.query("SELECT id, title, wiki_id FROM wiki_pages;")
       results_pages.each do |row_page|
         results_contents = database.query("SELECT * FROM wiki_content_versions WHERE page_id='#{row_page["id"]}' ORDER BY updated_on;")
-        title = row_page["title"]
+
+
+        # get wiki for page
+        wiki_row = nil
+        project_row = nil
+        results_wikis.each do |wiki|
+          wiki_row = wiki if wiki["id"] == row_page["wiki_id"]
+        end
+
+        if wiki_row
+          # get project from wiki-id
+          results_projects.each do |project|
+            project_row = project if project["id"] == wiki_row["project_id"]
+          end
+        end
+
+        project_identifier = project_row ? project_row["identifier"] + '/' : ""
+        puts project_identifier
+
+        title = project_identifier + row_page["title"]
         @titles << title
         
         results_contents.each do |row_content|
