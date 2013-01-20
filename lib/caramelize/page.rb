@@ -5,12 +5,12 @@ module Caramelize
   
     def initialize page={}
       @id =      page[:id]
-      @title =   page[:title]
-      @body =    page[:body]
+      @title =   page[:title] ? page[:title] : ""
+      @body =    page[:body] ? page[:body] : ""
       @syntax =  page[:markup]
-      @latest =  page[:latest]
-      @time =    page[:time]
-      @message = page[:message]
+      @latest =  page[:latest] ? page[:latest] : false
+      @time =    page[:time] ? page[:time] : Time.now
+      @message = page[:message] ? page[:message] : ""
       @author =  page[:author]
       @author_name =  page[:author_name]
     end

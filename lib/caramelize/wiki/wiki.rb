@@ -2,10 +2,11 @@ module Caramelize
   autoload :DatabaseConnector, 'caramelize/database_connector'
   class Wiki
     include DatabaseConnector
-    attr_accessor :revisions, :wiki_title, :titles, :description
+    attr_accessor :revisions, :wiki_title, :titles, :description, :namespaces, :options
     
     def initialize options={}
       @options = options
+      @namespaces = []
     end
     
     def revisions_by_title title
@@ -20,6 +21,7 @@ module Caramelize
     def read_authors
       return []
     end
+
     
     def convert_markup? to_markup
       markup != to_markup
@@ -37,5 +39,6 @@ module Caramelize
     def markup
       @options[:markup]
     end
+
   end
 end

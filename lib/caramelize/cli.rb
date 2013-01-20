@@ -55,7 +55,9 @@ module Caramelize
           instance_eval(File.read(file), file || '<eval>')
           original_wiki = input_wiki
           
-          ContentTransferer.execute(original_wiki, {:verbosity => @verbosity})
+          options = original_wiki.options
+          options[:verbosity] = @verbosity
+          ContentTransferer.execute(original_wiki, options)
           
           time_end = Time.now
           

@@ -77,6 +77,10 @@ module Caramelize
             output_wiki.commit_revision rev, options[:markup]
           end
         end
+      end # end convert_markup?
+
+      if options[:create_namespace_home]
+        output_wiki.create_namespace_home(original_wiki.namespaces)
       end
     end # end execute
   end

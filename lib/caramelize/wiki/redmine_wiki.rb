@@ -8,6 +8,7 @@ module Caramelize
     def initialize options={}
       super(options)
       options[:markup] = :textile
+      options[:create_namespace_home] = true unless options[:create_namespace_home]
     end
     
     # after calling this action, I expect the @titles and @revisions to be filled
@@ -18,7 +19,9 @@ module Caramelize
 
       # get all projects
       results_projects = database.query("SELECT id, identifier, name FROM projects;")
-
+      results_projects.each do |row_project|
+        @namespaces << {:identifier => row_project["identifier"], :name => row_project["name"]}
+      end
 
       results_wikis = database.query("SELECT id, project_id FROM wikis;")
 
@@ -42,7 +45,6 @@ module Caramelize
         end
 
         project_identifier = project_row ? project_row["identifier"] + '/' : ""
-        puts project_identifier
 
         title = project_identifier + row_page["title"]
         @titles << title
@@ -65,8 +67,7 @@ module Caramelize
       @titles.uniq!
       @latest_revisions.each { |rev| rev[1].set_latest }
       @revisions.sort! { |a,b| a.time <=> b.time }
-      
-      
+
       # TODO find latest revision for each limit
       
       @revisions
@@ -85,5 +86,5 @@ module Caramelize
       end
       @authors
     end
-  end    
+  end
 end

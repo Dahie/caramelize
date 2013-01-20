@@ -37,7 +37,6 @@ def customized_wiki
       end
       @titles.uniq!
       @revisions
-      
     end
   end
   
@@ -57,6 +56,8 @@ def predefined_wiki
   
   
   # For connection to a Redmine-Database use this Connector
+  # Additional options:
+  # :create_namespace_home => true/false (Default: true)  -  Creates a new wikipage at /home as root page for Gollum wiki
   return Caramelize::RedmineWiki.new(:host => "localhost", 
         :username => "root", 
         :password => "root",

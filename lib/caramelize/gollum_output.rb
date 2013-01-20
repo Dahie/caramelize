@@ -23,7 +23,7 @@ module Caramelize
         author = page.author
       else
         author = Author.new
-        author.name = page.author_name
+        author.name = page.author_name ? page.author_name : "Caramelize"
         author.email = "mail@example.com"
       end
       
@@ -50,6 +50,16 @@ module Caramelize
         block.call(page, index) if block_given?
         commit_revision(page, options[:markup])
       end
+    end
+
+    def create_namespace_home namespaces, options={}
+      options[:markup] = :markdown if options[:markup].nil? # target markup
+      body = "## Overview of namespaces" + "\n" + "\n"
+      namespaces.each do |namespace|
+        body << "* [[#{namespace[:name]}|#{namespace[:identifier]}/Wiki]]  \n"
+      end
+      page = Page.new({:title => "Home", :body => body, :message => 'Create Namespace Home', :latest => true })
+      commit_revision(page, options[:markup])
     end
     
   end
