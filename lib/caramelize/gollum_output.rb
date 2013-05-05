@@ -44,7 +44,7 @@ module Caramelize
     
     # Commit all revisions of the given history into this gollum-wiki-repository.
     def commit_history(revisions, options={}, &block)
-      options[:markup] = :markdown if options[:markup].nil? # target markup
+      options[:markup] = :markdown if !options[:markup] # target markup
       revisions.each_with_index do |page, index|
         # call debug output from outside
         block.call(page, index) if block_given?
@@ -56,7 +56,7 @@ module Caramelize
       options[:markup] = :markdown if options[:markup].nil? # target markup
       body = "## Overview of namespaces" + "\n" + "\n"
       namespaces.each do |namespace|
-        body << "* [[#{namespace[:name]}|#{namespace[:identifier]}/Wiki]]  \n"
+        body << "* [[#{namespace[:name]}|#{namespace[:identifier]}/Wiki]]  \n" # change wiki as configurable default home
       end
       page = Page.new({:title => "Home", :body => body, :message => 'Create Namespace Home', :latest => true })
       commit_revision(page, options[:markup])

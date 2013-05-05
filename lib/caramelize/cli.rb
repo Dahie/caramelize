@@ -52,7 +52,7 @@ module Caramelize
         file = detect_configuration_file config_file
         puts "Read config file: #{file}" if @verbosity == :verbose
         if file && File.exists?(file)
-          instance_eval(File.read(file), file || '<eval>')
+          instance_eval(File.read(file))
           original_wiki = input_wiki
           
           options = original_wiki.options
@@ -60,7 +60,6 @@ module Caramelize
           ContentTransferer.execute(original_wiki, options)
           
           time_end = Time.now
-          
           puts "Time required: #{time_end - time_start} s" if @verbosity == :verbose
         else
           puts "No config file found."

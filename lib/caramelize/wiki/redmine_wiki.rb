@@ -20,15 +20,17 @@ module Caramelize
       # get all projects
       results_projects = database.query("SELECT id, identifier, name FROM projects;")
       results_projects.each do |row_project|
+        #collect all namespaces
         @namespaces << {:identifier => row_project["identifier"], :name => row_project["name"]}
       end
 
+      # get all wikis
       results_wikis = database.query("SELECT id, project_id FROM wikis;")
 
+      # get all lemmas
       results_pages = database.query("SELECT id, title, wiki_id FROM wiki_pages;")
       results_pages.each do |row_page|
         results_contents = database.query("SELECT * FROM wiki_content_versions WHERE page_id='#{row_page["id"]}' ORDER BY updated_on;")
-
 
         # get wiki for page
         wiki_row = nil
@@ -60,6 +62,7 @@ module Caramelize
                             :message => row_content["comments"],
                             :author => author,
                             :author_name => author.name})
+          puts page.body
           @revisions << page
           @latest_revisions[title] = page
         end

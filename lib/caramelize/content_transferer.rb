@@ -30,7 +30,6 @@ module Caramelize
         # see if original wiki markup is among any gollum supported markups
         options[:markup] = output_wiki.supported_markup.index(original_wiki.markup) ? original_wiki.markup : :markdown
       end
-      puts  options[:markup]
 
       # setup progressbar
       progress_revisions = ProgressBar.create(:title => "Revisions", :total => @revisions.count, :format => '%a %B %p%% %t')
@@ -45,6 +44,9 @@ module Caramelize
           progress_revisions.increment
         end
       end
+
+
+      # TODO reorder interwiki links: https://github.com/gollum/gollum/wiki#bracket-tags
 
       # if wiki needs to convert syntax, do so
       puts "From markup: " + original_wiki.markup.to_s if options[:verbosity] == :verbose
