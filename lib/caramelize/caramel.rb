@@ -1,3 +1,4 @@
+#Encoding: UTF-8
 require 'caramelize/wiki/wiki'
 require 'caramelize/wiki/wikkawiki'
 require 'caramelize/wiki/redmine_wiki'

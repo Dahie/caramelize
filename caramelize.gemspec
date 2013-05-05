@@ -14,11 +14,11 @@ Gem::Specification.new do |s|
   s.description = %q{By defining the connectors from the input wiki you can migrate any wiki to git-based Gollum wiki repositories.}
   
   s.bindir = 'bin'
-  
+
   s.add_dependency('mysql2')
   s.add_dependency('cmdparse')
   s.add_dependency('ruby-progressbar')
-  s.add_dependency('gollum', '>= 1.3.0') # grit dependency implicit through gollum
+  s.add_dependency('gollum-lib', '>= 1.0.0') # grit dependency implicit through gollum
 
   s.rubyforge_project = "caramelize"
 

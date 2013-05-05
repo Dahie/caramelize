@@ -1,6 +1,6 @@
 #Encoding: UTF-8
 
-require 'gollum'
+require 'gollum-lib'
 require 'grit'
 require 'ruby-progressbar'
 
