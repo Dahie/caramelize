@@ -48,38 +48,48 @@ module Caramelize
 
       # TODO reorder interwiki links: https://github.com/gollum/gollum/wiki#bracket-tags
 
+      # init list of filters to perform on the latest wiki pages
+      filters = []
+
+      original_wiki.filters.each do |filter|
+        filters << filter
+      end
+
       # if wiki needs to convert syntax, do so
       puts "From markup: " + original_wiki.markup.to_s if options[:verbosity] == :verbose
       puts "To markup: " + options[:markup].to_s if options[:verbosity] == :verbose
       if original_wiki.convert_markup? options[:markup] # is wiki in target markup
-        
-        #setup progress for markup conversion
-        progress_markup = ProgressBar.create(:title => "Markup", :total => original_wiki.latest_revisions.count, :format => '%a %B %p%% %t')
 
-        puts "Latest revisions:" if options[:verbosity] == :verbose
-        # take each latest revision
-        for rev in original_wiki.latest_revisions
-          puts "Updated syntax: #{rev.title} #{rev.time}"  if options[:verbosity] == :verbose
-          progress_markup.increment
-          
-          # parse markup & convert to new syntax
-          if options[:markup] == :markdown
-            body_new = original_wiki.to_markdown rev.body
-          else
-            body_new = original_wiki.to_textile rev.body
-          end
 
-          unless body_new.eql? rev.body
-            rev.body = body_new
-            rev.author_name = options[:markup]
-            rev.time = Time.now
-            rev.author = nil
-            
-            # commit as latest page revision
-            output_wiki.commit_revision rev, options[:markup]
-          end
-        end
       end # end convert_markup?
+
+      puts "Latest revisions:" if options[:verbosity] == :verbose
+
+      #setup progress for markup conversion
+        progress_markup = ProgressBar.create(:title => "Markup filters", :total => original_wiki.latest_revisions.count, :format => '%a %B %p%% %t')
+
+      # take each latest revision
+      for rev in original_wiki.latest_revisions
+        puts "Filter source: #{rev.title} #{rev.time}"  if options[:verbosity] == :verbose
+        progress_markup.increment
+        
+        # run filters
+        body_new = rev.body
+        filters.each do |filter|
+          body_new = filter.run body_new
+        end
+
+        unless body_new.eql? rev.body
+          rev.body = body_new
+          rev.author_name = options[:markup]
+          rev.time = Time.now
+          rev.author = nil
+          
+          # commit as latest page revision
+          output_wiki.commit_revision rev, options[:markup]
+        end
+      end
+      
 
       if options[:create_namespace_home]
         output_wiki.create_namespace_home(original_wiki.namespaces)

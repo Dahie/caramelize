@@ -1,15 +1,16 @@
 #Encoding: UTF-8
 module Caramelize
   autoload :DatabaseConnector, 'caramelize/database_connector'
-  autoload :WikkaConverter, 'caramelize/wiki/wikka_converter'
+  autoload :Wikka2Markdown, 'caramelize/filters/wikka_to_markdown'
   
   class WikkaWiki < Wiki
     include DatabaseConnector
-    include WikkaConverter
     
     def initialize options={}
       super(options)
-      options[:markup] = :wikka
+      @options[:markup] = :wikka
+      @options[:swap_interwiki_links] = false
+      @options[:filters] << Caramelize::Wikka2Markdown.new
     end
 
     # after calling this action, I expect the @titles and @revisions to be filled

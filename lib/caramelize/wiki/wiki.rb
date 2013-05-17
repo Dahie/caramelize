@@ -1,3 +1,4 @@
+#Encoding: UTF-8
 module Caramelize
   autoload :DatabaseConnector, 'caramelize/database_connector'
   class Wiki
@@ -6,6 +7,7 @@ module Caramelize
     
     def initialize options={}
       @options = options
+      @options[:filters] = []
       @namespaces = []
     end
     
@@ -25,6 +27,14 @@ module Caramelize
     
     def convert_markup? to_markup
       markup != to_markup
+    end
+
+    def swap_wiki_links?
+      return false
+    end
+
+    def filters
+      @options[:filters]
     end
     
     def latest_revisions

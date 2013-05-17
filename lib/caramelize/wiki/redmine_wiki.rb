@@ -1,14 +1,17 @@
 #Encoding: UTF-8
 module Caramelize
   autoload :DatabaseConnector, 'caramelize/database_connector'
+  autoload :SwapWikiLinks, 'caramelize/filters/swap_wiki_links'
   
   class RedmineWiki < Wiki
     include DatabaseConnector
     
     def initialize options={}
       super(options)
-      options[:markup] = :textile
-      options[:create_namespace_home] = true unless options[:create_namespace_home]
+      @options[:markup] = :textile
+      @options[:create_namespace_home] = true unless @options[:create_namespace_home]
+      @options[:swap_interwiki_links] = true
+      @options[:filters] << Caramelize::SwapWikiLinks.new
     end
     
     # after calling this action, I expect the @titles and @revisions to be filled
@@ -62,7 +65,7 @@ module Caramelize
                             :message => row_content["comments"],
                             :author => author,
                             :author_name => author.name})
-          puts page.body
+          #puts page.body
           @revisions << page
           @latest_revisions[title] = page
         end

@@ -1,8 +1,9 @@
+#Encoding: UTF-8
 module Caramelize
-  module WikkaConverter
+  class Wikka2Markdown
     
     # take an input stream and convert all wikka syntax to markdown syntax
-    def to_markdown body
+    def run body
       body = body.dup
       body.gsub!(/(======)(.*?)(======)/ ) {|s| '# ' + $2 } #h1
       body.gsub!(/(=====)(.*?)(=====)/) {|s| '## ' + $2 }   #h2
