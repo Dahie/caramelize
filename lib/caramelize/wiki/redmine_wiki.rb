@@ -65,7 +65,6 @@ module Caramelize
                             :message => row_content["comments"],
                             :author => author,
                             :author_name => author.name})
-          #puts page.body
           @revisions << page
           @latest_revisions[title] = page
         end

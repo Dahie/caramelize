@@ -29,10 +29,6 @@ module Caramelize
       markup != to_markup
     end
 
-    def swap_wiki_links?
-      return false
-    end
-
     def filters
       @options[:filters]
     end

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    caramelize (0.1.2)
+    caramelize (0.2.0)
       cmdparse
       gollum-lib (>= 1.0.0)
       mysql2

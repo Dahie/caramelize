@@ -26,10 +26,8 @@ module Caramelize
       # initiate new wiki
       output_wiki = GollumOutput.new('wiki.git') # TODO make wiki_path an option
       
-      if !options[:markup]
-        # see if original wiki markup is among any gollum supported markups
-        options[:markup] = output_wiki.supported_markup.index(original_wiki.markup) ? original_wiki.markup : :markdown
-      end
+      # see if original wiki markup is among any gollum supported markups
+      options[:markup] = output_wiki.supported_markup.index(original_wiki.markup) ? original_wiki.markup : :markdown
 
       # setup progressbar
       progress_revisions = ProgressBar.create(:title => "Revisions", :total => @revisions.count, :format => '%a %B %p%% %t')
