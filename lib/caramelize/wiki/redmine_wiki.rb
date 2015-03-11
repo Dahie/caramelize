@@ -1,11 +1,10 @@
-#Encoding: UTF-8
+require 'caramelize/wiki/wiki'
+require 'caramelize/filters/swap_wiki_links'
 module Caramelize
-  autoload :DatabaseConnector, 'caramelize/database_connector'
-  autoload :SwapWikiLinks, 'caramelize/filters/swap_wiki_links'
-  
+
   class RedmineWiki < Wiki
     include DatabaseConnector
-    
+
     def initialize options={}
       super(options)
       @options[:markup] = :textile
@@ -13,18 +12,14 @@ module Caramelize
       @options[:swap_interwiki_links] = true
       @options[:filters] << Caramelize::SwapWikiLinks.new
     end
-    
-    # after calling this action, I expect the @titles and @revisions to be filled
-    def read_pages
-      @revisions = []
-      @titles = []
-      @latest_revisions = {}
 
+    # after calling this action, I expect the titles and revisions to be filled
+    def read_pages
       # get all projects
       results_projects = database.query("SELECT id, identifier, name FROM projects;")
       results_projects.each do |row_project|
         #collect all namespaces
-        @namespaces << {:identifier => row_project["identifier"], :name => row_project["name"]}
+        @namespaces << { identifier: row_project["identifier"], name: row_project["name"] }
       end
 
       # get all wikis
@@ -52,10 +47,11 @@ module Caramelize
         project_identifier = project_row ? project_row["identifier"] + '/' : ""
 
         title = project_identifier + row_page["title"]
-        @titles << title
-        
+        titles << title
+
+        @latest_revisions = {}
         results_contents.each do |row_content|
-          author = @authors[row_content["author_id"]] ? @authors[row_content["author_id"]] : nil
+          author = authors[row_content["author_id"]] ? @authors[row_content["author_id"]] : nil
           page = Page.new({:id => row_content["id"],
                             :title => title,
                             :body => row_content["data"],
@@ -65,31 +61,27 @@ module Caramelize
                             :message => row_content["comments"],
                             :author => author,
                             :author_name => author.name})
-          @revisions << page
+          revisions << page
           @latest_revisions[title] = page
         end
       end
-      @titles.uniq!
+      titles.uniq!
       @latest_revisions.each { |rev| rev[1].set_latest }
-      @revisions.sort! { |a,b| a.time <=> b.time }
+      revisions.sort! { |a,b| a.time <=> b.time }
 
       # TODO find latest revision for each limit
-      
-      @revisions
+
+      revisions
     end
-    
+
     def read_authors
-      sql = "SELECT id, login, mail FROM users;"
-      @authors = {}
-      results = database.query(sql)
+      results = database.query("SELECT id, login, mail FROM users;")
       results.each do |row|
-        author = Author.new
-        author.id    = row["id"]
-        author.name  = row["login"]
-        author.email = row["mail"]
-        @authors[author.id] = author
+        authors[row["id"]] = OpenStruct.new(id: row["id"],
+                                             name: row["login"],
+                                             email: row["mail"])
       end
-      @authors
+      authors
     end
   end
 end

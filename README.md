@@ -9,25 +9,25 @@ In the future more target wikis may be added. For the moment migration is suppor
 ### Installation
 
     $ gem install caramelize
-    
+
 Install the latest release of caramelize using RubyGems.
 
 ### Use
 
-    $ caramelize create 
+    $ caramelize create
 
 Creates a template configuration file "caramel.rb". This includes documentation on how to use the preset Wiki-connectors and how to write addition customized connectors. More about this below.
 
-    $ caramelize run 
-    
+    $ caramelize run
+
 Will start the wiki migration based on the configuration file. These are either found in predefined paths (./caramel.rb, ./config.rb, …), or passed as argument, as below.
 
     $ caramelize help
-    
+
 Returns help information.
 
 	$ caramelize version
-	
+
 Returns version and release information.
 
 ### Options
@@ -42,7 +42,7 @@ Executes the given configuration.
 
     $ caramelize --verbose [command]
     $ caramelize -v [command]
-    
+
 Displays more verbose output to the command line.
 
 ## Content migration
@@ -50,14 +50,14 @@ Displays more verbose output to the command line.
 ### Wiki support
 
 Caramelize comes with direct support for [WikkaWiki](wikka) and [Redmine](redmine)-Wiki.
-More custom wikis can be supported by creating a suitable configuration file. 
+More custom wikis can be supported by creating a suitable configuration file.
 
 Any imported wiki exports into a [gollum](gollum) git-repository. This is a wiki based around a git-repository. This gives you the flexibility of having all wiki pages exported as physical files, while keeping the history and having an easy and wide-supported way of access by using the wiki server gollum features.
 
 Since wiki software may have special features, that are not common among other wikis, content migration may always have a loss of style or information. Caramelize tries to support the most common features.
 
 * Page meta data
-  * title 
+  * title
   * content body
   * author name
   * author email address
@@ -65,7 +65,7 @@ Since wiki software may have special features, that are not common among other w
   * revisions
 * Markup conversion to markdown
   * limited to "simple" formatting, excluding complex formats such as tables
-  * conversion using regular expressions -> somewhat easy to learn and extend  
+  * conversion using regular expressions -> somewhat easy to learn and extend
 
 ### Configuration recipes
 
@@ -76,23 +76,23 @@ Custom import allows you to import data from wikis that are not natively support
 
 For a custom wiki you need to create a `wiki` instance object, that receives the necessary database creditials.
 
-    wiki = Caramelize::Wiki.new({:host => "localhost", 
-                    :username => "user", 
-                    :database => "database_name", 
-                    :password => 'monkey', 
+    wiki = Caramelize::Wiki.new({:host => "localhost",
+                    :username => "user",
+                    :database => "database_name",
+                    :password => 'monkey',
                     :markup => :wikka})
 
-This example ignores custom markup conversion and assumes WikkaWiki-markup. 
+This example ignores custom markup conversion and assumes WikkaWiki-markup.
 
 Once the object is established we need to hook in a method that defines how revisions are read from the database and how they are processed.
 
     wiki.instance_eval do
     	def read_pages
       		sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
-      		@revisions, @titles = [], []
+      		revisions, @titles = [], []
       		results = database.query(sql)
       		results.each do |row|
-        		@titles << row["tag"]
+        		titles << row["tag"]
         		author = @authors[row["user"]]
 		        page = Page.new({:id => row["id"],
                             :title =>   row["tag"],
@@ -106,9 +106,9 @@ Once the object is established we need to hook in a method that defines how revi
        		 @revisions << page
       	end
       # titles is the list of all unique page titles contained in the wiki
-      @titles.uniq!
+      titles.uniq!
       # revisions is the list of all revisions ordered by date
-      @revisions
+      revisions
     end
 
 In the end the `wiki` instance needs the `@titles` and `@revisions` filled.
@@ -127,8 +127,8 @@ Clone or fork this repository and start building.
 
     $ git clone git@github.com:Dahie/caramelize.git
     $ gem build caramelize.gemspec
-    
-Now to build and package the gem do 
+
+Now to build and package the gem do
 
     $ rake build
 
@@ -139,7 +139,7 @@ or
 to install the new gem right to your system.
 
 ## Contributing to caramelize
- 
+
 * Check out the latest master to make sure the feature hasn't been implemented or the bug hasn't been fixed yet
 * Check out the issue tracker to make sure someone already hasn't requested it and/or contributed it
 * Fork the project

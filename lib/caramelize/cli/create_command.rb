@@ -1,5 +1,5 @@
-#Encoding: UTF-8
 require 'caramelize/cli'
+require 'fileutils'
 
 module Caramelize::CLI
 
@@ -25,28 +25,12 @@ module Caramelize::CLI
 
     # Create a caramelize config file.
     def execute(args)
-      begin
-        
-        # create dummy config file
-        target_file = @config_file.nil? ? "caramel.rb" : @config_file 
-        
-        
-        #puts args[0]
-        require 'fileutils'
-        
-        FileUtils.cp(File.dirname(__FILE__) +"/../caramel.rb", target_file)
-        
-      rescue
-        #require 'fileutils'
-        #FileUtils.rm_rf(args[0])
-        raise
-      end
+      # create dummy config file
+      target_file = @config_file.nil? ? "caramel.rb" : @config_file
+      FileUtils.cp(File.dirname(__FILE__) +"/../caramel.rb", target_file)
       if commandparser.verbosity == :normal
         puts "Created new configuration file: #{target_file}"
-        #puts paths.sort.join("\n")
       end
     end
-    
   end
-  
 end

@@ -1,12 +1,5 @@
 #!/usr/bin/env ruby
 
-	# If we are given filenames, convert each file 
-	
 require 'caramelize/cli'
-begin
-  Caramelize::CLI::CommandParser.new.parse
-rescue
-  puts "An error has occurred:\n  " + $!.message
-  puts $!.backtrace if $DEBUG
-  exit(-1)
-end
+
+Caramelize::CLI::CommandParser.new.parse

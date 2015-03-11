@@ -1,16 +1,12 @@
-#Encoding: UTF-8
 require 'cmdparse'
 require 'caramelize/version'
 
 module Caramelize
-  autoload :ContentTransferer, 'caramelize/content_transferer'
+  require 'caramelize/content_transferer'
   module CLI
-    
-    # Namespace for all classes that act as CLI commands.
-    autoload :RunCommand, 'caramelize/cli/run_command'
-    autoload :CreateCommand, 'caramelize/cli/create_command'
-    
-  
+    require 'caramelize/cli/run_command'
+    require 'caramelize/cli/create_command'
+
     # This is the command parser class used for handling the webgen command line interface. After
     # creating an instance, the inherited #parse method can be used for parsing the command line
     # arguments and executing the requested command.
@@ -20,7 +16,7 @@ module Caramelize
       attr_reader :verbosity
 
       # Create a new CommandParser class. T
-      def initialize 
+      def initialize
         super(true)
         @verbosity = :normal
 
@@ -44,33 +40,44 @@ module Caramelize
         possible_files |= KNOWN_CONFIG_LOCATIONS
         possible_files.detect{|f| File.exists?(f)}
       end
-      
+
       # Utility method for sub-commands to transfer wiki contents
-      def transfer_content config_file = ""
+      def transfer_content(config_file = "")
         time_start = Time.now
-        
+
         file = detect_configuration_file config_file
-        puts "Read config file: #{file}" if @verbosity == :verbose
-        if file && File.exists?(file)
-          instance_eval(File.read(file))
-          original_wiki = input_wiki
-          
-          options = original_wiki.options
-          options[:verbosity] = @verbosity
-          ContentTransferer.execute(original_wiki, options)
-          
-          time_end = Time.now
-          puts "Time required: #{time_end - time_start} s" if @verbosity == :verbose
-        else
+        puts "Read config file: #{file}" if verbose?
+
+        unless file && File.exists?(file)
           puts "No config file found."
+          return false
         end
-        
+
+        commence_transfer file
+
+        puts "Time required: #{Time.now - time_start} s" if verbose?
+      end
+
+      def commence_transfer(file)
+        #load file
+        #original_wiki = Configuration.instance.input_wiki
+        instance_eval(File.read(file))
+        original_wiki = input_wiki
+
+        options = original_wiki.options
+        options[:verbosity] = @verbosity
+        ContentTransferer.execute(original_wiki, options)
+      end
+
+      def verbose?
+        @verbosity == :verbose
       end
 
       # :nodoc:
       def parse(argv = ARGV)
         Caramelize::CLI.constants.select {|c| c =~ /.+Command$/ }.each do |c|
-          self.add_command(Caramelize::CLI.const_get(c).new, (c.to_s == 'RunCommand' ? false : false)) # set runcommand as default
+          # set runcommand as default
+          self.add_command(Caramelize::CLI.const_get(c).new, (c.to_s == 'RunCommand' ? false : false))
         end
         super
       end

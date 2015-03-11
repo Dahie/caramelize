@@ -1,49 +1,36 @@
-#Encoding: UTF-8
-
+require 'caramelize/ext'
 module Caramelize
   class GollumOutput
-    
+
     def supported_markup
       [:markdown, :textile]
     end
-    
+
     # Initialize a new gollum-wiki-repository at the given path.
-    def initialize wiki_path
+    def initialize(new_wiki_path)
       # TODO use sanitized name as wiki-repository-title
-      repo = Grit::Repo.init(wiki_path) unless File.exists?(wiki_path)
-      @gollum = Gollum::Wiki.new(wiki_path)
+      @wiki_path = new_wiki_path
+      initialize_repository
     end
-    
+
+    def wiki_path
+      @wiki_path
+    end
+
     # Commit the given page into the gollum-wiki-repository.
     # Make sure the target markup is correct before calling this method.
     def commit_revision(page, markup)
-      message = page.message.empty? ? "Edit in page #{page.title}" : page.message
-        
-      if page.author
-        author = page.author
-      else
-        author = Author.new
-        author.name = page.author_name ? page.author_name : "Caramelize"
-        author.email = "mail@example.com"
-      end
-      
-      commit = {:message => message,
-               :name => author.name,
-               :email => author.email,
-               :authored_date => page.time,
-               :committed_date => page.time
-      }
-      
-      gollum_page = @gollum.page(page.title)
+      gollum_page = gollum.page(page.title)
       if gollum_page
-        @gollum.update_page(gollum_page, gollum_page.name, gollum_page.format, page.body, commit)
+        puts gollum_page, gollum_page.name, gollum_page.format, page.body, build_commit(page)
+        gollum.update_page(gollum_page, gollum_page.name, gollum_page.format, page.body, build_commit(page))
       else
-        @gollum.write_page(page.title, markup, page.body, commit)
+        gollum.write_page(page.title, markup, page.body, build_commit(page))
       end
     end
-    
+
     # Commit all revisions of the given history into this gollum-wiki-repository.
-    def commit_history(revisions, options={}, &block)
+    def commit_history(revisions, options = {}, &block)
       options[:markup] = :markdown if !options[:markup] # target markup
       revisions.each_with_index do |page, index|
         # call debug output from outside
@@ -52,15 +39,46 @@ module Caramelize
       end
     end
 
-    def create_namespace_home namespaces, options={}
-      options[:markup] = :markdown if options[:markup].nil? # target markup
-      body = "## Overview of namespaces" + "\n" + "\n"
+    def create_namespace_overview(namespaces, markup=:markdown)
+      markup_body = "## Overview of namespaces\n\n"
       namespaces.each do |namespace|
-        body << "* [[#{namespace[:name]}|#{namespace[:identifier]}/Wiki]]  \n" # change wiki as configurable default home
+        # TODO change wiki as configurable default home
+        # TODO support other markup syntaxes
+        markup_body << "* [[#{namespace[:name]}|#{namespace[:identifier]}/Wiki]]  \n"
       end
-      page = Page.new({:title => "Home", :body => body, :message => 'Create Namespace Home', :latest => true })
-      commit_revision(page, options[:markup])
+      commit_namespace_overview(markup_body, markup)
     end
-    
+
+
+    private
+
+
+    def commit_namespace_overview(body, markup)
+      page = Page.new(title: "Home",
+                      body: body,
+                      message: 'Create Namespace Home',
+                      latest: true)
+      commit_revision(page, markup)
+    end
+
+    def gollum
+      @gollum ||= Gollum::Wiki.new(wiki_path)
+    end
+
+    def initialize_repository
+      # TODO ask if we should replace existing paths
+      Grit::Repo.init(wiki_path) unless File.exists?(wiki_path)
+    end
+
+    def build_commit(page)
+      message = page.message.empty? ? "Edit in page #{page.title}" : page.message
+
+      { message: message,
+        name: page.author_name,
+        email: page.author_email,
+        authored_date: page.time,
+        committed_date: page.time }
+    end
+
   end
 end
