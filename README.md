@@ -89,11 +89,11 @@ Once the object is established we need to hook in a method that defines how revi
     wiki.instance_eval do
     	def read_pages
       		sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
-      		revisions, @titles = [], []
+      		revisions, titles = [], []
       		results = database.query(sql)
       		results.each do |row|
         		titles << row["tag"]
-        		author = @authors[row["user"]]
+        		author = authors[row["user"]]
 		        page = Page.new({:id => row["id"],
                             :title =>   row["tag"],
                             :body =>    row["body"],
@@ -103,7 +103,7 @@ Once the object is established we need to hook in a method that defines how revi
                             :message => row["note"],
                             :author =>  author,
                             :author_name => row["user"]})
-       		 @revisions << page
+       		 revisions << page
       	end
       # titles is the list of all unique page titles contained in the wiki
       titles.uniq!
@@ -111,7 +111,7 @@ Once the object is established we need to hook in a method that defines how revi
       revisions
     end
 
-In the end the `wiki` instance needs the `@titles` and `@revisions` filled.
+In the end the `wiki` instance needs the `titles` and `revisions` filled.
 
 Some wikis don't have all necessary metadata saved in the revision. In this case additional database queries are necessary. **The configuration recipe is pure ruby code, that is included on execution. This gives you alot of freedom in writing your configuration, but also a lot of power to break things for yourself. Be advised.**
 

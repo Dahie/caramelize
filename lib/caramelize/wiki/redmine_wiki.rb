@@ -9,7 +9,6 @@ module Caramelize
       super(options)
       @options[:markup] = :textile
       @options[:create_namespace_home] = true unless @options[:create_namespace_home]
-      @options[:swap_interwiki_links] = true
       @options[:filters] << Caramelize::SwapWikiLinks.new
     end
 

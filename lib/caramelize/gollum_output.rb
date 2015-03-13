@@ -22,7 +22,6 @@ module Caramelize
     def commit_revision(page, markup)
       gollum_page = gollum.page(page.title)
       if gollum_page
-        puts gollum_page, gollum_page.name, gollum_page.format, page.body, build_commit(page)
         gollum.update_page(gollum_page, gollum_page.name, gollum_page.format, page.body, build_commit(page))
       else
         gollum.write_page(page.title, markup, page.body, build_commit(page))

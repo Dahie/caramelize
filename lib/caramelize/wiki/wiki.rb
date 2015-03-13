@@ -11,11 +11,10 @@ module Caramelize
     end
 
     def revisions_by_title(title)
-      if titles.index title
-        # new array only containing pages by this name sorted by time
-        # TODO this is probably bad for renamed pages if supported
-        return revisions.reject { |revision| revision.title != title }.sort { |x,y| x.time <=> y.time }
-      end
+      # new array only containing pages by this name sorted by time asc
+      # TODO this is probably bad for renamed pages if supported
+      return revisions.select { |revision| revision.title == title }.sort { |x,y| x.time <=> y.time }
+      []
     end
 
     # return an empty array in case this action was not overridden

@@ -9,7 +9,6 @@ module Caramelize
     def initialize options={}
       super(options)
       @options[:markup] = :wikka
-      @options[:swap_interwiki_links] = false
       @options[:filters] << Caramelize::Wikka2Markdown.new
     end
 

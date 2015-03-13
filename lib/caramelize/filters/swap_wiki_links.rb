@@ -1,4 +1,3 @@
-#Encoding: UTF-8
 module Caramelize
   class SwapWikiLinks
 
@@ -7,11 +6,11 @@ module Caramelize
       body = body.dup
 
       body.gsub!(/\[\[(\S+)\|(.+?)\]\]/, '[[\2|\1]]')
-      body.gsub!(/\[\[([\w\s-]*)\]\]/) do |s|
-      	if $1
-      		t = $1.dup
-      		s = '[[' +t + "|"+ $1.gsub(' ', '_') + "]]"
-      	end
+      body.gsub!(/\[\[([\w\s]*)\]\]/) do |s|
+        if $1
+          t = $1.dup
+          s = "[[#{t}|#{$1.gsub(' ', '_')}]]"
+        end
       end
 
       body
