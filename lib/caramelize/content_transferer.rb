@@ -54,7 +54,7 @@ module Caramelize
 
         create_progress_bar("Markup filters", original_wiki.latest_revisions.count)
         migrate_markup_on_last_revision
-        create_overview_page_of_namespace
+        create_overview_page_of_namespaces if options[:create_namespace_overview]
       end
 
       private
@@ -71,14 +71,11 @@ module Caramelize
         filters |= original_wiki.filters
       end
 
-      def create_overview_page_of_namespace
-        return unless options[:create_namespace_home]
+      def create_overview_page_of_namespaces
         output_wiki.create_namespace_overview(original_wiki.namespaces)
       end
 
       def migrate_markup_on_last_revision
-
-
         if original_wiki.convert_markup? markup # is wiki in target markup
 
 
@@ -125,7 +122,7 @@ module Caramelize
       end
 
       def migrate_markup_per_revision(revision)
-        puts "Filter source: #{revision.title} #{revision.time}"  if options[:verbosity] == :verbose
+        puts "Filter source: #{revision.title} #{revision.time}"  if verbose?
         @progress_bar.increment
 
         # run filters

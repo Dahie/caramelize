@@ -38,27 +38,23 @@ module Caramelize
       end
     end
 
-    def create_namespace_overview(namespaces, markup=:markdown)
-      markup_body = "## Overview of namespaces\n\n"
+    def create_namespace_overview(namespaces)
+      body = "## Overview of namespaces\n\n"
       namespaces.each do |namespace|
         # TODO change wiki as configurable default home
         # TODO support other markup syntaxes
-        markup_body << "* [[#{namespace[:name]}|#{namespace[:identifier]}/Wiki]]  \n"
+        body << "* [[#{namespace[:name]}|#{namespace[:identifier]}/Wiki]]  \n"
       end
-      commit_namespace_overview(markup_body, markup)
+      page = Page.new(title: "Home",
+                      body: body,
+                      message: 'Create Namespace Overview',
+                      latest: true)
+      commit_revision(page, :markdown)
+      page
     end
 
 
     private
-
-
-    def commit_namespace_overview(body, markup)
-      page = Page.new(title: "Home",
-                      body: body,
-                      message: 'Create Namespace Home',
-                      latest: true)
-      commit_revision(page, markup)
-    end
 
     def gollum
       @gollum ||= Gollum::Wiki.new(wiki_path)

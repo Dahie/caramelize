@@ -18,7 +18,7 @@ module Caramelize
       results_projects = database.query("SELECT id, identifier, name FROM projects;")
       results_projects.each do |row_project|
         #collect all namespaces
-        @namespaces << { identifier: row_project["identifier"], name: row_project["name"] }
+        namespaces << OpenStruct.new(identifier: row_project["identifier"], name: row_project["name"])
       end
 
       # get all wikis

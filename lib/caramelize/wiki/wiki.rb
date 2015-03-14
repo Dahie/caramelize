@@ -22,6 +22,10 @@ module Caramelize
       return []
     end
 
+    def namespaces
+      @namespaces ||= {}
+    end
+
     def authors
       @authors ||= {}
     end
