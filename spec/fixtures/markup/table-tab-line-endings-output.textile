@@ -1,0 +1,145 @@
+h1. Williams-Renault 1994
+
+"Williams FW16 Launch Press Conference on YouTube":http://www.youtube.com/watch?v=qJF5TYS9uX0
+"Williams FW16 Testing (Senna, Estoril) on YouTube":http://www.youtube.com/watch?v=smRQ2YnAfv0
+
+h2. Livery Changes
+
+|	|_.Mainsponsor	    |_.Mirrors|
+|*Brazil*	|/5.Rothmans|/2.white/elf|
+|Pacific|
+|San Marino	|/14.blue/elf|
+|Monaco		|
+|Spain		|
+|*Canada*		|Rothmans Ltd|
+|*France*	|Barcode|
+|*Great Britain*|/2.Racing|
+|Germany	|
+|Hungary	|/7.Rothmans|
+|Belgium	|
+|Italy		|
+|Portugal	|
+|Europe 	|
+|Japan		|
+|Australia |
+
+h2. Selected Technical Upgrades
+
+The upgrades we are going to do on the mod:
+* **A-Spec**
+** Frontwing
+*** High V1
+** Rearwing
+*** High V1
+*** Regular V1
+* **B-Spec**
+** Frontwing
+*** High V3
+*** High V2
+** Rearwing
+*** High V3
+*** Regular V3
+*** Low V3
+
+h2. Technical Upgrades
+
+_This is for keeping track of all upgrades. We will not implement everything in the actual mod!_
+
+|	        |_.Front wing	|_.Rear wing|_.Nose    |_.Barge boards|_.Airbox|
+|*Brazil*	|/2.High V1     |Regular V1|/2.with flipups |/4.none|/5. |
+|Pacific	|              High V1|
+|San Marino	|Low V1|Regular V1|/14. without flipups|
+|Monaco	        |/2.High V2    |High V1|
+|Spain	        |??|/12.bargeboard|
+|Canada	        |/3.High V3|/2.High V1|/11.Airbox cutout|
+|France	        |
+|Great Britain  |Regular V1|
+|Germany	|Low V2 |Low|
+|Hungary	|High V3|High V3|
+|Belgium	|/2.Low V2|Regular V2|
+|Italy		|Low |
+|Portugal	|/4.High V3|??|
+|Europe 	|/3.Regular V3|
+|Japan		|
+|Australia      |
+
+h3. Front wing
+
+All frontwings from Spain onwards have new triangular endplates.
+
+*Low V2*: flat angle and large gurney flaps 
+*High V2*: added large gurney flaps 
+*High V3*: like v2, but with triangular sideplates 
+
+h3. Front wing
+
+*High V3*: adds one additional plane on the top and the wing additions inside the tires
+*Regular V2*: has different striped-down endplates
+*Regular V3*: has different endplates featuring the wing additions from the high-downforce variant
+
+
+
+h2. Technical Data (Autocourse 1994/95)
+
+!F1-1994_01_Williams.jpg!
+For comparison (from Histomobile):
+"FW16":http://www.histomobile.com/dvd_histomobile/usa/286/1994-Williams-FW16-.asp 515 kg, 2990 mm (wheelbase), 1669 mm (track front), 1598 mm (track rear)
+"FW16B":http://www.histomobile.com/dvd_histomobile/usa/286/1994-Williams-FW16B-.asp 595 kg, 2890 mm (wheelbase), 1669 mm (track front), 1598 mm (track rear)
+
+According to Autocourse 94/95, the FW16 started the season with the 67° V10 engine RS6 and got the RS6B for the Hockenheim GP as well as the RS6C for Monza. Both upgrades featured higher revs and improved top-end power. The RS6 delivered about 790 bhp / 589 KW @ 14300 rpm according to *"ultimatecarpage.com":http://www.ultimatecarpage.com/car/1054/Williams-FW16-Renault.html*.
+
+h2. Technical Data (Grand Prix 1994)
+
+!F1-1994_01_Williams_GP94.jpg!
+
+h2. Technical Upgrades
+
+The Ferrari car upgrades are listed below as reported in Autosport Magazine.
+
+h2. Pre-Season (Autosport 134(4), January 27)
+
+* Passive front suspension
+* New and simplified cockpit
+
+!Williams_000_AS-134_4_-1994-January-27.jpg!
+
+!Williams_010_AS-134_4_-1994-January-27.jpg!
+
+h3. Photos of the new cockpit and display (late season!)
+
+!Williams_010_cockpit1.jpg!
+!Williams_010_cockpit2.jpg!
+!Williams_010_cockpit3.jpg!
+
+h2. Pre-Season (Autosport 134(9), March 3)
+
+* General car design
+* Suspension
+* Rear wing
+
+!Williams_015_AS-134_9_-1994-March-3.jpg!
+!Williams_016_AS-134_9_-1994-March-3.jpg!
+!Williams_018_AS-134_9_-1994-March-3.jpg!
+
+h2. Brazilian GP, Interlagos (Autosport 134(11), March 17)
+
+* Re-designed ear end
+* Chassis (cockpit, fuel tank, ...)
+
+!Williams_020_AS-134_11_-1994-March-17.jpg!
+
+h2. Testing between Brazilian and Pacific GP (Autosport 134(14), April 7)
+
+!Williams_030_AS-134_14_-1994-April-7.jpg!
+
+h2. German GP, Hockenheim (Autosport 136(5), August 4)
+
+* Shortened sidepods
+* Revised (elongated) bargeboards
+* Revised cockpit edge (now rounded at the front)
+* New airbox vent in agreement with the new regulations
+* Rear suspension
+* Diffuser
+
+!Williams_040_AS-136_5_-1994-August-4.jpg!
+

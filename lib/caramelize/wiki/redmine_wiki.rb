@@ -1,5 +1,6 @@
 require 'caramelize/wiki/wiki'
 require 'caramelize/filters/swap_wiki_links'
+require 'caramelize/filters/remove_table_tab_line_endings'
 module Caramelize
 
   class RedmineWiki < Wiki
@@ -8,8 +9,9 @@ module Caramelize
     def initialize options={}
       super(options)
       @options[:markup] = :textile
-      @options[:create_namespace_home] = true unless @options[:create_namespace_home]
       @options[:filters] << Caramelize::SwapWikiLinks.new
+      @options[:filters] << Caramelize::RemoveTableTabLineEndings.new
+      @options[:create_namespace_overview] = true
     end
 
     # after calling this action, I expect the titles and revisions to be filled

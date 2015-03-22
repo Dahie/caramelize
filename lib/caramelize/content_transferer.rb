@@ -23,10 +23,9 @@ module Caramelize
         @options = options
         @original_wiki = original_wiki
 
-        options[:default_author] = "Caramelize" if !options[:default_author]
+        options[:default_author] = "Caramelize" unless options[:default_author]
         # see if original wiki markup is among any gollum supported markups
-        options[:markup] = output_wiki.supported_markup.index(original_wiki.markup) ? original_wiki.markup : :markdown
-
+        options[:markup] = target_markup
 
         # read page revisions from wiki
         # store page revisions
@@ -52,12 +51,19 @@ module Caramelize
 
         puts "Latest revisions:" if verbose?
 
-        create_progress_bar("Markup filters", original_wiki.latest_revisions.count)
+        create_progress_bar("Markup filters", original_wiki.latest_revisions.count) unless verbose?
         migrate_markup_on_last_revision
-        create_overview_page_of_namespaces if options[:create_namespace_overview]
+        if options[:create_namespace_overview]
+          create_overview_page_of_namespaces
+          puts 'Create Namespace Overview' if verbose?
+        end
       end
 
       private
+
+      def target_markup
+        output_wiki.supported_markup.index(original_wiki.markup) ? original_wiki.markup : :markdown
+      end
 
       def revisions
         @revisions ||= original_wiki.read_pages
@@ -68,7 +74,8 @@ module Caramelize
       end
 
       def initialize_page_filters
-        filters |= original_wiki.filters
+        filters << original_wiki.filters
+        filters.flatten!
       end
 
       def create_overview_page_of_namespaces
@@ -118,7 +125,7 @@ module Caramelize
       end
 
       def output_wiki
-        @output_wiki ||= GollumOutput.new('./wiki.git') # TODO make wiki_path an option
+        @output_wiki ||= GollumOutput.new('./wiki-export') # TODO make wiki_path an option
       end
 
       def migrate_markup_per_revision(revision)

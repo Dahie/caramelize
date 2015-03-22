@@ -4,14 +4,21 @@ describe Caramelize::SwapWikiLinks do
 
   describe :run do
     let(:filter) { Caramelize::SwapWikiLinks.new }
-    context 'hyperlink' do
+    context 'wiki link' do
       it 'should switch title and target' do
-        body = '[[Title|http://target]]'
-        expect(filter.run(body)).to eq '[[http://target|Title]]'
+        body = '[[statistics|Driver & Team Statistics]]'
+        expect(filter.run(body)).to eq '[[Driver & Team Statistics|statistics]]'
       end
       it 'should simple link to hyperlink' do
         body = '[[Intra wiki link]]'
         expect(filter.run(body)).to eq '[[Intra wiki link|Intra_wiki_link]]'
+      end
+      context 'replace in full file' do
+        it 'returns as expected' do
+          input_text = File.open(File.join(['spec', 'fixtures', 'markup', 'swap-links-input.textile']), 'r').read
+          output_text = File.open(File.join(['spec', 'fixtures', 'markup', 'swap-links-output.textile']), 'r').read
+          expect(filter.run(input_text)).to eq output_text
+        end
       end
     end
   end
