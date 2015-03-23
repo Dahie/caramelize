@@ -6,11 +6,15 @@ module Caramelize
       migrated_body = body.dup
 
       migrated_body.gsub!(/\[\[(\S+)\|(.+?)\]\]/, '[[\2|\1]]')
-      #migrated_body.gsub!(/\[\[([\w\s]*)\]\]/) do |s|
-      #  if $1
-      #    s = "[[#{$1}|#{$1.gsub(' ', '_')}]]"
-      #  end
-      #end
+      migrated_body.gsub!(/\[\[([\w\s\.]*)\]\]/) do |s|
+        if $1
+          s = $1
+          t = $1.dup
+          t.gsub!(' ', '_')
+          t.gsub!(/\./, '')
+          s = "[[#{s}|#{t}]]"
+        end
+      end
 
       migrated_body
     end

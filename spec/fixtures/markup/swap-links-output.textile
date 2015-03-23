@@ -11,8 +11,8 @@ h2. The 1994 Formula One Season
 
 h2. Development
 
-*[[Review Process F1 1994]]*
-*[[Credits]]*
+*[[Review Process F1 1994|Review_Process_F1_1994]]*
+*[[Credits|Credits]]*
 
 h2. Season data
 
@@ -52,6 +52,6 @@ Driver list from Brazil: "Discussion here":http://forum.ctdp.net/viewtopic.php?f
 |34|Bertrand Gachot  |
 
 
-[[Getting new people]]
+[[Getting new people|Getting_new_people]]
 
-[[Contact form]]
+[[Contact form|Contact_form]]

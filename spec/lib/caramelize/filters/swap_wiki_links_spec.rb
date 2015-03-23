@@ -9,6 +9,14 @@ describe Caramelize::SwapWikiLinks do
         body = '[[statistics|Driver & Team Statistics]]'
         expect(filter.run(body)).to eq '[[Driver & Team Statistics|statistics]]'
       end
+      it 'should replace space with dashes' do
+        body = '[[Release 1 0]]'
+        expect(filter.run(body)).to eq '[[Release 1 0|Release_1_0]]'
+      end
+      it 'should remove dots' do
+        body = '[[Release 1.0]]'
+        expect(filter.run(body)).to eq '[[Release 1.0|Release_10]]'
+      end
       it 'should simple link to hyperlink' do
         body = '[[Intra wiki link]]'
         expect(filter.run(body)).to eq '[[Intra wiki link|Intra_wiki_link]]'
