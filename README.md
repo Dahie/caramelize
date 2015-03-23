@@ -1,8 +1,8 @@
 # caramelize
 
-Caramelize is a compact and flexible wiki content migration tool. It is intended for easily transfering content from otherwise rare supported legacy wikis. With caramelize you can create your own export configurations and migrate your data into a git-based [gollum](gollum)-wiki retaining all your history and gaining the most flexible access to your wiki content.
+Caramelize is a compact and flexible wiki content migration tool. It is intended for easily transfering content from otherwise rare supported legacy wikis. With caramelize you can create your own export configurations and migrate your data into a git-based [gollum](https://github.com/github/gollum)-wiki retaining all your history and gaining the most flexible access to your wiki content.
 
-In the future more target wikis may be added. For the moment migration is supported for [WikkaWiki](wikka) and [Redmine](redmine)-Wiki.
+In the future more target wikis may be added. For the moment migration is supported for [WikkaWiki](http://wikkawiki.org/) and [Redmine](http://www.redmine.org/)-Wiki.
 
 ## Usage
 
@@ -49,10 +49,10 @@ Displays more verbose output to the command line.
 
 ### Wiki support
 
-Caramelize comes with direct support for [WikkaWiki](wikka) and [Redmine](redmine)-Wiki.
+Caramelize comes with direct support for [WikkaWiki](http://wikkawiki.org/) and [Redmine](http://www.redmine.org/)-Wiki.
 More custom wikis can be supported by creating a suitable configuration file.
 
-Any imported wiki exports into a [gollum](gollum) git-repository. This is a wiki based around a git-repository. This gives you the flexibility of having all wiki pages exported as physical files, while keeping the history and having an easy and wide-supported way of access by using the wiki server gollum features.
+Any imported wiki exports into a [gollum](https://github.com/github/gollum) git-repository. This is a wiki based around a git-repository. This gives you the flexibility of having all wiki pages exported as physical files, while keeping the history and having an easy and wide-supported way of access by using the wiki server gollum features.
 
 Since wiki software may have special features, that are not common among other wikis, content migration may always have a loss of style or information. Caramelize tries to support the most common features.
 
@@ -76,11 +76,11 @@ Custom import allows you to import data from wikis that are not natively support
 
 For a custom wiki you need to create a `wiki` instance object, that receives the necessary database creditials.
 
-    wiki = Caramelize::Wiki.new({:host => "localhost",
-                    :username => "user",
-                    :database => "database_name",
-                    :password => 'monkey',
-                    :markup => :wikka})
+    wiki = Caramelize::Wiki.new(host: "localhost",
+                                username: "user",
+                                database: "database_name",
+                                password: 'monkey',
+                                markup: :wikka})
 
 This example ignores custom markup conversion and assumes WikkaWiki-markup.
 
@@ -94,15 +94,15 @@ Once the object is established we need to hook in a method that defines how revi
       		results.each do |row|
         		titles << row["tag"]
         		author = authors[row["user"]]
-		        page = Page.new({:id => row["id"],
-                            :title =>   row["tag"],
-                            :body =>    row["body"],
-                            :markup =>  'wikka',
-                            :latest =>  row["latest"] == "Y",
-                            :time =>    row["time"],
-                            :message => row["note"],
-                            :author =>  author,
-                            :author_name => row["user"]})
+		        page = Page.new({id: row["id"],
+                            title:   row["tag"],
+                            body:    row["body"],
+                            markup:  'wikka',
+                            latest:  row["latest"] == "Y",
+                            time:    row["time"],
+                            message: row["note"],
+                            author:  author,
+                            author_name: row["user"]})
        		 revisions << page
       	end
       # titles is the list of all unique page titles contained in the wiki
@@ -150,8 +150,4 @@ to install the new gem right to your system.
 
 ## Copyright
 
-Copyright (c) 2011-2013 Daniel Senff. See LICENSE.md for further details.
-
-[wikka]: http://wikkawiki.org/
-[gollum]: https://github.com/github/gollum
-[redmine]: http://www.redmine.org/
+Copyright (c) 2011-2015 Daniel Senff. See LICENSE.md for further details.
