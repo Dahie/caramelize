@@ -27,21 +27,9 @@ module Caramelize
         # see if original wiki markup is among any gollum supported markups
         options[:markup] = target_markup
 
-        # read page revisions from wiki
-        # store page revisions
         original_wiki.read_authors
-
-        # setup progressbar
-        create_progress_bar("Revisions", revisions.count)
-
-        # commit page revisions to new wiki
-        commit_history
-
-
-        # TODO reorder interwiki links: https://github.com/gollum/gollum/wiki#bracket-tags
-
-        # init list of filters to perform on the latest wiki pages
         initialize_page_filters
+        commit_history
 
         # if wiki needs to convert syntax, do so
         if verbose?
@@ -51,12 +39,8 @@ module Caramelize
 
         puts "Latest revisions:" if verbose?
 
-        create_progress_bar("Markup filters", original_wiki.latest_revisions.count) unless verbose?
         migrate_markup_on_last_revision
-        if options[:create_namespace_overview]
-          create_overview_page_of_namespaces
-          puts 'Create Namespace Overview' if verbose?
-        end
+        create_overview_page_of_namespaces if options[:create_namespace_overview]
       end
 
       private
@@ -79,6 +63,7 @@ module Caramelize
       end
 
       def create_overview_page_of_namespaces
+        puts 'Create Namespace Overview' if verbose?
         output_wiki.create_namespace_overview(original_wiki.namespaces)
       end
 
@@ -88,12 +73,15 @@ module Caramelize
 
         end # end convert_markup?
 
+        create_progress_bar("Markup filters", original_wiki.latest_revisions.count) unless verbose?
         original_wiki.latest_revisions.each do |revision|
           migrate_markup_per_revision(revision)
         end
       end
 
       def commit_history
+        # setup progressbar
+        create_progress_bar("Revisions", revisions.count) unless verbose?
         output_wiki.commit_history(revisions, options) do |page, index|
           if verbose?
             puts "(#{index+1}/#{revisions.count}) #{page.time} #{page.title}"
@@ -129,8 +117,11 @@ module Caramelize
       end
 
       def migrate_markup_per_revision(revision)
-        puts "Filter source: #{revision.title} #{revision.time}"  if verbose?
-        @progress_bar.increment
+        if verbose?
+          puts "Filter source: #{revision.title} #{revision.time}"
+        else
+          @progress_bar.increment
+        end
 
         # run filters
         body_new = run_filters(revision.body)
