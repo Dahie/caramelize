@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    caramelize (0.2.0)
+    caramelize (0.3.0)
       cmdparse
       docile
       gollum-lib (>= 1.0.0)
