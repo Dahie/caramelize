@@ -12,6 +12,7 @@ describe Caramelize::GollumOutput do
         end
       end
     end
+
     context 'revisions are given' do
       context 'and title given' do
         it 'returns empty array' do

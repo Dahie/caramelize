@@ -66,9 +66,7 @@ module Caramelize
     end
 
     def build_commit(page)
-      message = page.message.empty? ? "Edit in page #{page.title}" : page.message
-
-      { message: message,
+      { message: page.commit_message,
         name: page.author_name,
         email: page.author_email,
         authored_date: page.time,

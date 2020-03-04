@@ -89,7 +89,6 @@ module Caramelize
             @progress_bar.increment
           end
         end
-
       end
 
       def original_wiki
@@ -141,7 +140,7 @@ module Caramelize
       def run_filters(body)
         body_new = body
         filters.each do |filter|
-          body_new = filter.run body_new
+          body_new = filter.run(body_new)
         end
         body_new
       end
@@ -150,6 +149,5 @@ module Caramelize
         @progress_bar = ProgressBar.create(title: title, total: total, format: '%a %B %p%% %t')
       end
     end
-
   end
 end
