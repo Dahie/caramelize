@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
   spec.require_paths = ["lib"]
 
   spec.add_dependency('mysql2')
-  spec.add_dependency('cmdparse')
+  spec.add_dependency('commander')
   spec.add_dependency('docile')
   spec.add_dependency('ruby-progressbar')
   spec.add_dependency('gollum-lib', '>= 1.0.0') # grit dependency implicit through gollum

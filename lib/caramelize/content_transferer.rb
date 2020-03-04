@@ -19,21 +19,21 @@ module Caramelize
     class << self
 
       # Execute the content migration
-      def execute(original_wiki, options={})
+      def execute(input_wiki, options={})
+        @input_wiki = input_wiki
         @options = options
-        @original_wiki = original_wiki
 
         options[:default_author] = "Caramelize" unless options[:default_author]
         # see if original wiki markup is among any gollum supported markups
         options[:markup] = target_markup
 
-        original_wiki.read_authors
+        input_wiki.read_authors
         initialize_page_filters
         commit_history
 
         # if wiki needs to convert syntax, do so
         if verbose?
-          puts "From markup: #{original_wiki.markup.to_s}"
+          puts "From markup: #{input_wiki.markup.to_s}"
           puts "To markup: #{markup.to_s}"
         end
 
@@ -46,11 +46,15 @@ module Caramelize
       private
 
       def target_markup
-        output_wiki.supported_markup.index(original_wiki.markup) ? original_wiki.markup : :markdown
+        needs_conversion_to_target_markup? ? input_wiki.markup : :markdown
+      end
+
+      def needs_conversion_to_target_markup?
+        output_wiki.supported_markup.index(input_wiki.markup)
       end
 
       def revisions
-        @revisions ||= original_wiki.read_pages
+        @revisions ||= input_wiki.read_pages
       end
 
       def filters
@@ -58,23 +62,23 @@ module Caramelize
       end
 
       def initialize_page_filters
-        filters << original_wiki.filters
+        filters << input_wiki.filters
         filters.flatten!
       end
 
       def create_overview_page_of_namespaces
         puts 'Create Namespace Overview' if verbose?
-        output_wiki.create_namespace_overview(original_wiki.namespaces)
+        output_wiki.create_namespace_overview(input_wiki.namespaces)
       end
 
       def migrate_markup_on_last_revision
-        if original_wiki.convert_markup? markup # is wiki in target markup
+        if input_wiki.convert_markup? markup # is wiki in target markup
 
 
         end # end convert_markup?
 
-        create_progress_bar("Markup filters", original_wiki.latest_revisions.count) unless verbose?
-        original_wiki.latest_revisions.each do |revision|
+        create_progress_bar("Markup filters", input_wiki.latest_revisions.count) unless verbose?
+        input_wiki.latest_revisions.each do |revision|
           migrate_markup_per_revision(revision)
         end
       end
@@ -91,8 +95,8 @@ module Caramelize
         end
       end
 
-      def original_wiki
-        @original_wiki
+      def input_wiki
+        @input_wiki
       end
 
       def verbose?
@@ -102,7 +106,7 @@ module Caramelize
       def markup
         unless @markup
           # see if original wiki markup is among any gollum supported markups
-          @markup = output_wiki.supported_markup.index(original_wiki.markup) ? original_wiki.markup : :markdown
+          @markup = output_wiki.supported_markup.index(input_wiki.markup) ? input_wiki.markup : :markdown
         end
         @markup
       end

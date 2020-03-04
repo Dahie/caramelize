@@ -51,7 +51,7 @@ end
 def predefined_wiki
 
   # For connection to a WikkaWiki-Database use this Connector
-  options = { host: "localhost",
+  #options = { host: "localhost",
   #      username: "root",
   #      password: "root",
   #      database: "wikka" }
