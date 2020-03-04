@@ -2,9 +2,8 @@ require 'caramelize/ext'
 module Caramelize
   class GollumOutput
 
-    def supported_markup
-      [:markdown, :textile]
-    end
+    SUPPORTED_TARGET_MARKUP =
+      %i[markdown textile rdoc creole media_wiki org pod re_structured_text ascii_doc]
 
     # Initialize a new gollum-wiki-repository at the given path.
     def initialize(new_wiki_path)
@@ -38,21 +37,22 @@ module Caramelize
       end
     end
 
-    def create_namespace_overview(namespaces)
-      body = "## Overview of namespaces\n\n"
-      namespaces.each do |namespace|
-        # TODO change wiki as configurable default home
-        # TODO support other markup syntaxes
-        body << "* [[#{namespace[:name]}|#{namespace[:identifier]}/Wiki]]  \n"
-      end
-      page = Page.new(title: "Home",
-                      body: body,
-                      message: 'Create Namespace Overview',
-                      latest: true)
+    def commit_namespace_overview(namespaces)
+      page = ::Caramelize::Services::PageBuilder.build_namespace_overview(namespaces)
       commit_revision(page, :markdown)
-      page
     end
 
+    def supported_markup
+      SUPPORTED_TARGET_MARKUP
+    end
+
+    def build_commit(page)
+      { message: page.commit_message,
+        name: page.author_name,
+        email: page.author_email,
+        authored_date: page.time,
+        committed_date: page.time }
+    end
 
     private
 
@@ -65,13 +65,7 @@ module Caramelize
       Grit::Repo.init(wiki_path) unless File.exists?(wiki_path)
     end
 
-    def build_commit(page)
-      { message: page.commit_message,
-        name: page.author_name,
-        email: page.author_email,
-        authored_date: page.time,
-        committed_date: page.time }
-    end
+
 
   end
 end

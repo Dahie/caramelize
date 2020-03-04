@@ -4,7 +4,7 @@ module Caramelize
     attr_accessor :title, :body, :id, :markup, :latest, :time, :message,
                   :author, :author_name
 
-    def initialize page={}
+    def initialize(page={})
       @id =      page[:id]
       @title =   page[:title] || ""
       @body =    page[:body] || ""

@@ -11,7 +11,6 @@ module Caramelize
   require 'caramelize/gollum_output'
   require 'caramelize/wiki/redmine_wiki'
   require 'caramelize/wiki/wikkawiki'
-  require 'caramelize/wiki/wiki'
 
   # Controller for the content migration
   class ContentTransferer
@@ -68,13 +67,12 @@ module Caramelize
 
       def create_overview_page_of_namespaces
         puts 'Create Namespace Overview' if verbose?
-        output_wiki.create_namespace_overview(input_wiki.namespaces)
+        output_wiki.commit_namespace_overview(input_wiki.namespaces)
       end
 
       def migrate_markup_on_last_revision
         if input_wiki.convert_markup? markup # is wiki in target markup
-
-
+          # TODO
         end # end convert_markup?
 
         create_progress_bar("Markup filters", input_wiki.latest_revisions.count) unless verbose?

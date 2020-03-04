@@ -1,9 +1,10 @@
 require 'spec_helper'
 
-describe Caramelize::GollumOutput do
+describe Caramelize::Wiki::Base do
 
-  describe :revisions_by_author do
-    let(:wiki) { Caramelize::Wiki.new }
+  describe '#revisions_by_author' do
+    let(:wiki) { described_class.new }
+
     context 'revisions is empty' do
       context 'and titles is empty' do
         it 'returns empty array' do

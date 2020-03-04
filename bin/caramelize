@@ -12,23 +12,25 @@ program :help, 'Author', 'Daniel Senff <public@danielsenff.de>'
 default_command :run
 
 command :new do |c|
-  c.syntax      = 'caramelize create [options]'
-  c.summary     = 'Create new configuration'
+  c.syntax = 'caramelize create [options]'
+  c.summary = 'Create new configuration'
   c.description = 'Create a fresh configuration file for caramelize'
   c.option '--config STRING', String, 'The config file (default: caramel.rb)'
   c.example 'Create a fresh config file as "caramel.rb"', 'caramelize create'
   c.example 'Create a fresh config file as "config.rb"', 'caramelize create --config config.rb'
   c.action do |args, options|
     target_file ||= (options.config || 'caramel.rb')
-    FileUtils.cp(File.dirname(__FILE__) + '/../lib/caramelize/caramel.rb', target_file)
-    say "Created new configuration file: #{target_file}"
+    options.default({ config: 'caramel.rb' })
+    FileUtils.cp(File.dirname(__FILE__) + '/../lib/caramelize/caramel.rb',
+                 options.config)
+    say "Created new configuration file: #{optinos.config}"
   end
 end
 alias_command :create, :new
 
 command :run do |c|
-  c.syntax      = 'caramelize run [options]'
-  c.summary     = 'Run wiki transfer'
+  c.syntax = 'caramelize run [options]'
+  c.summary = 'Run wiki transfer'
   c.description = 'Run the wiki content transfer based on the given configuration file'
   c.option '--config', String, 'The config file (default: caramel.rb)'
   c.example 'Run transfer for "caramel.rb"', 'caramelize run'
