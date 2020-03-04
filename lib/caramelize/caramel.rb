@@ -1,5 +1,5 @@
-require 'caramelize/wiki/wikkawiki'
-require 'caramelize/wiki/redmine_wiki'
+require 'caramelize/input_wiki/wikkawiki'
+require 'caramelize/input_wiki/redmine_wiki'
 
 ## Example caramelize configuration file
 
@@ -16,7 +16,7 @@ def customized_wiki
               database: "database_name",
               password: 'Picard-Delta-5',
               markup: :wikka}
-  wiki = Caramelize::Wiki.new(options)
+  wiki = Caramelize::InputWiki::Wiki.new(options)
   wiki.instance_eval do
     def read_pages
       sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
@@ -54,7 +54,7 @@ def predefined_wiki
   #      username: "root",
   #      password: "root",
   #      database: "wikka" }
-  #return Caramelize::WikkaWiki.new(options)
+  #return Caramelize::InputWiki::WikkaWiki.new(options)
 
 
   # For connection to a Redmine-Database use this Connector
@@ -64,7 +64,7 @@ def predefined_wiki
               username: "root",
               password: "root",
               database: "redmine_development" }
-  return Caramelize::RedmineWiki.new(options)
+  return Caramelize::InputWiki::RedmineWiki.new(options)
 end
 
 

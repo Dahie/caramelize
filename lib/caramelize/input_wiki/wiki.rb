@@ -1,6 +1,6 @@
 module Caramelize
-  module Wiki
-    class Base
+  module InputWiki
+    class Wiki
       include DatabaseConnector
 
       attr_accessor :revisions, :wiki_title, :titles, :description, :namespaces, :options

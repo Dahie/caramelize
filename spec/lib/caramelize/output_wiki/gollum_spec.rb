@@ -1,7 +1,7 @@
 require 'spec_helper'
 
-describe Caramelize::GollumOutput do
-  let(:gollum_output) { Caramelize::GollumOutput.new('wiki.git') }
+describe Caramelize::OutputWiki::Gollum do
+  let(:gollum_output) { described_class.new('wiki.git') }
   before do
     allow(gollum_output).to receive(:initialize_repository).and_return true
   end

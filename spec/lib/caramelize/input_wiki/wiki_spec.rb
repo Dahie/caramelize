@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe Caramelize::Wiki::Base do
+describe Caramelize::InputWiki::Wiki do
 
   describe '#revisions_by_author' do
     let(:wiki) { described_class.new }

@@ -8,9 +8,9 @@ module Caramelize
   require 'caramelize/ext'
   require 'caramelize/content_transferer'
   require 'caramelize/database_connector'
-  require 'caramelize/gollum_output'
-  require 'caramelize/wiki/redmine_wiki'
-  require 'caramelize/wiki/wikkawiki'
+  require 'caramelize/output_wiki/gollum'
+  require 'caramelize/input_wiki/redmine_wiki'
+  require 'caramelize/input_wiki/wikkawiki'
 
   # Controller for the content migration
   class ContentTransferer

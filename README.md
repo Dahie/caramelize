@@ -76,11 +76,11 @@ Custom import allows you to import data from wikis that are not natively support
 
 For a custom wiki you need to create a `wiki` instance object, that receives the necessary database creditials.
 
-    wiki = Caramelize::Wiki.new(host: "localhost",
-                                username: "user",
-                                database: "database_name",
-                                password: 'monkey',
-                                markup: :wikka})
+    wiki = Caramelize::InputWiki::Wiki.new(host: "localhost",
+                                          username: "user",
+                                          database: "database_name",
+                                          password: 'monkey',
+                                          markup: :wikka})
 
 This example ignores custom markup conversion and assumes WikkaWiki-markup.
 

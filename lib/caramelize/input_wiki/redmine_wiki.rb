@@ -1,10 +1,10 @@
-require 'caramelize/wiki/base'
+require 'caramelize/input_wiki/wiki'
 require 'caramelize/filters/swap_wiki_links'
 require 'caramelize/filters/remove_table_tab_line_endings'
 
 module Caramelize
-  module Wiki
-    class RedmineWiki < Base
+  module InputWiki
+    class RedmineWiki < Wiki
       include DatabaseConnector
 
       def initialize options={}

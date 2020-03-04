@@ -1,10 +1,10 @@
-require 'caramelize/wiki/base'
+require 'caramelize/input_wiki/wiki'
 require 'caramelize/database_connector'
 require 'caramelize/filters/wikka_to_markdown'
 
 module Caramelize
-  module Wiki
-    class WikkaWiki < Base
+  module InputWiki
+    class WikkaWiki < Wiki
       include DatabaseConnector
 
       def initialize options={}
