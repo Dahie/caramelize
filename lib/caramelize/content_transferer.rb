@@ -114,7 +114,8 @@ module Caramelize
       end
 
       def output_wiki
-        @output_wiki ||= GollumOutput.new('./wiki-export') # TODO make wiki_path an option
+        # TODO make wiki_path an option
+        @output_wiki ||= OutputWiki::Gollum.new('./wiki-export')
       end
 
       def migrate_markup_per_revision(revision)

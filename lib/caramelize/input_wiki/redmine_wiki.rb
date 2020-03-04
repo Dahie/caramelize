@@ -53,16 +53,7 @@ module Caramelize
 
           @latest_revisions = {}
           results_contents.each do |row_content|
-            author = authors[row_content["author_id"]] ? @authors[row_content["author_id"]] : nil
-            page = Page.new({:id => row_content["id"],
-                              :title => title,
-                              :body => row_content["data"],
-                              :markup => :textile,
-                              :latest => false,
-                              :time => row_content["updated_on"],
-                              :message => row_content["comments"],
-                              :author => author,
-                              :author_name => author.name})
+            page = Page.new(build_properties)
             revisions << page
             @latest_revisions[title] = page
           end
@@ -80,10 +71,26 @@ module Caramelize
         results = database.query("SELECT id, login, mail FROM users;")
         results.each do |row|
           authors[row["id"]] = OpenStruct.new(id: row["id"],
-                                               name: row["login"],
-                                               email: row["mail"])
+                                              name: row["login"],
+                                              email: row["mail"])
         end
         authors
+      end
+
+      private
+
+      def build_properties(row)
+        author = authors[row_content["author_id"]] ? @authors[row_content["author_id"]] : nil
+        { id: row_content["id"],
+          title: title,
+          body: row_content["data"],
+          markup: :textile,
+          latest: false,
+          time: row_content["updated_on"],
+          message: row_content["comments"],
+          author: author,
+          author_name: author.name
+        }
       end
     end
   end

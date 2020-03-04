@@ -13,22 +13,13 @@ module Caramelize
         @options[:filters] << Caramelize::Wikka2Markdown.new
       end
 
-      # after calling this action, I expect the titles and @revisions to be filled
+      # after calling this action, titles and @revisions are expected to be filled
       def read_pages
         sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
         results = database.query(sql)
         results.each do |row|
           titles << row["tag"]
-          author = authors[row["user"]]
-          page = Page.new({:id => row["id"],
-                              :title =>   row["tag"],
-                              :body =>    row["body"],
-                              :markup =>  :wikka,
-                              :latest =>  row["latest"] == "Y",
-                              :time =>    row["time"],
-                              :message => row["note"],
-                              :author =>  author,
-                              :author_name => row["user"]})
+          page = Page.new(build_properties(row))
           revisions << page
         end
         titles.uniq!
@@ -44,6 +35,22 @@ module Caramelize
           authors[row["name"]] = OpenStruct.new(name:  row["name"],
                                                 email: row["email"] )
         end
+      end
+
+      private
+
+      def build_properties(row)
+        author = authors[row["user"]]
+        { id: row["id"],
+          title: row["tag"],
+          body: row["body"],
+          markup: :wikka,
+          latest: row["latest"] == "Y",
+          time: row["time"],
+          message: row["note"],
+          author: author,
+          author_name: row["user"]
+        }
       end
     end
   end

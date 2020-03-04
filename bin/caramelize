@@ -32,17 +32,16 @@ command :run do |c|
   c.syntax = 'caramelize run [options]'
   c.summary = 'Run wiki transfer'
   c.description = 'Run the wiki content transfer based on the given configuration file'
-  c.option '--config', String, 'The config file (default: caramel.rb)'
+  c.option '--config STRING', String, 'The config file (default: caramel.rb)'
   c.example 'Run transfer for "caramel.rb"', 'caramelize run'
   c.example 'Run transfer for "config.rb"', 'caramelize run --config config.rb'
   c.action do |args, options|
     time_start = Time.now
     options.default({ config: 'caramel.rb' })
 
-    configuration = options.config
-    instance_eval(File.read(configuration))
+    instance_eval(File.read(options.config))
 
     Caramelize::ContentTransferer.execute(input_wiki, input_wiki.options)
-    say "Time required: #{Time.now - time_start} s" if verbose?
+    say "Time required: #{Time.now - time_start} s"
   end
 end
