@@ -36,7 +36,7 @@ module Caramelize
       end
 
       def commit_namespace_overview(namespaces)
-        commit_revision(build_namespace_overview, :markdown)
+        commit_revision(build_namespace_overview(namespaces), :markdown)
       end
 
       def supported_markup
