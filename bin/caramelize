@@ -41,7 +41,7 @@ command :run do |c|
 
     instance_eval(File.read(options.config))
 
-    Caramelize::ContentTransferer.execute(input_wiki, input_wiki.options)
+    Caramelize::ContentTransferer.new(input_wiki, input_wiki.options).execute
     say "Time required: #{Time.now - time_start} s"
   end
 end

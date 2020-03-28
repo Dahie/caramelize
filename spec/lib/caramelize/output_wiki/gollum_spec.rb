@@ -6,6 +6,51 @@ describe Caramelize::OutputWiki::Gollum do
     allow(gollum_output).to receive(:initialize_repository).and_return true
   end
 
+  describe '#commit_revision' do
+    let(:title) { 'title' }
+    let(:input_page) do
+      double(author_name: 'Steven Universe',
+             author_email: 'steven@example.com',
+             body: 'body',
+             commit_message: 'done',
+             time: Time.now,
+             title: title)
+    end
+    let(:gollum_page) do
+      double(:gollum_page,
+             name: 'title',
+             format: :markdown)
+    end
+    let(:markup) { :markdown }
+    let(:gollum) { double(:gollum) }
+
+    before do
+      allow(Gollum::Wiki).to receive(:new).and_return(gollum)
+    end
+
+    context 'page exists' do
+      before do
+        allow(gollum).to receive(:page).with(title).and_return(gollum_page)
+      end
+
+      it 'updates page' do
+        expect(gollum).to receive(:update_page).once.and_return(true)
+        gollum_output.commit_revision(input_page, markup)
+      end
+    end
+
+    context 'page does not exist yet' do
+      before do
+        allow(gollum).to receive(:page).with(title).and_return(nil)
+      end
+
+      it 'creates page' do
+        expect(gollum).to receive(:write_page).once
+        gollum_output.commit_revision(input_page, markup)
+      end
+    end
+  end
+
   describe '#commit_history' do
     pending
   end

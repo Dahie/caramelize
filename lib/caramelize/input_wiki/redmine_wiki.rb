@@ -53,7 +53,7 @@ module Caramelize
 
           @latest_revisions = {}
           results_contents.each do |row_content|
-            page = Page.new(build_properties)
+            page = Page.new(build_properties(title, row_content))
             revisions << page
             @latest_revisions[title] = page
           end
@@ -79,8 +79,8 @@ module Caramelize
 
       private
 
-      def build_properties(row)
-        author = authors[row_content["author_id"]] ? @authors[row_content["author_id"]] : nil
+      def build_properties(title, row_content)
+        author = authors[row_content["author_id"]] ? authors[row_content["author_id"]] : nil
         { id: row_content["id"],
           title: title,
           body: row_content["data"],
