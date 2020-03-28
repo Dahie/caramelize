@@ -11,6 +11,8 @@ program :help, 'Author', 'Daniel Senff <public@danielsenff.de>'
 
 default_command :run
 
+global_option '--verbose'
+
 command :new do |c|
   c.syntax = 'caramelize create [options]'
   c.summary = 'Create new configuration'
@@ -38,10 +40,12 @@ command :run do |c|
   c.action do |args, options|
     time_start = Time.now
     options.default({ config: 'caramel.rb' })
+    puts options.inspect
 
     instance_eval(File.read(options.config))
 
-    Caramelize::ContentTransferer.new(input_wiki, input_wiki.options).execute
+    wiki_options = input_wiki.options.merge(verbose: options.verbose)
+    Caramelize::ContentTransferer.new(input_wiki, wiki_options).execute
     say "Time required: #{Time.now - time_start} s"
   end
 end

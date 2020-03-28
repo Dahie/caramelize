@@ -32,7 +32,7 @@ module Caramelize
       if verbose?
         puts "From markup: #{input_wiki.markup.to_s}"
         puts "To markup: #{target_markup.to_s}"
-        puts "Latest revisions:"
+        puts "Convert latest revisions:"
       end
 
       migrate_markup_of_latest_revisions
@@ -65,7 +65,7 @@ module Caramelize
     end
 
     def verbose?
-      options[:verbosity] == :verbose
+      options[:verbose]
     end
 
     def revisions_count

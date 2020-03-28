@@ -41,7 +41,6 @@ Creates an example configuration by the given name.
 Executes the given configuration.
 
     $ caramelize --verbose [command]
-    $ caramelize -v [command]
 
 Displays more verbose output to the command line.
 
