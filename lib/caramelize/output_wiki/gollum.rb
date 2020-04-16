@@ -26,6 +26,11 @@ module Caramelize
         end
       end
 
+      def rename_page(page_title, rename)
+        gollum_page = gollum.page(page_title)
+        gollum.rename_page(gollum_page, rename)
+      end
+
       # Commit all revisions of the given history into this gollum-wiki-repository.
       def commit_history(revisions, options = {}, &block)
         revisions.each_with_index do |page, index|

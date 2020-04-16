@@ -13,12 +13,13 @@ module Caramelize
   class ContentTransferer
     attr_reader :input_wiki, :options, :filter_processor
 
+    DEFAULT_GOLLUM_HOME_TITLE = 'Home'.freeze
+
     def initialize(input_wiki, options)
       @input_wiki = input_wiki
       @options = options
 
       options[:default_author] = options.fetch(:default_author, "Caramelize")
-      options[:target_directory] = 'wiki-export'
       options[:markup] = target_markup
     end
 
@@ -37,6 +38,8 @@ module Caramelize
 
       puts 'Create Namespace Overview' if verbose?
       create_overview_page_of_namespaces if options[:create_namespace_overview]
+
+      rename_home_page
     end
 
     private
@@ -55,7 +58,7 @@ module Caramelize
     end
 
     def output_wiki
-      @output_wiki ||= OutputWiki::Gollum.new(options[:target_directory])
+      @output_wiki ||= OutputWiki::Gollum.new(options[:target])
     end
 
     def filter_processor
@@ -115,6 +118,11 @@ module Caramelize
         # commit as latest page revision
         output_wiki.commit_revision(revision, options[:markup])
       end
+    end
+
+    def rename_home_page
+      puts options.inspect
+      output_wiki.rename_page(options[:home_page_title], DEFAULT_GOLLUM_HOME_TITLE)
     end
   end
 end

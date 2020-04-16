@@ -39,11 +39,19 @@ command :run do |c|
   c.example 'Run transfer for "config.rb"', 'caramelize run --config config.rb'
   c.action do |args, options|
     time_start = Time.now
-    options.default({ config: 'caramel.rb' })
+    options.default({ config: 'caramel.rb', target: 'wiki-export' })
 
     instance_eval(File.read(options.config))
 
-    wiki_options = input_wiki.options.merge(verbose: options.verbose)
+    target = options.target
+
+    if File.exists?(target)
+      answer = agree("#{target} already exists. Overwrite with fresh repository?")
+      FileUtils.rm_rf(target) if answer
+    end
+
+    wiki_options = input_wiki.options.merge(verbose: options.verbose,
+                                            target: options.target)
     Caramelize::ContentTransferer.new(input_wiki, wiki_options).execute
     say "Time required: #{Time.now - time_start} s"
   end

@@ -8,9 +8,9 @@ describe Caramelize::OutputWiki::Gollum do
 
   describe '#commit_revision' do
     let(:title) { 'title' }
+    let(:author) { double(name: 'Steven Universe', email: 'steven@example.com') }
     let(:input_page) do
-      double(author_name: 'Steven Universe',
-             author_email: 'steven@example.com',
+      double(author: author,
              body: 'body',
              commit_message: 'done',
              time: Time.now,
