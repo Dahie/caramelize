@@ -107,9 +107,10 @@ module Caramelize
 
       unless body_new == revision.body
         revision.body = body_new
-        revision.author_name = target_markup
+        revision.author_name = 'Caramelize'
         revision.time = Time.now
         revision.author = nil
+        revision.message = "Markup of '#{revision.title}' converted to #{target_markup}"
 
         # commit as latest page revision
         output_wiki.commit_revision(revision, options[:markup])
