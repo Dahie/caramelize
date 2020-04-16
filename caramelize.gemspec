@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency('commander')
   spec.add_dependency('docile')
   spec.add_dependency('ruby-progressbar')
-  spec.add_dependency('gollum-lib', '>= 1.0.0') # grit dependency implicit through gollum
+  spec.add_dependency('gollum-lib')
 
   spec.add_development_dependency "bundler", "~> 1.6"
   spec.add_development_dependency "rake"

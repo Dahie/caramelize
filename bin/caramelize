@@ -40,7 +40,6 @@ command :run do |c|
   c.action do |args, options|
     time_start = Time.now
     options.default({ config: 'caramel.rb' })
-    puts options.inspect
 
     instance_eval(File.read(options.config))
 

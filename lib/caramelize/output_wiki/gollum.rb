@@ -1,4 +1,3 @@
-require 'caramelize/ext'
 module Caramelize
   module OutputWiki
     class Gollum
@@ -47,8 +46,8 @@ module Caramelize
       def build_commit(page)
         {
           message: page.commit_message,
-          name: page.author_name,
-          email: page.author_email,
+          name: page.author.name,
+          email: page.author.email,
           authored_date: page.time,
           committed_date: page.time
         }
@@ -61,12 +60,14 @@ module Caramelize
       end
 
       def gollum
-        @gollum ||= ::Gollum::Wiki.new(wiki_path)
+        @gollum ||= ::Gollum::Wiki.new(wiki_path, {repo_is_bare: true})
       end
 
       def initialize_repository
         return if File.exists?(wiki_path)
-        Grit::Repo.init(wiki_path)
+        Dir.mkdir(wiki_path)
+        #::Gollum::Git::Repo.new(wiki_path, { is_bare: true })
+        ::Gollum::Git::Repo.init(wiki_path)
       end
     end
   end

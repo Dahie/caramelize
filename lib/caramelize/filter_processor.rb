@@ -1,5 +1,4 @@
 require 'gollum-lib'
-require 'grit'
 require 'ruby-progressbar'
 
 module Caramelize

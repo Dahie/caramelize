@@ -1,11 +1,9 @@
 require 'gollum-lib'
-require 'grit'
 require 'ruby-progressbar'
 
 module Caramelize
 
   require 'caramelize/page'
-  require 'caramelize/ext'
   require 'caramelize/content_transferer'
   require 'caramelize/database_connector'
   require 'caramelize/output_wiki/gollum'
@@ -20,7 +18,7 @@ module Caramelize
       @options = options
 
       options[:default_author] = options.fetch(:default_author, "Caramelize")
-      options[:target_directory] = './wiki-export'
+      options[:target_directory] = 'wiki-export'
       options[:markup] = target_markup
     end
 
@@ -86,7 +84,6 @@ module Caramelize
     end
 
     def commit_history
-      puts revisions_count
       progress_bar = ProgressBar.create(title: "Revisions",
                                         total: revisions_count)
 
