@@ -121,7 +121,6 @@ module Caramelize
     end
 
     def rename_home_page
-      puts options.inspect
       output_wiki.rename_page(options[:home_page_title], DEFAULT_GOLLUM_HOME_TITLE)
     end
   end

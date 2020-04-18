@@ -2,13 +2,14 @@ require 'spec_helper'
 
 describe Caramelize::Wikka2Markdown do
 
-  describe :run do
-    let(:filter) { Caramelize::Wikka2Markdown.new }
+  describe '#run' do
+    let(:filter) { described_class.new }
+    subject { filter.run(body) }
+
     context 'headline h1' do
-      it 'converts to markdown' do
-        body = '======Headline======'
-        expect(filter.run(body)).to eq '# Headline'
-      end
+      let(:body) { '======Headline======' }
+
+      it { is_expected.to eq '# Headline' }
     end
 
     context 'headline h2' do
@@ -47,10 +48,9 @@ describe Caramelize::Wikka2Markdown do
     end
 
     context 'italic' do
-      it 'converts to markdown' do
-        body = '//Text is italic//'
-        expect(filter.run(body)).to eq '_Text is italic_'
-      end
+      let(:body) { '//Text is italic//' }
+
+      it { is_expected.to eq '*Text is italic*' }
     end
 
     context 'underline' do
@@ -90,10 +90,37 @@ describe Caramelize::Wikka2Markdown do
       end
     end
 
+    context 'wikilink' do
+      context 'only url' do
+        let(:body) { '[[LemmaLemma]]' }
+
+        it { is_expected.to eq '[[LemmaLemma]]' }
+      end
+
+      context 'url and title' do
+        let(:body) { '[[SandBox|Test your formatting skills]]' }
+
+        it { is_expected.to eq '[[SandBox|Test your formatting skills]]' }
+      end
+    end
+
     context 'hyperlink' do
-      it 'converts to markdown' do
-        body = '[[Title http://target]]'
-        expect(filter.run(body)).to eq '[[http://target|Title]]'
+      context 'only url' do
+        let(:body) { '[[http://target]]' }
+
+        it { is_expected.to eq '<http://target>' }
+      end
+
+      context 'url with space' do
+        let(:body) { '[[http://target Title]]' }
+
+        it { is_expected.to eq '[Title](http://target)' }
+      end
+
+      context 'url with pipe' do
+        let(:body) { '[[http://target|Title]]' }
+
+        it { is_expected.to eq '[Title](http://target)' }
       end
     end
   end

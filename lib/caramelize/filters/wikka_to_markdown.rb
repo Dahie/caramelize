@@ -10,7 +10,7 @@ module Caramelize
       body.gsub!(/(===)(.*?)(===)/) {|s| '#### ' + $2 }   #h4
 
       body.gsub!(/(\*\*)(.*?)(\*\*)/) {|s| '**' + $2 + '**' }   #bold
-      body.gsub!(/(\/\/)(.*?)(\/\/)/) {|s| '_' + $2 + '_' }   #italic
+      body.gsub!(/(\/\/)(.*?)(\/\/)/, '*\2*') #italic
       #str.gsub!(/(===)(.*?)(===)/) {|s| '`' + $2 + '`'}   #code
       body.gsub!(/(__)(.*?)(__)/) {|s| '<u>' + $2 + '</u>'}   #underline
       body.gsub!(/(---)/, '  ')   #forced linebreak
@@ -23,15 +23,14 @@ module Caramelize
       # TODO ordered lists
 
       # TODO images: ({{image)(url\=?)?(.*)(}})
+      # markdown: ![Tux, the Linux mascot](/assets/images/tux.png)
 
-      #str.gsub!(/(----)/) {|s| '~~~~'}   #seperator
-
-
-      body.gsub!(/(\[\[)(\w+)\s(.+?)(\]\])/, '[[\3|\2]]')
-      #body.gsub!(/\[\[(\w+)\s(.+)\]\]/, ' [[\1 | \2]] ')
-
-
-      # TODO more syntax conversion for links and images
+      # url
+      body.gsub!(/[\[]{2}((\w+):[\S][^\| ]*)[\| ](.*)[\]]{2}/,
+                 '[\3](\1)')
+      body.gsub!(/[\[]{2}((\w+):.*)[\]]{2}/, '<\1>')
+      body.gsub!(/[\[]{2}(\w+)\s(.+?)[\]]{2}/, '[[\2|\1]]')
+      #body.gsub!(/[]{2}(\w+)\s(.+)\]\]/, ' [[\1 | \2]] ')
 
       body
     end

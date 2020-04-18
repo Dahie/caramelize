@@ -28,7 +28,7 @@ module Caramelize
 
       def rename_page(page_title, rename)
         gollum_page = gollum.page(page_title)
-        gollum.rename_page(gollum_page, rename)
+        gollum.rename_page(gollum_page, rename, { message: 'Rename home page' })
       end
 
       # Commit all revisions of the given history into this gollum-wiki-repository.
