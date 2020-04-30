@@ -7,7 +7,7 @@ module Caramelize
     class WikkaWiki < Wiki
       include DatabaseConnector
 
-      def initialize options={}
+      def initialize(options = {})
         super(options)
         @options[:markup] = :wikka
         @options[:filters] << Caramelize::Wikka2Markdown.new
@@ -15,10 +15,8 @@ module Caramelize
 
       # after calling this action, titles and @revisions are expected to be filled
       def read_pages
-        sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
-        results = database.query(sql)
-        results.each do |row|
-          titles << row["tag"]
+        pages.each do |row|
+          titles << row['tag']
           page = Page.new(build_properties(row))
           revisions << page
         end
@@ -29,19 +27,25 @@ module Caramelize
       end
 
       def read_authors
-        sql = "SELECT name, email FROM wikka_users;"
+        sql = 'SELECT name, email FROM wikka_users;'
         results = database.query(sql)
         results.each do |row|
-          authors[row["name"]] = OpenStruct.new(name:  row["name"],
-                                                email: row["email"] )
+          authors[row['name']] = OpenStruct.new(name:  row['name'],
+                                                email: row['email'] )
         end
       end
 
       private
 
+      def pages
+        sql = 'SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;'
+        @pages ||= database.query(sql)
+      end
+
       def build_properties(row)
-        author = authors[row["user"]]
-        { id: row["id"],
+        author = authors[row['user']]
+        {
+          id: row["id"],
           title: row["tag"],
           body: row["body"],
           markup: :wikka,
