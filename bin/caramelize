@@ -6,7 +6,7 @@ require 'commander/import'
 # :name is optional, otherwise uses the basename of this executable
 program :name, 'caramelize'
 program :version, Caramelize::VERSION
-program :description, 'TODO'
+program :description, 'With Caramelize you can migrate any wiki to git-based Gollum wiki repositories.'
 program :help, 'Author', 'Daniel Senff <public@danielsenff.de>'
 
 default_command :run
@@ -25,7 +25,7 @@ command :new do |c|
     options.default({ config: 'caramel.rb' })
     FileUtils.cp(File.dirname(__FILE__) + '/../lib/caramelize/caramel.rb',
                  options.config)
-    say "Created new configuration file: #{optinos.config}"
+    say "Created new configuration file: #{options.config}"
   end
 end
 alias_command :create, :new

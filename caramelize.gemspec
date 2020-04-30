@@ -11,7 +11,7 @@ Gem::Specification.new do |spec|
   spec.email       = ["mail@danielsenff.de"]
   spec.homepage    = "http://github.com/Dahie/caramelize"
   spec.summary     = %q{Flexible and modular wiki conversion tool}
-  spec.description = %q{By defining the connectors from the input wiki you can migrate any wiki to git-based Gollum wiki repositories.}
+  spec.description = %q{With Caramelize you can migrate any wiki to git-based Gollum wiki repositories.}
 
   spec.files         = `git ls-files -z`.split("\x0")
   spec.executables   = spec.files.grep(%r{^bin/}) { |f| File.basename(f) }
