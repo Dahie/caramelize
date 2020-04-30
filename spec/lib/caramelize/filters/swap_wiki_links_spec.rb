@@ -1,31 +1,47 @@
 require 'spec_helper'
 
 describe Caramelize::SwapWikiLinks do
+  describe '#run' do
+    let(:filter) { described_class.new(body) }
+    subject { filter.run }
 
-  describe :run do
-    let(:filter) { Caramelize::SwapWikiLinks.new }
-    context 'wiki link' do
-      it 'should switch title and target' do
-        body = '[[statistics|Driver & Team Statistics]]'
-        expect(filter.run(body)).to eq '[[Driver & Team Statistics|statistics]]'
+    context 'wiki link with title' do
+      let(:body) { '[[statistics|Driver & Team Statistics]]' }
+
+      it 'swaps title and target' do
+        is_expected.to eq '[[Driver & Team Statistics|statistics]]'
       end
-      it 'should replace space with dashes' do
-        body = '[[Release 1 0]]'
-        expect(filter.run(body)).to eq '[[Release 1 0|Release_1_0]]'
+    end
+
+    context 'wiki title with spaces' do
+      let(:body) { '[[Release 1 0]]' }
+
+      it 'replaces space with dashes' do
+        is_expected.to eq '[[Release 1 0|Release_1_0]]'
       end
-      it 'should remove dots' do
-        body = '[[Release 1.0]]'
-        expect(filter.run(body)).to eq '[[Release 1.0|Release_10]]'
+    end
+
+    context 'wiki title with dashes' do
+      let(:body) { '[[Release 1.0]]' }
+
+      it 'removes dots' do
+        is_expected.to eq '[[Release 1.0|Release_10]]'
       end
-      it 'should simple link to hyperlink' do
-        body = '[[Intra wiki link]]'
-        expect(filter.run(body)).to eq '[[Intra wiki link|Intra_wiki_link]]'
+    end
+
+    context 'wiki link with spaces and without title' do
+      let(:body) { '[[Intra wiki link]]' }
+
+      it 'simples link to hyperlink' do
+        is_expected.to eq '[[Intra wiki link|Intra_wiki_link]]'
       end
+
       context 'replace in full file' do
+        let(:body) { File.open(File.join(['spec', 'fixtures', 'markup', 'swap-links-input.textile']), 'r').read }
+
         it 'returns as expected' do
-          input_text = File.open(File.join(['spec', 'fixtures', 'markup', 'swap-links-input.textile']), 'r').read
           output_text = File.open(File.join(['spec', 'fixtures', 'markup', 'swap-links-output.textile']), 'r').read
-          expect(filter.run(input_text)).to eq output_text
+          is_expected.to eq output_text
         end
       end
     end

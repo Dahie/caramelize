@@ -7,8 +7,12 @@ describe Caramelize::FilterProcessor do
   subject(:processor) { described_class.new(input_wiki) }
 
   class ReverseFilter
-    def run(body)
-      body.reverse
+    def initialize(body)
+      @body = body
+    end
+
+    def run
+      @body.reverse
     end
   end
 
@@ -20,9 +24,7 @@ describe Caramelize::FilterProcessor do
     end
 
     context 'with reverse filter' do
-      let(:filters) do
-        [ReverseFilter.new]
-      end
+      let(:filters) { [ReverseFilter] }
 
       it 'returns reversed body' do
         expect(processor.run(body)).to eql body.reverse

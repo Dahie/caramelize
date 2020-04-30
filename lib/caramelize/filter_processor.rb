@@ -15,7 +15,7 @@ module Caramelize
     def run(body)
       body_new = body
       filters.each do |filter|
-        body_new = filter.run(body_new)
+        body_new = filter.new(body_new).run
       end
       body_new
     end

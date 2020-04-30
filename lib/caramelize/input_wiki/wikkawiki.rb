@@ -10,7 +10,7 @@ module Caramelize
       def initialize(options = {})
         super(options)
         @options[:markup] = :wikka
-        @options[:filters] << Caramelize::Wikka2Markdown.new
+        @options[:filters] << Caramelize::Wikka2Markdown
       end
 
       # after calling this action, titles and @revisions are expected to be filled

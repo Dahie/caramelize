@@ -10,8 +10,8 @@ module Caramelize
       def initialize(options = {})
         super(options)
         @options[:markup] = :textile
-        @options[:filters] << Caramelize::SwapWikiLinks.new
-        @options[:filters] << Caramelize::RemoveTableTabLineEndings.new
+        @options[:filters] << Caramelize::SwapWikiLinks
+        @options[:filters] << Caramelize::RemoveTableTabLineEndings
         @options[:create_namespace_overview] = true
       end
 

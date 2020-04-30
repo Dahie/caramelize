@@ -1,10 +1,16 @@
 require 'spec_helper'
 
 describe Caramelize::Wikka2Markdown do
+  let(:filter) { described_class.new(body) }
 
   describe '#run' do
-    let(:filter) { described_class.new }
-    subject { filter.run(body) }
+    subject { filter.run }
+
+    xcontext 'keep line breaks' do
+      let(:body) { "line1\nline2" }
+
+      it { is_expected.to eq "line1  \nline2" }
+    end
 
     context 'headline h1' do
       let(:body) { '======Headline======' }
@@ -13,38 +19,33 @@ describe Caramelize::Wikka2Markdown do
     end
 
     context 'headline h2' do
-      it 'converts to markdown' do
-        body = '=====Headline====='
-        expect(filter.run(body)).to eq '## Headline'
-      end
+      let(:body) { '=====Headline=====' }
+
+      it { is_expected.to eq '## Headline' }
     end
 
     context 'headline h3' do
-      it 'converts to markdown' do
-        body = '====Headline===='
-        expect(filter.run(body)).to eq '### Headline'
-      end
+      let(:body) { '====Headline===='}
+
+      it { is_expected.to eq '### Headline' }
     end
 
     context 'headline h4' do
-      it 'converts to markdown' do
-        body = '===Headline==='
-        expect(filter.run(body)).to eq '#### Headline'
-      end
+      let(:body) { '===Headline===' }
+
+      it { is_expected.to eq '#### Headline' }
     end
 
-    context 'headline h1' do
-      it 'converts to markdown' do
-        body = '======Headline======'
-        expect(filter.run(body)).to eq '# Headline'
-      end
+    context 'headline h5' do
+      let(:body) { '==Headline==' }
+
+      it { is_expected.to eq '##### Headline' }
     end
 
     context 'bold' do
-      it 'converts to markdown' do
-        body = '**Text is bold**'
-        expect(filter.run(body)).to eq '**Text is bold**'
-      end
+      let(:body) { '**Text is bold**' }
+
+      it { is_expected.to eq '**Text is bold**' }
     end
 
     context 'italic' do
@@ -54,39 +55,66 @@ describe Caramelize::Wikka2Markdown do
     end
 
     context 'underline' do
-      it 'converts to markdown' do
-        body = '__Text is underlined__'
-        expect(filter.run(body)).to eq '<u>Text is underlined</u>'
-      end
+      let(:body) { '__Text is underlined__' }
+
+      it { is_expected.to eq '<u>Text is underlined</u>' }
     end
 
     context 'line break' do
-      it 'converts to markdown' do
-        body = 'Text is---\nbroken to two lines.'
-        expect(filter.run(body)).to eq 'Text is  \nbroken to two lines.'
-      end
+      let(:body) { 'Text is---\nbroken to two lines.' }
+
+      it { is_expected.to eq 'Text is  \nbroken to two lines.' }
     end
 
     context 'unordered list entry' do
       context 'tab based' do
-        it 'converts to markdown' do
-          body = "\t-unordered list entry"
-          expect(filter.run(body)).to eq '*unordered list entry'
-        end
+        let(:body) { "\t-unordered list entry" }
+
+        it { is_expected.to eq '* unordered list entry' }
       end
 
       context 'also tab based' do
-        it 'converts to markdown' do
-          body = "~-unordered list entry"
-          expect(filter.run(body)).to eq '*unordered list entry'
-        end
+        let(:body) { "~-unordered list entry" }
+
+        it { is_expected.to eq '* unordered list entry' }
       end
 
       context 'space based' do
-        it 'converts to markdown' do
-          body = "    -unordered list entry"
-          expect(filter.run(body)).to eq '*unordered list entry'
-        end
+        let(:body) { "    -unordered list entry" }
+
+        it { is_expected.to eq '* unordered list entry' }
+      end
+
+      context 'tab based with space' do
+        let(:body) { "\t- unordered list entry" }
+
+        it { is_expected.to eq '* unordered list entry' }
+      end
+
+      context 'also tab based with space' do
+        let(:body) { "~- unordered list entry" }
+
+        it { is_expected.to eq '* unordered list entry' }
+      end
+
+      context 'space based with space' do
+        let(:body) { "    - unordered list entry" }
+
+        it { is_expected.to eq '* unordered list entry' }
+      end
+    end
+
+    context 'ordered list entry' do
+      context 'without space' do
+        let(:body) { "~1)ordered list entry" }
+
+        it { is_expected.to eq '1. ordered list entry' }
+      end
+
+      context 'with space' do
+        let(:body) { "~1) ordered list entry" }
+
+        it { is_expected.to eq '1. ordered list entry' }
       end
     end
 
@@ -97,10 +125,16 @@ describe Caramelize::Wikka2Markdown do
         it { is_expected.to eq '[[LemmaLemma]]' }
       end
 
-      context 'url and title' do
+      context 'url and pipe title' do
         let(:body) { '[[SandBox|Test your formatting skills]]' }
 
-        it { is_expected.to eq '[[SandBox|Test your formatting skills]]' }
+        it { is_expected.to eq '[[Test your formatting skills|SandBox]]' }
+      end
+
+      context 'url and title' do
+        let(:body) { '[[SandBox Test your formatting skills]]' }
+
+        it { is_expected.to eq '[[Test your formatting skills|SandBox]]' }
       end
     end
 
@@ -111,7 +145,7 @@ describe Caramelize::Wikka2Markdown do
         it { is_expected.to eq '<http://target>' }
       end
 
-      context 'url with space' do
+      context 'url with title' do
         let(:body) { '[[http://target Title]]' }
 
         it { is_expected.to eq '[Title](http://target)' }
@@ -122,6 +156,43 @@ describe Caramelize::Wikka2Markdown do
 
         it { is_expected.to eq '[Title](http://target)' }
       end
+    end
+
+    context 'code block' do
+      let(:body) do
+        <<-EOS
+Text before
+
+%%
+std::cin >> input;
+++stat[input];
+%%
+
+Text after
+
+%%
+std::cin >> input;
+++stat[input];
+%%
+
+        EOS
+      end
+      let(:expected_result) do
+        <<-EOS
+Text before
+
+    std::cin >> input;
+    ++stat[input];
+
+Text after
+
+    std::cin >> input;
+    ++stat[input];
+
+        EOS
+      end
+
+      it { is_expected.to eq expected_result }
     end
   end
 end
