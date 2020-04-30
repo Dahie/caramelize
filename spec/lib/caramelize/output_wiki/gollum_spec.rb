@@ -84,8 +84,7 @@ describe Caramelize::OutputWiki::Gollum do
     let(:expected_hash) do
       {
         message: 'Dinosaurs really had feathers, do not forget!',
-        authored_date: Time.parse('2015-02-12'),
-        committed_date: Time.parse('2015-02-12'),
+        time: Time.parse('2015-02-12'),
         name: 'Jeff Goldblum',
         email: 'jeff.g@example.com'
       }

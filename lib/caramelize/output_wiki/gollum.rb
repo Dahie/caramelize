@@ -53,8 +53,7 @@ module Caramelize
           message: page.commit_message,
           name: page.author.name,
           email: page.author.email,
-          authored_date: page.time,
-          committed_date: page.time
+          time: page.time
         }
       end
 

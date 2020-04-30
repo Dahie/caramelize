@@ -1,4 +1,3 @@
-require 'gollum-lib'
 require 'ruby-progressbar'
 
 module Caramelize
@@ -73,37 +72,47 @@ module Caramelize
       revisions.count
     end
 
+    def latest_revisions_count
+      input_wiki.latest_revisions.count
+    end
+
     def create_overview_page_of_namespaces
       output_wiki.commit_namespace_overview(input_wiki.namespaces)
     end
 
-    def migrate_markup_of_latest_revisions
-      progress_bar = ProgressBar.create(title: "Markup filters",
-                                        total: revisions_count)
+    def migrate_markup_progress_bar
+      @migrate_markup_progress_bar ||=
+        ProgressBar.create(title: "Markup filters",
+                           total: latest_revisions_count)
+    end
 
+    def commit_history_progress_bar
+      @commit_history_progress_bar ||=
+        ProgressBar.create(title: "Revisions",
+                           total: revisions_count)
+    end
+
+    def migrate_markup_of_latest_revisions
       input_wiki.latest_revisions.each do |revision|
-        migrate_markup_of_revision(revision, progress_bar)
+        migrate_markup_of_revision(revision)
       end
     end
 
     def commit_history
-      progress_bar = ProgressBar.create(title: "Revisions",
-                                        total: revisions_count)
-
       output_wiki.commit_history(revisions, options) do |page, index|
         if verbose?
           puts "(#{index + 1}/#{revisions_count}) #{page.time} #{page.title}"
         else
-          progress_bar.increment
+          commit_history_progress_bar.increment
         end
       end
     end
 
-    def migrate_markup_of_revision(revision, progress_bar)
+    def migrate_markup_of_revision(revision)
       if verbose?
         puts "Filter source: #{revision.title} #{revision.time}"
       else
-        progress_bar.increment
+        migrate_markup_progress_bar.increment
       end
 
       body_new = filter_processor.run(revision.body)
