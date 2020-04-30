@@ -46,21 +46,14 @@ module Caramelize
       def build_page(row_page)
         results_contents = database.query("SELECT * FROM wiki_content_versions WHERE page_id='#{row_page["id"]}' ORDER BY updated_on;")
 
-        # get wiki for page
-        wiki_row = nil
-        project_row = nil
-        wikis.each do |wiki|
-          wiki_row = wiki if wiki["id"] == row_page["wiki_id"]
-        end
+        wiki = wikis.select{ |row| row['id'] == row_page['wiki_id'] }.first
 
-        if wiki_row
-          # get project from wiki-id
-          results_projects.each do |project|
-            project_row = project if project["id"] == wiki_row["project_id"]
-          end
-        end
+        project_identifier = ''
 
-        project_identifier = project_row ? project_row['identifier'] + '/' : ""
+        if wiki
+          project = projects.select{ |row| row['id'] == wiki['project_id'] }.first
+          project_identifier = project['identifier'] + '/'
+        end
 
         title = project_identifier + row_page['title']
         titles << title
