@@ -20,7 +20,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency('mysql2')
   spec.add_dependency('commander')
-  spec.add_dependency('docile')
   spec.add_dependency('ruby-progressbar')
   spec.add_dependency('gollum-lib')
 
