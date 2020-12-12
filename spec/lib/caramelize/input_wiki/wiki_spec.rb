@@ -17,7 +17,7 @@ describe Caramelize::InputWiki::Wiki do
 
     context 'pages with revisions' do
       it 'returns list of latest pages' do
-        wiki.titles = ['allosaurus', 'brachiosaurus']
+        wiki.titles = %w[allosaurus brachiosaurus]
         allow(wiki).to receive(:revisions_by_title)
           .with('allosaurus').and_return([page1, page2])
         allow(wiki).to receive(:revisions_by_title)

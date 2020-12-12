@@ -32,7 +32,7 @@ module Caramelize
       end
 
       def read_authors
-        results = database.query('SELECT id, login, mail FROM users;')
+        results = database.query(authors_query)
         results.each do |row|
           authors[row["id"]] = OpenStruct.new(id: row["id"],
                                               name: row["login"],
@@ -44,7 +44,7 @@ module Caramelize
       private
 
       def build_page(row_page)
-        results_contents = database.query("SELECT * FROM wiki_content_versions WHERE page_id='#{row_page["id"]}' ORDER BY updated_on;")
+        results_contents = database.query(single_page_query(row_page['id']))
 
         wiki = wikis.select{ |row| row['id'] == row_page['wiki_id'] }.first
 
@@ -74,20 +74,40 @@ module Caramelize
         end
       end
 
+      def authors_query
+        'SELECT id, login, mail FROM users;'
+      end
+
+      def single_page_query(page_id)
+        "SELECT * FROM wiki_content_versions WHERE page_id='#{page_id}' ORDER BY updated_on;"
+      end
+
+      def projects_query
+        'SELECT id, identifier, name FROM projects;'
+      end
+
+      def pages_query
+        'SELECT id, title, wiki_id FROM wiki_pages;'
+      end
+
+      def wikis_query
+        'SELECT id, project_id FROM wikis;'
+      end
+
       def pages
-        @pages ||= database.query('SELECT id, title, wiki_id FROM wiki_pages;')
+        @pages ||= database.query(pages_query)
       end
 
       def projects
-        @projects ||= database.query('SELECT id, identifier, name FROM projects;')
+        @projects ||= database.query(projects_query)
       end
 
       def wikis
-        @wikis ||= database.query('SELECT id, project_id FROM wikis;')
+        @wikis ||= database.query(wikis_query)
       end
 
       def build_properties(title, row_content)
-        author = authors[row_content["author_id"]] ? authors[row_content["author_id"]] : nil
+        author = authors.fetch(row_content["author_id"], nil)
         {
           id: row_content['id'],
           title: title,

@@ -1,4 +1,3 @@
-require 'caramelize/input_wiki/wiki'
 require 'caramelize/database_connector'
 require 'caramelize/filters/wikka_to_markdown'
 
@@ -6,6 +5,9 @@ module Caramelize
   module InputWiki
     class WikkaWiki < Wiki
       include DatabaseConnector
+
+      SQL_PAGES = 'SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;'.freeze
+      SQL_AUTHORS = 'SELECT name, email FROM wikka_users;'.freeze
 
       def initialize(options = {})
         super(options)
@@ -27,8 +29,7 @@ module Caramelize
       end
 
       def read_authors
-        sql = 'SELECT name, email FROM wikka_users;'
-        results = database.query(sql)
+        results = database.query(authors_query)
         results.each do |row|
           authors[row['name']] = OpenStruct.new(name:  row['name'],
                                                 email: row['email'] )
@@ -37,9 +38,16 @@ module Caramelize
 
       private
 
+      def pages_query
+        SQL_PAGES
+      end
+
+      def authors_query
+        SQL_AUTHORS
+      end
+
       def pages
-        sql = 'SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;'
-        @pages ||= database.query(sql)
+        @pages ||= database.query(pages_query)
       end
 
       def build_properties(row)
