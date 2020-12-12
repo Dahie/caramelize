@@ -23,10 +23,7 @@ module Caramelize
           build_page(row_page)
         end
         titles.uniq!
-        @latest_revisions.each { |rev| rev[1].set_latest }
         revisions.sort! { |a,b| a.time <=> b.time }
-
-        # TODO find latest revision for each limit
 
         revisions
       end
@@ -58,11 +55,9 @@ module Caramelize
         title = project_identifier + row_page['title']
         titles << title
 
-        @latest_revisions = {}
         results_contents.each do |row_content|
           page = Page.new(build_properties(title, row_content))
           revisions << page
-          @latest_revisions[title] = page
         end
       end
 

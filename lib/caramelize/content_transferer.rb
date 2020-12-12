@@ -10,7 +10,7 @@ module Caramelize
   require 'caramelize/input_wiki/wikkawiki'
 
   class ContentTransferer
-    attr_reader :input_wiki, :options, :filter_processor
+    attr_reader :input_wiki, :options
 
     DEFAULT_GOLLUM_HOME_TITLE = 'Home'.freeze
 

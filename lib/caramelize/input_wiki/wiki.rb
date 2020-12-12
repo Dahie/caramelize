@@ -14,9 +14,8 @@ module Caramelize
       def revisions_by_title(title)
         # new array only containing pages by this name sorted by time asc
         # this does not support renamed pages
-        return revisions
-          .select { |revision| revision.title == title }
-          .sort { |x,y| x.time <=> y.time }
+        revisions.select { |revision| revision.title == title }
+                 .sort { |x,y| x.time <=> y.time }
       end
 
       # return an empty array in case this action was not overridden
@@ -49,13 +48,12 @@ module Caramelize
       end
 
       def latest_revisions
-        titles.map { |title| revisions_by_title(title).last }.compact
+        @latest_revisions ||= titles.map { |title| revisions_by_title(title).last }.compact
       end
 
       def markup
         @options[:markup]
       end
-
     end
   end
 end
