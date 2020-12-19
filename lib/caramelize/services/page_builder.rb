@@ -7,7 +7,7 @@ module Caramelize
         namespaces.each do |namespace|
           # TODO change wiki as configurable default home
           # TODO support other markup syntaxes
-          body << "* [[#{namespace[:name]}|#{namespace[:identifier]}/Wiki]]  \n"
+          body << "* [[#{namespace[:name]}|#{namespace[:identifier]}/wiki]]  \n"
         end
 
         Page.new(title: "Home",

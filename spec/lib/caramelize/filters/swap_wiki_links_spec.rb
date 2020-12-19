@@ -17,15 +17,15 @@ describe Caramelize::SwapWikiLinks do
       let(:body) { '[[Release 1 0]]' }
 
       it 'replaces space with dashes' do
-        is_expected.to eq '[[Release 1 0|Release_1_0]]'
+        is_expected.to eq '[[Release 1 0|release_1_0]]'
       end
     end
 
     context 'wiki title with dashes' do
-      let(:body) { '[[Release 1.0]]' }
+      let(:body) { '[[Release-1.0]]' }
 
       it 'removes dots' do
-        is_expected.to eq '[[Release 1.0|Release_10]]'
+        is_expected.to eq '[[Release-1.0|release-10]]'
       end
     end
 
@@ -33,7 +33,7 @@ describe Caramelize::SwapWikiLinks do
       let(:body) { '[[Intra wiki link]]' }
 
       it 'simples link to hyperlink' do
-        is_expected.to eq '[[Intra wiki link|Intra_wiki_link]]'
+        is_expected.to eq '[[Intra wiki link|intra_wiki_link]]'
       end
 
       context 'replace in full file' do

@@ -14,7 +14,8 @@ describe Caramelize::OutputWiki::Gollum do
              body: 'body',
              commit_message: 'done',
              time: Time.now,
-             title: title)
+             title: title,
+             path: title)
     end
     let(:gollum_page) do
       double(:gollum_page,

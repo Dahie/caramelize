@@ -4,8 +4,9 @@ describe Caramelize::Page do
 
   let(:message) { 'Dinosaurs really had feathers, do not forget!' }
   let(:author) { OpenStruct.new(name: 'Jeff Goldblum', email: 'jeff.g@example.com') }
+  let(:title){ 'Feathered Dinosaurs' }
   subject(:page) do
-    Caramelize::Page.new( title: 'Feathered Dinosaurs',
+    Caramelize::Page.new(title: title,
                 message: message,
                 time: Time.parse('2015-02-12'),
                 body: 'Dinosaurs are awesome and have feathers!',
@@ -30,6 +31,23 @@ describe Caramelize::Page do
       end
     end
   end
+
+  describe '#path' do
+    context "title is 'Home'" do
+      let(:title) { 'Home' }
+      it { expect(page.path).to eq 'Home'}
+    end
+
+    context "title is 'Feathered Dinosaurs'" do
+      it { expect(page.path).to eq 'Feathered Dinosaurs'}
+    end
+
+    context "title is 'Space/Feathered Dinosaurs'" do
+      let(:title) { 'Space/Feathered Dinosaurs' }
+      it { expect(page.path).to eq 'Space/feathered dinosaurs'}
+    end
+  end
+
 
   describe '#commit_message' do
     context 'page has message' do

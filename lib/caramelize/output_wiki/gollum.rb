@@ -1,3 +1,5 @@
+require 'gollum-lib'
+
 module Caramelize
   module OutputWiki
     class Gollum
@@ -17,12 +19,12 @@ module Caramelize
       # Commit the given page into the gollum-wiki-repository.
       # Make sure the target markup is correct before calling this method.
       def commit_revision(page, markup)
-        gollum_page = gollum.page(page.title)
+        gollum_page = gollum.page(page.path)
 
         if gollum_page
           gollum.update_page(gollum_page, gollum_page.name, gollum_page.format, page.body, build_commit(page))
         else
-          gollum.write_page(page.title, markup, page.body, build_commit(page))
+          gollum.write_page(page.path, markup, page.body, build_commit(page))
         end
       end
 

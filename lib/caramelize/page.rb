@@ -4,14 +4,14 @@ module Caramelize
     attr_accessor :title, :body, :id, :markup, :latest, :time, :message,
                   :author, :author_name
 
-    def initialize(page={})
+    def initialize(page = {})
       @id =      page[:id]
-      @title =   page[:title] || ""
-      @body =    page[:body] || ""
+      @title =   page.fetch(:title, '')
+      @body =    page.fetch(:body, '')
       @syntax =  page[:markup]
       @latest =  page[:latest] || false
-      @time =    page[:time] || Time.now
-      @message = page[:message] || ""
+      @time =    page.fetch(:time, Time.now)
+      @message = page.fetch(:message, '')
       @author =  page[:author]
       @author_name = page[:author_name]
     end
@@ -31,6 +31,11 @@ module Caramelize
 
     def latest?
       @latest
+    end
+
+    def path
+      return @title unless @title.index('/')
+      @title.split('/').first + '/' + @title.split('/').last.downcase
     end
 
     def set_latest

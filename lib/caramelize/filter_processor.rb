@@ -1,6 +1,3 @@
-require 'gollum-lib'
-require 'ruby-progressbar'
-
 module Caramelize
   class FilterProcessor
     attr_reader :filters, :input_wiki
