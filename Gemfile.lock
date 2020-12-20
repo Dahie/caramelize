@@ -49,9 +49,6 @@ GEM
       guard-compat (~> 1.1)
       rspec (>= 2.99.0, < 4.0)
     highline (2.0.3)
-    io-console (0.5.6)
-    irb (1.2.7)
-      reline (>= 0.1.5)
     jaro_winkler (1.5.4)
     json (2.3.1)
     listen (3.2.1)
@@ -86,8 +83,6 @@ GEM
     rb-fsevent (0.10.3)
     rb-inotify (0.10.1)
       ffi (~> 1.0)
-    reline (0.1.9)
-      io-console (~> 0.5)
     rexml (3.2.4)
     rouge (3.26.0)
     rspec (3.9.0)
@@ -131,7 +126,6 @@ DEPENDENCIES
   caramelize!
   guard
   guard-rspec
-  irb
   rake
   rspec
   rubocop
