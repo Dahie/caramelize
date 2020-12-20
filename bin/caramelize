@@ -56,3 +56,20 @@ command :run do |c|
     say "Time required: #{Time.now - time_start} s"
   end
 end
+
+command :doctor do |c|
+  c.syntax = 'caramelize doctor [options]'
+  c.summary = 'Run wiki transfer'
+  c.description = 'Run health-check'
+  c.option '--target STRING', String, 'The target path to Gollum git repository (default: wiki-export)'
+  c.example 'Run transfer for "caramel.rb"', 'caramelize doctor'
+  c.action do |args, options|
+    options.default(target: 'wiki-export')
+
+    if File.exists?(options.target)
+      Caramelize::HealthCheck.new(options.target).execute
+    else
+      say("No wiki repositry found in directory #{options.target}")
+    end
+  end
+end

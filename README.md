@@ -24,6 +24,11 @@ Creates a template configuration file "caramel.rb". This includes documentation 
 
 Will start the wiki migration based on the configuration file. These are either found in predefined paths (./caramel.rb, ./config.rb, …), or passed as argument, as below.
 
+    $ caramelize doctor
+
+Can be used to assess the quality of your wiki conversion. It'll help you see
+how many wiki links may be broken and how many pages were orphaned.
+
     $ caramelize help
 
 Returns help information.
