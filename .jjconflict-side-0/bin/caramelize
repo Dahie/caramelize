@@ -1,0 +1,76 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'caramelize'
+require 'commander/import'
+
+# :name is optional, otherwise uses the basename of this executable
+program :name, 'caramelize'
+program :version, Caramelize::VERSION
+program :description, 'With Caramelize you can migrate any wiki to git-based Gollum wiki repositories.'
+program :help, 'Author', 'Daniel Senff <public@danielsenff.de>'
+
+default_command :run
+
+global_option '--verbose'
+
+command :new do |c|
+  c.syntax = 'caramelize create [options]'
+  c.summary = 'Create new configuration'
+  c.description = 'Create a fresh configuration file for caramelize'
+  c.option '--config STRING', String, 'The config file (default: caramel.rb)'
+  c.example 'Create a fresh config file as "caramel.rb"', 'caramelize create'
+  c.example 'Create a fresh config file as "config.rb"', 'caramelize create --config config.rb'
+  c.action do |_args, options|
+    target_file || options.config || 'caramel.rb'
+    options.default({ config: 'caramel.rb' })
+    FileUtils.cp("#{File.dirname(__FILE__)}/../lib/caramelize/#{target_file}",
+                 options.config)
+    say "Created new configuration file: #{options.config}"
+  end
+end
+alias_command :create, :new
+
+command :run do |c|
+  c.syntax = 'caramelize run [options]'
+  c.summary = 'Run wiki transfer'
+  c.description = 'Run the wiki content transfer based on the given configuration file'
+  c.option '--config STRING', String, 'The config file (default: caramel.rb)'
+  c.example 'Run transfer for "caramel.rb"', 'caramelize run'
+  c.example 'Run transfer for "config.rb"', 'caramelize run --config config.rb'
+  c.action do |_args, options|
+    time_start = Time.now
+    options.default({ config: 'caramel.rb', target: 'wiki-export' })
+
+    instance_eval(File.read(options.config))
+
+    target = options.target
+
+    if File.exist?(target)
+      answer = agree("#{target} already exists. Overwrite with fresh repository?")
+      FileUtils.rm_rf(target) if answer
+    end
+
+    wiki_options = input_wiki.options.merge(verbose: options.verbose,
+                                            target: options.target)
+    Caramelize::ContentTransferer.new(input_wiki, wiki_options).execute
+    say "Time required: #{Time.now - time_start} s"
+  end
+end
+
+command :doctor do |c|
+  c.syntax = 'caramelize doctor [options]'
+  c.summary = 'Run wiki transfer'
+  c.description = 'Run health-check'
+  c.option '--target STRING', String, 'The target path to Gollum git repository (default: wiki-export)'
+  c.example 'Run transfer for "caramel.rb"', 'caramelize doctor'
+  c.action do |_args, options|
+    options.default(target: 'wiki-export')
+
+    if File.exist?(options.target)
+      Caramelize::HealthCheck.new(options.target).execute
+    else
+      say("No wiki repositry found in directory #{options.target}")
+    end
+  end
+end

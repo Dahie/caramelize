@@ -116,6 +116,24 @@ Once the object is established we need to hook in a method that defines how revi
       revisions
     end
 
+Using this customized configurations you can add many nifty tricks in your
+customizations. For large databases, the processing may run out of memory.
+With this configuration, you can set a limit and offset:
+
+    def input_wiki
+      options = { host: 'localhost', username: "user", password: "password", database: "database" }
+      wiki = Caramelize::InputWiki::Phpbb3::Forum.new(options)
+
+      wiki.instance_eval do
+        def posts_query
+          start_progress_at_id = 10_000
+          limit = 10_000
+          "SELECT * FROM phpbb_posts ORDER BY post_time WHERE id > #{start_progress_at_id} ASC LIMIT #{limit};"
+        end
+      end
+      wiki
+    end
+
 In the end the `wiki` instance needs the `titles` and `revisions` filled.
 
 Some wikis don't have all necessary metadata saved in the revision. In this case additional database queries are necessary. **The configuration recipe is pure ruby code, that is included on execution. This gives you alot of freedom in writing your configuration, but also a lot of power to break things for yourself. Be advised.**
