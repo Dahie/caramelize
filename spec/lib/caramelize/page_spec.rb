@@ -1,21 +1,22 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Caramelize::Page do
-
-  let(:message) { 'Dinosaurs really had feathers, do not forget!' }
-  let(:author) { OpenStruct.new(name: 'Jeff Goldblum', email: 'jeff.g@example.com') }
-  let(:title){ 'Feathered Dinosaurs' }
   subject(:page) do
-    Caramelize::Page.new(title: title,
-                message: message,
-                time: Time.parse('2015-02-12'),
-                body: 'Dinosaurs are awesome and have feathers!',
-                author: author )
+    described_class.new(title:,
+                        message:,
+                        time: Time.parse('2015-02-12'),
+                        body: 'Dinosaurs are awesome and have feathers!',
+                        author:)
   end
 
+  let(:message) { 'Dinosaurs really had feathers, do not forget!' }
+  let(:author) { double(name: 'Jeff Goldblum', email: 'jeff.g@example.com') }
+  let(:title) { 'Feathered Dinosaurs' }
 
   describe '#author' do
-    context 'no author is set' do
+    context 'without author' do
       let(:author) { nil }
 
       it 'fills with Caramelize user' do
@@ -24,7 +25,7 @@ describe Caramelize::Page do
       end
     end
 
-    context 'author is set' do
+    context 'with author' do
       it 'fills with Caramelize user' do
         expect(page.author.name).to eql(author.name)
         expect(page.author.email).to eql(author.email)
@@ -33,30 +34,31 @@ describe Caramelize::Page do
   end
 
   describe '#path' do
-    context "title is 'Home'" do
+    context "when title is 'Home'" do
       let(:title) { 'Home' }
-      it { expect(page.path).to eq 'Home'}
+
+      it { expect(page.path).to eq 'Home' }
     end
 
-    context "title is 'Feathered Dinosaurs'" do
-      it { expect(page.path).to eq 'Feathered Dinosaurs'}
+    context "when title is 'Feathered Dinosaurs'" do
+      it { expect(page.path).to eq 'Feathered Dinosaurs' }
     end
 
-    context "title is 'Space/Feathered Dinosaurs'" do
+    context "when title is 'Space/Feathered Dinosaurs'" do
       let(:title) { 'Space/Feathered Dinosaurs' }
-      it { expect(page.path).to eq 'Space/feathered dinosaurs'}
+
+      it { expect(page.path).to eq 'Space/feathered dinosaurs' }
     end
   end
 
-
   describe '#commit_message' do
-    context 'page has message' do
+    context 'with page having message' do
       it 'uses page.title' do
         expect(page.commit_message).to eq 'Dinosaurs really had feathers, do not forget!'
       end
     end
 
-    context 'page has no message' do
+    context 'with page having no message' do
       let(:message) { '' }
 
       it 'creates message "Edit in page Feathered Dinosaurs"' do

@@ -1,10 +1,13 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Caramelize::FilterProcessor do
-  let(:filters) { [] }
-  let(:input_wiki) { double(filters: filters) }
-  let(:body) { 'body' }
   subject(:processor) { described_class.new(input_wiki) }
+
+  let(:filters) { [] }
+  let(:input_wiki) { double(filters:) }
+  let(:body) { 'body' }
 
   class ReverseFilter
     def initialize(body)

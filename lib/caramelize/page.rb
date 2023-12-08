@@ -1,6 +1,7 @@
+# frozen_string_literal: true
+
 module Caramelize
   class Page
-
     attr_accessor :title, :body, :id, :markup, :latest, :time, :message,
                   :author, :author_name
 
@@ -25,8 +26,8 @@ module Caramelize
     end
 
     def author
-      @author ||= OpenStruct.new(name: @author_name || "Caramelize",
-                             email: "mail@example.com")
+      @author ||= OpenStruct.new(name: @author_name || 'Caramelize',
+                                 email: 'mail@example.com')
     end
 
     def latest?
@@ -35,7 +36,12 @@ module Caramelize
 
     def path
       return @title unless @title.index('/')
-      @title.split('/').first + '/' + @title.split('/').last.downcase
+
+      "#{title_pieces.first}/#{title_pieces.last.downcase}"
+    end
+
+    def title_pieces
+      @title.split('/')
     end
 
     def set_latest
@@ -48,6 +54,7 @@ module Caramelize
 
     def commit_message
       return "Edit in page #{title}" if message.empty?
+
       message
     end
   end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caramelize
   class Wikka2Markdown
     attr_reader :source_body
@@ -7,7 +9,7 @@ module Caramelize
     end
 
     def run
-      # TODO images: ({{image)(url\=?)?(.*)(}})
+      # TODO: images: ({{image)(url\=?)?(.*)(}})
       # markdown: ![Tux, the Linux mascot](/assets/images/tux.png)
 
       replace_headlines
@@ -21,18 +23,18 @@ module Caramelize
     end
 
     def replace_headlines
-      target_body.gsub!(/(======)(.*?)(======)/ ) {|s| '# ' + $2 } #h1
-      target_body.gsub!(/(=====)(.*?)(=====)/) {|s| '## ' + $2 }   #h2
-      target_body.gsub!(/(====)(.*?)(====)/) {|s| '### ' + $2 }   #h3
-      target_body.gsub!(/(===)(.*?)(===)/) {|s| '#### ' + $2 }   #h4
-      target_body.gsub!(/(==)(.*?)(==)/) {|s| '##### ' + $2 }   #h5
+      target_body.gsub!(/(======)(.*?)(======)/) { |_s| "# #{::Regexp.last_match(2)}" } # h1
+      target_body.gsub!(/(=====)(.*?)(=====)/) { |_s| "## #{::Regexp.last_match(2)}" } # h2
+      target_body.gsub!(/(====)(.*?)(====)/) { |_s| "### #{::Regexp.last_match(2)}" } # h3
+      target_body.gsub!(/(===)(.*?)(===)/) { |_s| "#### #{::Regexp.last_match(2)}" } # h4
+      target_body.gsub!(/(==)(.*?)(==)/) { |_s| "##### #{::Regexp.last_match(2)}" } # h5
     end
 
     def replace_formatting
-      target_body.gsub!(/(\*\*)(.*?)(\*\*)/) {|s| '**' + $2 + '**' }   #bold
-      target_body.gsub!(/(\/\/)(.*?)(\/\/)/, '*\2*') #italic
-      target_body.gsub!(/(__)(.*?)(__)/) {|s| '<u>' + $2 + '</u>'}   #underline
-      target_body.gsub!(/(---)/, '  ')   #forced linebreak
+      target_body.gsub!(/(\*\*)(.*?)(\*\*)/) { |_s| "**#{::Regexp.last_match(2)}**" } # bold
+      target_body.gsub!(%r{(//)(.*?)(//)}, '*\2*') # italic
+      target_body.gsub!(/(__)(.*?)(__)/) { |_s| "<u>#{::Regexp.last_match(2)}</u>" } # underline
+      target_body.gsub!(/(---)/, '  ') # forced linebreak
     end
 
     def replace_lists
@@ -45,18 +47,18 @@ module Caramelize
     end
 
     def replace_wiki_links
-      target_body.gsub!(/[\[]{2}(\w+)[\s|](.+?)[\]]{2}/, '[[\2|\1]]')
+      target_body.gsub!(/\[{2}(\w+)[\s|](.+?)\]{2}/, '[[\2|\1]]')
     end
 
     def replace_links
-      target_body.gsub!(/[\[]{2}((\w+):[\S][^\| ]*)[\| ](.*)[\]]{2}/,
-                 '[\3](\1)')
-      target_body.gsub!(/[\[]{2}((\w+):.*)[\]]{2}/, '<\1>')
+      target_body.gsub!(/\[{2}((\w+):\S[^| ]*)[| ](.*)\]{2}/,
+                        '[\3](\1)')
+      target_body.gsub!(/\[{2}((\w+):.*)\]{2}/, '<\1>')
     end
 
     def replace_code_block
       target_body.gsub!(/^%%\s(.*?)%%\s?/m) do
-        $1.gsub(/^/, '    ')
+        ::Regexp.last_match(1).gsub(/^/, '    ')
       end
     end
 

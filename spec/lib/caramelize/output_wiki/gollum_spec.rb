@@ -1,7 +1,10 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe Caramelize::OutputWiki::Gollum do
   let(:gollum_output) { described_class.new('wiki.git') }
+
   before do
     allow(gollum_output).to receive(:initialize_repository).and_return true
   end
@@ -10,11 +13,11 @@ describe Caramelize::OutputWiki::Gollum do
     let(:title) { 'title' }
     let(:author) { double(name: 'Steven Universe', email: 'steven@example.com') }
     let(:input_page) do
-      double(author: author,
+      double(author:,
              body: 'body',
              commit_message: 'done',
              time: Time.now,
-             title: title,
+             title:,
              path: title)
     end
     let(:gollum_page) do
@@ -29,7 +32,7 @@ describe Caramelize::OutputWiki::Gollum do
       allow(Gollum::Wiki).to receive(:new).and_return(gollum)
     end
 
-    context 'page exists' do
+    context 'when page exists' do
       before do
         allow(gollum).to receive(:page).with(title).and_return(gollum_page)
       end
@@ -40,7 +43,7 @@ describe Caramelize::OutputWiki::Gollum do
       end
     end
 
-    context 'page does not exist yet' do
+    context 'when page does not exist yet' do
       before do
         allow(gollum).to receive(:page).with(title).and_return(nil)
       end
@@ -59,12 +62,12 @@ describe Caramelize::OutputWiki::Gollum do
   describe '#commit_namespace_overview' do
     let(:namespaces) do
       [
-        OpenStruct.new(identifier: 'velociraptors', name: 'Velociraptor'),
-        OpenStruct.new(identifier: 'allosaurus', name: 'Allosaurus')
+        { dentifier: 'velociraptors', name: 'Velociraptor' },
+        { identifier: 'allosaurus', name: 'Allosaurus' }
       ]
     end
 
-    context '2 pages in namespaces' do
+    context 'with 2 pages in namespaces' do
       it 'commits page' do
         allow(gollum_output).to receive(:commit_revision)
         gollum_output.commit_namespace_overview(namespaces)
@@ -75,11 +78,11 @@ describe Caramelize::OutputWiki::Gollum do
 
   describe '#build_commit' do
     let(:page) do
-      Caramelize::Page.new( title: 'Feathered Dinosaurs',
-                message: 'Dinosaurs really had feathers, do not forget!',
-                time: Time.parse('2015-02-12'),
-                body: 'Dinosaurs are awesome and have feathers!',
-                author: OpenStruct.new(name: 'Jeff Goldblum', email: 'jeff.g@example.com') )
+      Caramelize::Page.new(title: 'Feathered Dinosaurs',
+                           message: 'Dinosaurs really had feathers, do not forget!',
+                           time: Time.parse('2015-02-12'),
+                           body: 'Dinosaurs are awesome and have feathers!',
+                           author: double(name: 'Jeff Goldblum', email: 'jeff.g@example.com'))
     end
 
     let(:expected_hash) do
@@ -95,15 +98,15 @@ describe Caramelize::OutputWiki::Gollum do
       expect(gollum_output.build_commit(page)).to eq expected_hash
     end
 
-    context 'page has message' do
+    context 'when page has message' do
       it 'uses page.title' do
         expect(gollum_output.build_commit(page)[:message])
           .to eq 'Dinosaurs really had feathers, do not forget!'
       end
     end
 
-    context 'page has no message' do
-      it 'should create message "Edit in page Feathered Dinosaurs"' do
+    context 'when page has no message' do
+      it 'creates message "Edit in page Feathered Dinosaurs"' do
         page.message = ''
         expect(gollum_output.build_commit(page)[:message])
           .to eq 'Edit in page Feathered Dinosaurs'

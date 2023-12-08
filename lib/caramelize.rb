@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'caramelize/version'
 require 'caramelize/page'
 require 'caramelize/content_transferer'

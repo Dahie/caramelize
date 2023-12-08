@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caramelize
   module InputWiki
     class Wiki
@@ -5,7 +7,7 @@ module Caramelize
 
       attr_accessor :revisions, :wiki_title, :titles, :description, :namespaces, :options
 
-      def initialize(options={})
+      def initialize(options = {})
         @options = options
         @options[:filters] = []
         @namespaces = []
@@ -15,7 +17,7 @@ module Caramelize
         # new array only containing pages by this name sorted by time asc
         # this does not support renamed pages
         revisions.select { |revision| revision.title == title }
-                 .sort { |x,y| x.time <=> y.time }
+                 .sort { |x, y| x.time <=> y.time }
       end
 
       # return an empty array in case this action was not overridden

@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 require 'caramelize'
 require 'commander/import'
@@ -20,10 +21,10 @@ command :new do |c|
   c.option '--config STRING', String, 'The config file (default: caramel.rb)'
   c.example 'Create a fresh config file as "caramel.rb"', 'caramelize create'
   c.example 'Create a fresh config file as "config.rb"', 'caramelize create --config config.rb'
-  c.action do |args, options|
-    target_file ||= (options.config || 'caramel.rb')
+  c.action do |_args, options|
+    target_file || options.config || 'caramel.rb'
     options.default({ config: 'caramel.rb' })
-    FileUtils.cp(File.dirname(__FILE__) + '/../lib/caramelize/caramel.rb',
+    FileUtils.cp("#{File.dirname(__FILE__)}/../lib/caramelize/#{target_file}",
                  options.config)
     say "Created new configuration file: #{options.config}"
   end
@@ -37,7 +38,7 @@ command :run do |c|
   c.option '--config STRING', String, 'The config file (default: caramel.rb)'
   c.example 'Run transfer for "caramel.rb"', 'caramelize run'
   c.example 'Run transfer for "config.rb"', 'caramelize run --config config.rb'
-  c.action do |args, options|
+  c.action do |_args, options|
     time_start = Time.now
     options.default({ config: 'caramel.rb', target: 'wiki-export' })
 
@@ -63,7 +64,7 @@ command :doctor do |c|
   c.description = 'Run health-check'
   c.option '--target STRING', String, 'The target path to Gollum git repository (default: wiki-export)'
   c.example 'Run transfer for "caramel.rb"', 'caramelize doctor'
-  c.action do |args, options|
+  c.action do |_args, options|
     options.default(target: 'wiki-export')
 
     if File.exist?(options.target)

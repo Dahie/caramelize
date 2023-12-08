@@ -1,9 +1,10 @@
+# frozen_string_literal: true
+
 require 'gollum-lib'
 
 module Caramelize
   module OutputWiki
     class Gollum
-
       attr_reader :wiki_path
 
       SUPPORTED_TARGET_MARKUP =
@@ -11,7 +12,7 @@ module Caramelize
 
       # Initialize a new gollum-wiki-repository at the given path.
       def initialize(new_wiki_path)
-        # TODO use sanitized name as wiki-repository-title
+        # TODO: use sanitized name as wiki-repository-title
         @wiki_path = new_wiki_path
         initialize_repository
       end
@@ -66,13 +67,14 @@ module Caramelize
       end
 
       def gollum
-        @gollum ||= ::Gollum::Wiki.new(wiki_path, {repo_is_bare: true})
+        @gollum ||= ::Gollum::Wiki.new(wiki_path, { repo_is_bare: true })
       end
 
       def initialize_repository
         return if File.exist?(wiki_path)
+
         Dir.mkdir(wiki_path)
-        #::Gollum::Git::Repo.new(wiki_path, { is_bare: true })
+        # ::Gollum::Git::Repo.new(wiki_path, { is_bare: true })
         ::Gollum::Git::Repo.init(wiki_path)
       end
     end

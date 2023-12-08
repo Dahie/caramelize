@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'caramelize/input_wiki/wiki'
 require 'caramelize/filters/swap_wiki_links'
 require 'caramelize/filters/remove_table_tab_line_endings'
@@ -23,7 +25,7 @@ module Caramelize
           build_page(row_page)
         end
         titles.uniq!
-        revisions.sort! { |a,b| a.time <=> b.time }
+        revisions.sort! { |a, b| a.time <=> b.time }
 
         revisions
       end
@@ -31,9 +33,9 @@ module Caramelize
       def read_authors
         results = database.query(authors_query)
         results.each do |row|
-          authors[row["id"]] = OpenStruct.new(id: row["id"],
-                                              name: row["login"],
-                                              email: row["mail"])
+          authors[row['id']] = OpenStruct.new(id: row['id'],
+                                              name: row['login'],
+                                              email: row['mail'])
         end
         authors
       end
@@ -43,13 +45,13 @@ module Caramelize
       def build_page(row_page)
         results_contents = database.query(single_page_query(row_page['id']))
 
-        wiki = wikis.select{ |row| row['id'] == row_page['wiki_id'] }.first
+        wiki = wikis.select { |row| row['id'] == row_page['wiki_id'] }.first
 
         project_identifier = ''
 
         if wiki
-          project = projects.select{ |row| row['id'] == wiki['project_id'] }.first
-          project_identifier = project['identifier'] + '/'
+          project = projects.select { |row| row['id'] == wiki['project_id'] }.first
+          project_identifier = "#{project['identifier']}/"
         end
 
         title = project_identifier + row_page['title']
@@ -63,8 +65,8 @@ module Caramelize
 
       def add_projects_as_namespaces
         projects.each do |row_project|
-          namespace = OpenStruct.new(identifier: row_project['identifier'],
-                                     name: row_project['name'])
+          namespace = { identifier: row_project['identifier'],
+                        name: row_project['name'] }
           namespaces << namespace
         end
       end
@@ -102,16 +104,16 @@ module Caramelize
       end
 
       def build_properties(title, row_content)
-        author = authors.fetch(row_content["author_id"], nil)
+        author = authors.fetch(row_content['author_id'], nil)
         {
           id: row_content['id'],
-          title: title,
+          title:,
           body: row_content['data'],
           markup: :textile,
           latest: false,
           time: row_content['updated_on'],
           message: row_content['comments'],
-          author: author,
+          author:,
           author_name: author.name
         }
       end

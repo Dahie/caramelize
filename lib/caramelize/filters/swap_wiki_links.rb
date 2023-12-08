@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module Caramelize
   class SwapWikiLinks
     def initialize(body)
@@ -8,8 +10,8 @@ module Caramelize
     def run
       migrated_body = @body.dup
 
-      migrated_body.gsub!(/\[\[(\S+)\|(.+?)\]\]/) { format_link($2, $1) }
-      migrated_body.gsub!(/\[\[([\w\s\-\.]*)\]\]/) { format_link($1, $1.dup) }
+      migrated_body.gsub!(/\[\[(\S+)\|(.+?)\]\]/) { format_link(::Regexp.last_match(2), ::Regexp.last_match(1)) }
+      migrated_body.gsub!(/\[\[([\w\s\-.]*)\]\]/) { format_link(::Regexp.last_match(1), ::Regexp.last_match(1).dup) }
 
       migrated_body
     end
@@ -19,7 +21,7 @@ module Caramelize
     def format_link(label, link)
       link.downcase!
       link.gsub!(' ', '_')
-      link.gsub!(/\./, '')
+      link.gsub!('.', '')
       "[[#{label}|#{link}]]"
     end
   end

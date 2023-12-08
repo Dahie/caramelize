@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require 'ruby-progressbar'
 
 module Caramelize
-
   require 'caramelize/page'
   require 'caramelize/content_transferer'
   require 'caramelize/database_connector'
@@ -12,13 +13,14 @@ module Caramelize
   class ContentTransferer
     attr_reader :input_wiki, :options
 
-    DEFAULT_GOLLUM_HOME_TITLE = 'Home'.freeze
+    DEFAULT_GOLLUM_HOME_TITLE = 'Home'
+    DEFAULT_AUTHOR_NAME = 'Caramelize'
 
     def initialize(input_wiki, options)
       @input_wiki = input_wiki
       @options = options
 
-      options[:default_author] = options.fetch(:default_author, "Caramelize")
+      options[:default_author] = options.fetch(:default_author, 'Caramelize')
       options[:markup] = target_markup
     end
 
@@ -28,9 +30,9 @@ module Caramelize
       commit_history
 
       if verbose?
-        puts "From markup: #{input_wiki.markup.to_s}"
-        puts "To markup: #{target_markup.to_s}"
-        puts "Convert latest revisions:"
+        puts "From markup: #{input_wiki.markup}"
+        puts "To markup: #{target_markup}"
+        puts 'Convert latest revisions:'
       end
 
       migrate_markup_of_latest_revisions
@@ -82,13 +84,13 @@ module Caramelize
 
     def migrate_markup_progress_bar
       @migrate_markup_progress_bar ||=
-        ProgressBar.create(title: "Markup filters",
+        ProgressBar.create(title: 'Markup filters',
                            total: latest_revisions_count)
     end
 
     def commit_history_progress_bar
       @commit_history_progress_bar ||=
-        ProgressBar.create(title: "Revisions",
+        ProgressBar.create(title: 'Revisions',
                            total: revisions_count)
     end
 
@@ -117,16 +119,20 @@ module Caramelize
 
       body_new = filter_processor.run(revision.body)
 
-      unless body_new == revision.body
-        revision.body = body_new
-        revision.author_name = 'Caramelize'
-        revision.time = Time.now
-        revision.author = nil
-        revision.message = "Markup of '#{revision.title}' converted to #{target_markup}"
+      return if body_new == revision.body
 
-        # commit as latest page revision
-        output_wiki.commit_revision(revision, options[:markup])
-      end
+      # commit as latest page revision
+      output_wiki.commit_revision(build_revision_metadata(body_new), options[:markup])
+    end
+
+    def build_revision_metadata(body)
+      revision.body = body
+      revision.author_name = DEFAULT_AUTHOR_NAME
+      revision.time = Time.now
+      revision.author = nil
+      revision.message = "Markup of '#{revision.title}' converted to #{target_markup}"
+
+      revision
     end
 
     def rename_home_page
