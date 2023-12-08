@@ -33,9 +33,9 @@ module Caramelize
       def read_authors
         results = database.query(authors_query)
         results.each do |row|
-          authors[row['id']] = OpenStruct.new(id: row['id'],
-                                              name: row['login'],
-                                              email: row['mail'])
+          authors[row['id']] = { id: row['id'],
+                                 name: row['login'],
+                                 email: row['mail'] }
         end
         authors
       end
@@ -113,8 +113,7 @@ module Caramelize
           latest: false,
           time: row_content['updated_on'],
           message: row_content['comments'],
-          author:,
-          author_name: author.name
+          author:
         }
       end
     end

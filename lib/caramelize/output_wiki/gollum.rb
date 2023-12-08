@@ -14,7 +14,7 @@ module Caramelize
       def initialize(new_wiki_path)
         # TODO: use sanitized name as wiki-repository-title
         @wiki_path = new_wiki_path
-        initialize_repository
+        initialize_repository unless File.exist?(wiki_path)
       end
 
       # Commit the given page into the gollum-wiki-repository.
@@ -29,9 +29,9 @@ module Caramelize
         end
       end
 
-      def rename_page(page_title, rename)
+      def rename_page(page_title, new_title)
         gollum_page = gollum.page(page_title)
-        gollum.rename_page(gollum_page, rename, { message: 'Rename home page' })
+        gollum.rename_page(gollum_page, new_title, { message: 'Rename home page' })
       end
 
       # Commit all revisions of the given history into this gollum-wiki-repository.
@@ -54,8 +54,8 @@ module Caramelize
       def build_commit(page)
         {
           message: page.commit_message,
-          name: page.author.name,
-          email: page.author.email,
+          name: page.author_name,
+          email: page.author_email,
           time: page.time
         }
       end
@@ -71,8 +71,6 @@ module Caramelize
       end
 
       def initialize_repository
-        return if File.exist?(wiki_path)
-
         Dir.mkdir(wiki_path)
         # ::Gollum::Git::Repo.new(wiki_path, { is_bare: true })
         ::Gollum::Git::Repo.init(wiki_path)

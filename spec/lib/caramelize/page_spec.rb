@@ -12,23 +12,29 @@ describe Caramelize::Page do
   end
 
   let(:message) { 'Dinosaurs really had feathers, do not forget!' }
-  let(:author) { double(name: 'Jeff Goldblum', email: 'jeff.g@example.com') }
+  let(:author) { { name: 'Jeff Goldblum', email: 'jeff.g@example.com' } }
   let(:title) { 'Feathered Dinosaurs' }
 
   describe '#author' do
     context 'without author' do
       let(:author) { nil }
 
-      it 'fills with Caramelize user' do
-        expect(page.author.name).to eql('Caramelize')
-        expect(page.author.email).to eql('mail@example.com')
+      it 'fills with Caramelize user name' do
+        expect(page.author.fetch(:name)).to eql('Caramelize')
+      end
+
+      it 'fills with dummy email' do
+        expect(page.author.fetch(:email)).to eql('mail@example.com')
       end
     end
 
     context 'with author' do
-      it 'fills with Caramelize user' do
-        expect(page.author.name).to eql(author.name)
-        expect(page.author.email).to eql(author.email)
+      it 'fills with author name' do
+        expect(page.author.fetch(:name)).to eql(author[:name])
+      end
+
+      it 'fills with author email' do
+        expect(page.author.fetch(:email)).to eql(author[:email])
       end
     end
   end

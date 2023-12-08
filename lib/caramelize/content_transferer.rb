@@ -15,6 +15,7 @@ module Caramelize
 
     DEFAULT_GOLLUM_HOME_TITLE = 'Home'
     DEFAULT_AUTHOR_NAME = 'Caramelize'
+    DEFAULT_AUTHOR_EMAIL = 'caramelize@example.com'
 
     def initialize(input_wiki, options)
       @input_wiki = input_wiki
@@ -96,6 +97,12 @@ module Caramelize
 
     def migrate_markup_of_latest_revisions
       input_wiki.latest_revisions.each do |revision|
+        if verbose?
+          puts "Filter source: #{revision.title} #{revision.time}"
+        else
+          migrate_markup_progress_bar.increment
+        end
+
         migrate_markup_of_revision(revision)
       end
     end
@@ -111,26 +118,21 @@ module Caramelize
     end
 
     def migrate_markup_of_revision(revision)
-      if verbose?
-        puts "Filter source: #{revision.title} #{revision.time}"
-      else
-        migrate_markup_progress_bar.increment
-      end
-
       body_new = filter_processor.run(revision.body)
 
       return if body_new == revision.body
 
+      message = "Markup of '#{revision.title}' converted to #{target_markup}"
+
       # commit as latest page revision
-      output_wiki.commit_revision(build_revision_metadata(body_new), options[:markup])
+      output_wiki.commit_revision(build_revision_metadata(revision, body_new, message), options[:markup])
     end
 
-    def build_revision_metadata(body)
-      revision.body = body
-      revision.author_name = DEFAULT_AUTHOR_NAME
+    def build_revision_metadata(revision, body_new, message)
+      revision.body = body_new
+      revision.author = { name: DEFAULT_AUTHOR_NAME, email: DEFAULT_AUTHOR_EMAIL }
       revision.time = Time.now
-      revision.author = nil
-      revision.message = "Markup of '#{revision.title}' converted to #{target_markup}"
+      revision.message = message
 
       revision
     end

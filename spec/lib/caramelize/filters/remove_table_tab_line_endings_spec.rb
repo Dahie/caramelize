@@ -35,7 +35,7 @@ describe Caramelize::RemoveTableTabLineEndings do
       end
     end
 
-    context 'table with tabs at windows line-endings' do
+    context 'with table having tabs at windows line-endings' do
       let(:body) { "cell1\t|cell2\t|\t\t\r\n" }
 
       it 'removes tabs at end of line' do

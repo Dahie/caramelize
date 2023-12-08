@@ -32,8 +32,7 @@ def customized_wiki
                        latest: row['latest'] == 'Y',
                        time: row['time'],
                        message: row['note'],
-                       author:,
-                       author_name: row['user'] }
+                       author: }
         page = Page.new(properties)
         revisions << page
       end

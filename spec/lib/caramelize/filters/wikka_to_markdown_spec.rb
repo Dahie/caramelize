@@ -121,10 +121,16 @@ describe Caramelize::Wikka2Markdown do
     end
 
     context 'when wikilink' do
-      context 'only url' do
+      context 'with only url' do
         let(:body) { '[[LemmaLemma]]' }
 
         it { is_expected.to eq '[[LemmaLemma]]' }
+      end
+
+      context 'with only url sklfs' do
+        let(:body) { "\n        [[ComunitySiteIdeas]]        \n" }
+
+        it { is_expected.to eq "\n        [[ComunitySiteIdeas]]        \n" }
       end
 
       context 'with url and pipe title' do
@@ -141,7 +147,7 @@ describe Caramelize::Wikka2Markdown do
     end
 
     context 'when hyperlink' do
-      context 'only url' do
+      context 'with only url' do
         let(:body) { '[[http://target]]' }
 
         it { is_expected.to eq '<http://target>' }
@@ -151,6 +157,12 @@ describe Caramelize::Wikka2Markdown do
         let(:body) { '[[http://target Title]]' }
 
         it { is_expected.to eq '[Title](http://target)' }
+      end
+
+      context 'with url with title and special characters' do
+        let(:body) { '- [[http://www.sourcepole.com/sources/programming/cpp/cppqref.html C++ Syntax Reference]]' }
+
+        it { is_expected.to eq '- [C++ Syntax Reference](http://www.sourcepole.com/sources/programming/cpp/cppqref.html)' }
       end
 
       context 'with url with pipe' do

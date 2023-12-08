@@ -2,8 +2,7 @@
 
 module Caramelize
   class Page
-    attr_accessor :title, :body, :id, :markup, :latest, :time, :message,
-                  :author, :author_name
+    attr_accessor :title, :body, :id, :markup, :latest, :time, :message, :author
 
     def initialize(page = {})
       @id =      page[:id]
@@ -14,20 +13,18 @@ module Caramelize
       @time =    page.fetch(:time, Time.now)
       @message = page.fetch(:message, '')
       @author =  page[:author]
-      @author_name = page[:author_name]
     end
 
     def author_email
-      author.email
+      author[:email]
     end
 
     def author_name
-      author.name
+      author[:name]
     end
 
     def author
-      @author ||= OpenStruct.new(name: @author_name || 'Caramelize',
-                                 email: 'mail@example.com')
+      @author ||= { name: 'Caramelize', email: 'mail@example.com' }
     end
 
     def latest?

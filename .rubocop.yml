@@ -24,3 +24,6 @@ Metrics/BlockLength:
 
 Layout/LineLength:
   Enabled: false
+
+RSpec/NestedGroups:
+  Enabled: false

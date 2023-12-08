@@ -107,8 +107,7 @@ Once the object is established we need to hook in a method that defines how revi
                             latest:  row["latest"] == "Y",
                             time:    row["time"],
                             message: row["note"],
-                            author:  author,
-                            author_name: row["user"]})
+                            author:  author})
        		 revisions << page
       	end
       # titles is the list of all unique page titles contained in the wiki

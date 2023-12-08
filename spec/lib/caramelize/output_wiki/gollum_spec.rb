@@ -11,14 +11,14 @@ describe Caramelize::OutputWiki::Gollum do
 
   describe '#commit_revision' do
     let(:title) { 'title' }
-    let(:author) { double(name: 'Steven Universe', email: 'steven@example.com') }
+    let(:author) { { name: 'Steven Universe', email: 'steven@example.com' } }
     let(:input_page) do
-      double(author:,
-             body: 'body',
-             commit_message: 'done',
-             time: Time.now,
-             title:,
-             path: title)
+      Caramelize::Page.new(author:,
+                           body: 'body',
+                           commit_message: 'done',
+                           time: Time.now,
+                           title:,
+                           path: title)
     end
     let(:gollum_page) do
       double(:gollum_page,
@@ -56,7 +56,7 @@ describe Caramelize::OutputWiki::Gollum do
   end
 
   describe '#commit_history' do
-    pending
+    pending('test full history')
   end
 
   describe '#commit_namespace_overview' do
@@ -82,7 +82,7 @@ describe Caramelize::OutputWiki::Gollum do
                            message: 'Dinosaurs really had feathers, do not forget!',
                            time: Time.parse('2015-02-12'),
                            body: 'Dinosaurs are awesome and have feathers!',
-                           author: double(name: 'Jeff Goldblum', email: 'jeff.g@example.com'))
+                           author: { name: 'Jeff Goldblum', email: 'jeff.g@example.com' })
     end
 
     let(:expected_hash) do

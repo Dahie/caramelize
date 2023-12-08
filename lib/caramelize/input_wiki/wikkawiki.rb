@@ -33,8 +33,7 @@ module Caramelize
       def read_authors
         results = database.query(authors_query)
         results.each do |row|
-          authors[row['name']] = double(name: row['name'],
-                                        email: row['email'])
+          authors[row['name']] = { name: row['name'], email: row['email'] }
         end
       end
 
@@ -62,8 +61,7 @@ module Caramelize
           latest: row['latest'] == 'Y',
           time: row['time'],
           message: row['note'],
-          author:,
-          author_name: row['user']
+          author:
         }
       end
     end
