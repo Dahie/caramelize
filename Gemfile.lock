@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    caramelize (1.1.0)
+    caramelize (1.1.1)
       commander
       gollum-lib
       mysql2
@@ -137,4 +137,4 @@ DEPENDENCIES
   rubocop
 
 BUNDLED WITH
-   2.2.22
+   2.4.22
