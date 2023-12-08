@@ -70,7 +70,7 @@ module Caramelize
       end
 
       def initialize_repository
-        return if File.exists?(wiki_path)
+        return if File.exist?(wiki_path)
         Dir.mkdir(wiki_path)
         #::Gollum::Git::Repo.new(wiki_path, { is_bare: true })
         ::Gollum::Git::Repo.init(wiki_path)
