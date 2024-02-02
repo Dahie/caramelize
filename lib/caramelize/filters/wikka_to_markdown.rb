@@ -62,8 +62,8 @@ module Caramelize
     end
 
     def replace_code_block
-      target_body.gsub!(/^%%(\w+)\s(.*?)%%\s?/m) { "```#{::Regexp.last_match(1)}\n#{::Regexp.last_match(2)}```\n"}
-      target_body.gsub!(/^%%\s(.*?)%%\s?/m) { "```\n#{::Regexp.last_match(1)}```\n"}
+      target_body.gsub!(/^%%(\w+)\s(.*?)%%\s?/m) { "```#{::Regexp.last_match(1)}\n#{::Regexp.last_match(2)}```\n" }
+      target_body.gsub!(/^%%\s(.*?)%%\s?/m) { "```\n#{::Regexp.last_match(1)}```\n" }
     end
 
     def target_body

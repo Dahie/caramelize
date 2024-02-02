@@ -17,11 +17,11 @@ describe Caramelize::CamelCaseToWikiLinks do
     end
 
     context 'with camel case text' do
-        let(:body) { 'Hier ein camelCaseExample, bitte [[DankeDanke]]' }
-  
-        it 'does not to wiki link' do
-          expect(run).to eq 'Hier ein camelCaseExample, bitte [[DankeDanke]]'
-        end
+      let(:body) { 'Hier ein camelCaseExample, bitte [[DankeDanke]]' }
+
+      it 'does not to wiki link' do
+        expect(run).to eq 'Hier ein camelCaseExample, bitte [[DankeDanke]]'
       end
+    end
   end
 end
