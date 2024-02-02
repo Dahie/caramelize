@@ -72,37 +72,37 @@ describe Caramelize::Wikka2Markdown do
       context 'with tab based' do
         let(:body) { "\t-unordered list entry" }
 
-        it { is_expected.to eq '* unordered list entry' }
+        it { is_expected.to eq '- unordered list entry' }
       end
 
       context 'with tabs' do
         let(:body) { '~-unordered list entry' }
 
-        it { is_expected.to eq '* unordered list entry' }
+        it { is_expected.to eq '- unordered list entry' }
       end
 
       context 'with spaces' do
         let(:body) { '    -unordered list entry' }
 
-        it { is_expected.to eq '* unordered list entry' }
+        it { is_expected.to eq '- unordered list entry' }
       end
 
       context 'with tab based with space' do
         let(:body) { "\t- unordered list entry" }
 
-        it { is_expected.to eq '* unordered list entry' }
+        it { is_expected.to eq '- unordered list entry' }
       end
 
       context 'with another tab based with space' do
         let(:body) { '~- unordered list entry' }
 
-        it { is_expected.to eq '* unordered list entry' }
+        it { is_expected.to eq '- unordered list entry' }
       end
 
       context 'with space based with space' do
         let(:body) { '    - unordered list entry' }
 
-        it { is_expected.to eq '* unordered list entry' }
+        it { is_expected.to eq '- unordered list entry' }
       end
     end
 

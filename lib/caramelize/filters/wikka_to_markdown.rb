@@ -38,9 +38,9 @@ module Caramelize
     end
 
     def replace_lists
-      target_body.gsub!(/(\t-\s?)(.*)/, '* \2')    # unordered list
-      target_body.gsub!(/(~-\s?)(.*)/, '* \2')     # unordered list
-      target_body.gsub!(/(    -\s?)(.*)/, '* \2')     # unordered list
+      target_body.gsub!(/(\t-\s?)(.*)/, '- \2')    # unordered list
+      target_body.gsub!(/(~-\s?)(.*)/, '- \2')     # unordered list
+      target_body.gsub!(/(    -\s?)(.*)/, '- \2')     # unordered list
 
       target_body.gsub!(/(~1\)\s?)(.*)/, '1. \2')     # unordered list
       # TODO ordered lists
