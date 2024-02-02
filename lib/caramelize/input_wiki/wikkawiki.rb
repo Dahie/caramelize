@@ -2,6 +2,7 @@
 
 require 'caramelize/database_connector'
 require 'caramelize/filters/wikka_to_markdown'
+require 'caramelize/filters/camel_case_to_wiki_links'
 
 module Caramelize
   module InputWiki
@@ -15,6 +16,7 @@ module Caramelize
         super(options)
         @options[:markup] = :wikka
         @options[:filters] << Caramelize::Wikka2Markdown
+        @options[:filters] << Caramelize::CamelCaseToWikiLinks
       end
 
       # after calling this action, titles and @revisions are expected to be filled
