@@ -224,14 +224,14 @@ describe Caramelize::Wikka2Markdown do
         <<~EOS
           Text before
 
-          %%php
+          %%(php)
           std::cin >> input;
           ++stat[input];
           %%
 
           Text after
 
-          %%java
+          %%(java)
           std::cin >> input;
           ++stat[input];
           %%
