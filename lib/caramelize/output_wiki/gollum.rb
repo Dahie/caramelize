@@ -67,7 +67,7 @@ module Caramelize
       end
 
       def gollum
-        @gollum ||= ::Gollum::Wiki.new(wiki_path, { repo_is_bare: true })
+        @gollum ||= ::Gollum::Wiki.new(wiki_path, { repo_is_bare: true, ref: 'main' })
       end
 
       def initialize_repository

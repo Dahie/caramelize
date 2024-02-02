@@ -27,24 +27,23 @@ module Caramelize
 
     def execute
       input_wiki.read_authors
-
       commit_history
+      print_meta_data if verbose?
 
-      if verbose?
-        puts "From markup: #{input_wiki.markup}"
-        puts "To markup: #{target_markup}"
-        puts 'Convert latest revisions:'
-      end
-
+      puts 'Convert latest revisions:' if verbose?
       migrate_markup_of_latest_revisions
 
-      puts 'Create Namespace Overview' if verbose?
       create_overview_page_of_namespaces if options[:create_namespace_overview]
 
-      rename_home_page
+      rename_home_page if options[:home_page_title]
     end
 
     private
+
+    def print_meta_data
+      puts "From markup: #{input_wiki.markup}"
+      puts "To markup: #{target_markup}"
+    end
 
     def target_markup
       @target_markup ||=
@@ -80,6 +79,7 @@ module Caramelize
     end
 
     def create_overview_page_of_namespaces
+      puts 'Create Namespace Overview' if verbose?
       output_wiki.commit_namespace_overview(input_wiki.namespaces)
     end
 
@@ -138,6 +138,7 @@ module Caramelize
     end
 
     def rename_home_page
+      puts "Rename page #{options[:home_page_title]} to #{DEFAULT_GOLLUM_HOME_TITLE}" if verbose?
       output_wiki.rename_page(options[:home_page_title], DEFAULT_GOLLUM_HOME_TITLE)
     end
   end
