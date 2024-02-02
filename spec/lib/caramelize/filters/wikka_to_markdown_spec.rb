@@ -172,6 +172,12 @@ describe Caramelize::Wikka2Markdown do
       end
     end
 
+    context 'when inline code' do
+      let(:body) { 'Code: %%Hello World%% // done' }
+
+      it { is_expected.to eq 'Code: `Hello World` // done' }
+    end
+
     context 'when code block' do
       let(:body) do
         <<~EOS
@@ -195,13 +201,58 @@ describe Caramelize::Wikka2Markdown do
         <<~EOS
           Text before
 
-              std::cin >> input;
-              ++stat[input];
+          ```
+          std::cin >> input;
+          ++stat[input];
+          ```
 
           Text after
 
-              std::cin >> input;
-              ++stat[input];
+          ```
+          std::cin >> input;
+          ++stat[input];
+          ```
+
+        EOS
+      end
+
+      it { is_expected.to eq expected_result }
+    end
+
+    context 'when code block with language' do
+      let(:body) do
+        <<~EOS
+          Text before
+
+          %%php
+          std::cin >> input;
+          ++stat[input];
+          %%
+
+          Text after
+
+          %%java
+          std::cin >> input;
+          ++stat[input];
+          %%
+
+        EOS
+      end
+      let(:expected_result) do
+        <<~EOS
+          Text before
+
+          ```php
+          std::cin >> input;
+          ++stat[input];
+          ```
+
+          Text after
+
+          ```java
+          std::cin >> input;
+          ++stat[input];
+          ```
 
         EOS
       end

@@ -17,6 +17,7 @@ module Caramelize
       replace_lists
       replace_wiki_links
       replace_links
+      replace_inline_code
       replace_code_block
 
       target_body
@@ -56,10 +57,13 @@ module Caramelize
       target_body.gsub!(/\[{2}((\w+):.*)\]{2}/, '<\1>')
     end
 
+    def replace_inline_code
+      target_body.gsub!(/(%%)(.*?)(%%)/) { |_s| "`#{::Regexp.last_match(2)}`" } # h1
+    end
+
     def replace_code_block
-      target_body.gsub!(/^%%\s(.*?)%%\s?/m) do
-        ::Regexp.last_match(1).gsub(/^/, '    ')
-      end
+      target_body.gsub!(/^%%(\w+)\s(.*?)%%\s?/m) { "```#{::Regexp.last_match(1)}\n#{::Regexp.last_match(2)}```\n"}
+      target_body.gsub!(/^%%\s(.*?)%%\s?/m) { "```\n#{::Regexp.last_match(1)}```\n"}
     end
 
     def target_body
