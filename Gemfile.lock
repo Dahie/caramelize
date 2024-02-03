@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    caramelize (1.1.1)
+    caramelize (1.2.0)
       commander
       gollum-lib
       mysql2
