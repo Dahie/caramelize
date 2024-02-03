@@ -10,6 +10,8 @@ describe Caramelize::OutputWiki::Gollum do
   end
 
   describe '#commit_revision' do
+    subject(:gollum) { double(:gollum) }
+
     let(:title) { 'title' }
     let(:author) { { name: 'Steven Universe', email: 'steven@example.com' } }
     let(:input_page) do
@@ -20,13 +22,7 @@ describe Caramelize::OutputWiki::Gollum do
                            title:,
                            path: title)
     end
-    let(:gollum_page) do
-      double(:gollum_page,
-             name: 'title',
-             format: :markdown)
-    end
-    let(:markup) { :markdown }
-    let(:gollum) { double(:gollum) }
+    let(:gollum_page) { double(:gollum_page, name: 'title', format: :markdown) }
 
     before do
       allow(Gollum::Wiki).to receive(:new).and_return(gollum)
@@ -39,7 +35,7 @@ describe Caramelize::OutputWiki::Gollum do
 
       it 'updates page' do
         expect(gollum).to receive(:update_page).once.and_return(true)
-        gollum_output.commit_revision(input_page, markup)
+        gollum_output.commit_revision(input_page, :markdown)
       end
     end
 
@@ -49,8 +45,9 @@ describe Caramelize::OutputWiki::Gollum do
       end
 
       it 'creates page' do
-        expect(gollum).to receive(:write_page).once
-        gollum_output.commit_revision(input_page, markup)
+        allow(gollum).to receive(:write_page)
+        gollum_output.commit_revision(input_page, :markdown)
+        expect(gollum).to have_received(:write_page).once
       end
     end
   end

@@ -41,6 +41,10 @@ module Caramelize
         @titles ||= []
       end
 
+      def excluded_pages
+        []
+      end
+
       def convert_markup?(to_markup)
         markup != to_markup
       end

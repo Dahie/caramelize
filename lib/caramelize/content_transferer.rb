@@ -30,7 +30,6 @@ module Caramelize
       commit_history
       print_meta_data if verbose?
 
-      puts 'Convert latest revisions:' if verbose?
       migrate_markup_of_latest_revisions
 
       create_overview_page_of_namespaces if options[:create_namespace_overview]
@@ -96,7 +95,13 @@ module Caramelize
     end
 
     def migrate_markup_of_latest_revisions
+      puts 'Convert latest revisions:' if verbose?
       input_wiki.latest_revisions.each do |revision|
+        if input_wiki.excluded_pages.include?(revision.title)
+          puts "Exclude Page: #{revision.title}" if verbose?
+          next
+        end
+
         if verbose?
           puts "Filter source: #{revision.title} #{revision.time}"
         else
@@ -109,6 +114,11 @@ module Caramelize
 
     def commit_history
       output_wiki.commit_history(revisions, options) do |page, index|
+        if input_wiki.excluded_pages.include?(page.title)
+          puts "Exclude Page: #{page.title}" if verbose?
+          next
+        end
+
         if verbose?
           puts "(#{index + 1}/#{revisions_count}) #{page.time} #{page.title}"
         else
