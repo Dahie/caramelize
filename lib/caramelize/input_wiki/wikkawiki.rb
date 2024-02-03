@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require 'caramelize/database_connector'
-require 'caramelize/filters/wikka_to_markdown'
+require 'caramelize/filters/add_newline_on_page_end'
 require 'caramelize/filters/camel_case_to_wiki_links'
+require 'caramelize/filters/wikka_to_markdown'
 
 module Caramelize
   module InputWiki
@@ -11,10 +12,12 @@ module Caramelize
 
       SQL_PAGES = 'SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;'
       SQL_AUTHORS = 'SELECT name, email FROM wikka_users;'
+      FUNCTION_PAGES = %w[AdminBadWords AdminPages AdminUsers AdminSpamLog Callbacks CategoryAdmin CategoryCategory CategoryWiki DatabaseInfo FormattingRules HighScores InterWiki MyChanges MyPages OrphanedPages OwnedPages PageIndex PasswordForgotten RecentChanges RecentlyCommented Sandbox SysInfo TextSearch TextSearchExpanded UserSettings WantedPages WikiCategory WikkaInstaller WikkaConfig WikkaDocumentation WikkaMenulets WikkaReleaseNotes].freeze
 
       def initialize(options = {})
         super(options)
         @options[:markup] = :wikka
+        @options[:filters] << Caramelize::AddNewlineOnPageEnd
         @options[:filters] << Caramelize::Wikka2Markdown
         @options[:filters] << Caramelize::CamelCaseToWikiLinks
       end
@@ -37,6 +40,10 @@ module Caramelize
         results.each do |row|
           authors[row['name']] = { name: row['name'], email: row['email'] }
         end
+      end
+
+      def excluded_pages
+        FUNCTION_PAGES
       end
 
       private
