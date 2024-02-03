@@ -1,6 +1,6 @@
 # Caramelize
 
-[![Build Status](https://travis-ci.org/dahie/caramelize.svg?branch=master)](https://travis-ci.org/dahie/caramelize) [![Maintainability](https://api.codeclimate.com/v1/badges/7fe3ef34e09ba8133424/maintainability)](https://codeclimate.com/github/Dahie/caramelize/maintainability)
+[![Maintainability](https://api.codeclimate.com/v1/badges/7fe3ef34e09ba8133424/maintainability)](https://codeclimate.com/github/Dahie/caramelize/maintainability)
 
 Caramelize is a compact and flexible wiki content migration tool. It is intended for easily transfering content from otherwise rare supported legacy wikis. With caramelize you can create your own export configurations and migrate your data into a git-based [gollum](https://github.com/github/gollum)-wiki retaining all your history and gaining the most flexible access to your wiki content.
 
