@@ -15,7 +15,7 @@ module Caramelize
 
       private
 
-      def has_home_page?
+      def has_home_page? # rubocop:todo Naming/PredicateName
         gollum.file('Home')
       end
     end

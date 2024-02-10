@@ -10,7 +10,7 @@ module Caramelize
   require 'caramelize/input_wiki/redmine_wiki'
   require 'caramelize/input_wiki/wikkawiki'
 
-  class ContentTransferer
+  class ContentTransferer # rubocop:todo Metrics/ClassLength
     attr_reader :input_wiki, :options
 
     DEFAULT_GOLLUM_HOME_TITLE = 'Home'
@@ -94,7 +94,8 @@ module Caramelize
                            total: revisions_count)
     end
 
-    def migrate_markup_of_latest_revisions
+    # rubocop:todo Metrics/MethodLength
+    def migrate_markup_of_latest_revisions # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
       puts 'Convert latest revisions:' if verbose?
       input_wiki.latest_revisions.each do |revision|
         if input_wiki.excluded_pages.include?(revision.title)
@@ -111,8 +112,10 @@ module Caramelize
         migrate_markup_of_revision(revision)
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
-    def commit_history
+    # rubocop:todo Metrics/MethodLength
+    def commit_history # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
       output_wiki.commit_history(revisions, options) do |page, index|
         if input_wiki.excluded_pages.include?(page.title)
           puts "Exclude Page: #{page.title}" if verbose?
@@ -126,6 +129,7 @@ module Caramelize
         end
       end
     end
+    # rubocop:enable Metrics/MethodLength
 
     def migrate_markup_of_revision(revision)
       body_new = filter_processor.run(revision.body)

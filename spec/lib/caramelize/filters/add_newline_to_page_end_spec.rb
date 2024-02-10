@@ -2,7 +2,9 @@
 
 require 'spec_helper'
 
-describe Caramelize::AddNewlineToPageEnd do
+# rubocop:todo RSpec/SpecFilePathFormat
+describe Caramelize::Filter::AddNewlineToPageEnd do # rubocop:todo RSpec/FilePath, RSpec/SpecFilePathFormat
+  # rubocop:enable RSpec/SpecFilePathFormat
   describe '#run' do
     subject(:run) { filter.run }
 

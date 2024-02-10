@@ -10,7 +10,7 @@ describe Caramelize::OutputWiki::Gollum do
   end
 
   describe '#commit_revision' do
-    subject(:gollum) { double(:gollum) }
+    subject(:gollum) { double(:gollum) } # rubocop:todo RSpec/VerifiedDoubles
 
     let(:title) { 'title' }
     let(:author) { { name: 'Steven Universe', email: 'steven@example.com' } }
@@ -22,7 +22,7 @@ describe Caramelize::OutputWiki::Gollum do
                            title:,
                            path: title)
     end
-    let(:gollum_page) { double(:gollum_page, name: 'title', format: :markdown) }
+    let(:gollum_page) { double(:gollum_page, name: 'title', format: :markdown) } # rubocop:todo RSpec/VerifiedDoubles
 
     before do
       allow(Gollum::Wiki).to receive(:new).and_return(gollum)
@@ -30,24 +30,26 @@ describe Caramelize::OutputWiki::Gollum do
 
     context 'when page exists' do
       before do
-        allow(gollum).to receive(:page).with(title).and_return(gollum_page)
+        allow(gollum).to receive(:page).with(title).and_return(gollum_page) # rubocop:todo RSpec/SubjectStub
       end
 
       it 'updates page' do
-        expect(gollum).to receive(:update_page).once.and_return(true)
+        # rubocop:todo RSpec/SubjectStub
+        expect(gollum).to receive(:update_page).once.and_return(true) # rubocop:todo RSpec/MessageSpies, RSpec/SubjectStub
+        # rubocop:enable RSpec/SubjectStub
         gollum_output.commit_revision(input_page, :markdown)
       end
     end
 
     context 'when page does not exist yet' do
       before do
-        allow(gollum).to receive(:page).with(title).and_return(nil)
+        allow(gollum).to receive(:page).with(title).and_return(nil) # rubocop:todo RSpec/SubjectStub
       end
 
       it 'creates page' do
-        allow(gollum).to receive(:write_page)
+        allow(gollum).to receive(:write_page) # rubocop:todo RSpec/SubjectStub
         gollum_output.commit_revision(input_page, :markdown)
-        expect(gollum).to have_received(:write_page).once
+        expect(gollum).to have_received(:write_page).once # rubocop:todo RSpec/SubjectStub
       end
     end
   end

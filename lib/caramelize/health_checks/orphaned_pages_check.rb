@@ -18,7 +18,7 @@ module Caramelize
 
       private
 
-      def check_page(page)
+      def check_page(page) # rubocop:todo Metrics/MethodLength
         0.tap do |available_count|
           page.intra_wiki_links.each do |intra_wiki_path|
             if page_paths.include?(intra_wiki_path)
