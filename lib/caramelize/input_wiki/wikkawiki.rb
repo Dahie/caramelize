@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require 'caramelize/database_connector'
-require 'caramelize/filters/add_newline_on_page_end'
+require 'caramelize/filters/add_newline_to_page_end'
 require 'caramelize/filters/camel_case_to_wiki_links'
 require 'caramelize/filters/wikka_to_markdown'
 
@@ -12,7 +12,7 @@ module Caramelize
 
       SQL_PAGES = 'SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;'
       SQL_AUTHORS = 'SELECT name, email FROM wikka_users;'
-      FUNCTION_PAGES = %w[AdminBadWords AdminPages AdminUsers AdminSpamLog Callbacks CategoryAdmin CategoryCategory CategoryWiki DatabaseInfo FormattingRules HighScores InterWiki MyChanges MyPages OrphanedPages OwnedPages PageIndex PasswordForgotten RecentChanges RecentlyCommented Sandbox SysInfo TextSearch TextSearchExpanded UserSettings WantedPages WikiCategory WikkaInstaller WikkaConfig WikkaDocumentation WikkaMenulets WikkaReleaseNotes].freeze
+      FUNCTION_PAGES = %w[AdminBadWords AdminPages AdminUsers AdminSpamLog CategoryAdmin CategoryCategory CategoryWiki DatabaseInfo FormattingRules HighScores InterWiki MyChanges MyPages OrphanedPages OwnedPages PageIndex PasswordForgotten RecentChanges RecentlyCommented Sandbox SysInfo TableMarkup TableMarkupReference TextSearch TextSearchExpanded UserSettings WantedPages WikiCategory WikkaInstaller WikkaConfig WikkaDocumentation WikkaMenulets WikkaReleaseNotes].freeze
 
       def initialize(options = {})
         super(options)
