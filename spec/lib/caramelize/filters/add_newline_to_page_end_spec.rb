@@ -2,7 +2,7 @@
 
 require 'spec_helper'
 
-describe Caramelize::AddNewlineOnPageEnd do
+describe Caramelize::AddNewlineToPageEnd do
   describe '#run' do
     subject(:run) { filter.run }
 
