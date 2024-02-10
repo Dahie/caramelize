@@ -6,18 +6,20 @@ describe Caramelize::FilterProcessor do
   subject(:processor) { described_class.new(input_wiki) }
 
   let(:filters) { [] }
-  let(:input_wiki) { double(filters:) }
+  let(:input_wiki) { double(filters:) } # rubocop:todo RSpec/VerifiedDoubles
   let(:body) { 'body' }
 
-  class ReverseFilter
+  # rubocop:todo RSpec/LeakyConstantDeclaration
+  class ReverseFilter # rubocop:todo Lint/ConstantDefinitionInBlock, RSpec/LeakyConstantDeclaration
     def initialize(body)
       @body = body
     end
 
     def run
-      @body.reverse
+      @body.reverse # rubocop:todo RSpec/InstanceVariable
     end
   end
+  # rubocop:enable RSpec/LeakyConstantDeclaration
 
   describe '#run' do
     context 'without any filters' do

@@ -9,7 +9,8 @@ require 'caramelize/input_wiki/redmine_wiki'
 # not supported by default in this software
 
 # Note, if you want to activate this, you need to uncomment the line below.
-def customized_wiki
+# rubocop:todo Metrics/MethodLength
+def customized_wiki # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
   # This example is a reimplementation of the WikkaWiki-Connector.
   # To connect to WikkaWiki, I suggest to use the predefined Connector below.
   options = { host: 'localhost',
@@ -19,7 +20,8 @@ def customized_wiki
               markup: :wikka }
   wiki = Caramelize::InputWiki::Wiki.new(options)
   wiki.instance_eval do
-    def read_pages
+    # rubocop:todo Metrics/MethodLength
+    def read_pages # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
       sql = 'SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;'
       results = database.query(sql)
       results.each do |row|
@@ -39,10 +41,12 @@ def customized_wiki
       titles.uniq!
       revisions
     end
+    # rubocop:enable Metrics/MethodLength
   end
 
   wiki
 end
+# rubocop:enable Metrics/MethodLength
 
 # if you want to use one of the preset Wiki-Connectors uncomment the connector
 # and edit the database logins accordingly.

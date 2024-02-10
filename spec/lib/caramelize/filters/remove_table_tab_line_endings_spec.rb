@@ -2,13 +2,15 @@
 
 require 'spec_helper'
 
-describe Caramelize::RemoveTableTabLineEndings do
+# rubocop:todo RSpec/SpecFilePathFormat
+describe Caramelize::RemoveTableTabLineEndings do # rubocop:todo RSpec/FilePath, RSpec/SpecFilePathFormat
+  # rubocop:enable RSpec/SpecFilePathFormat
   subject(:run) { filter.run }
 
   let(:filter) { described_class.new(body) }
 
   describe '#run' do
-    context 'table with tabs at unix line-endings' do
+    context 'table with tabs at unix line-endings' do # rubocop:todo RSpec/ContextWording
       let(:body) { "cell1\t|cell2\t|\t\t\n" }
 
       it 'removes tabs at end of line' do
@@ -23,7 +25,7 @@ describe Caramelize::RemoveTableTabLineEndings do
         expect(run).to eq "cell1\t|cell2\t|\n"
       end
 
-      context 'replace in full file' do
+      context 'replace in full file' do # rubocop:todo RSpec/ContextWording
         let(:body) do
           File.read(File.join(['spec', 'fixtures', 'markup', 'table-tab-line-endings-input.textile']))
         end

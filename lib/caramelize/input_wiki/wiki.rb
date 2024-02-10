@@ -25,7 +25,7 @@ module Caramelize
         []
       end
 
-      def namespaces
+      def namespaces # rubocop:todo Lint/DuplicateMethods
         @namespaces ||= {}
       end
 
@@ -33,11 +33,11 @@ module Caramelize
         @authors ||= {}
       end
 
-      def revisions
+      def revisions # rubocop:todo Lint/DuplicateMethods
         @revisions ||= []
       end
 
-      def titles
+      def titles # rubocop:todo Lint/DuplicateMethods
         @titles ||= []
       end
 

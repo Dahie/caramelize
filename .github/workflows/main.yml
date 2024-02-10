@@ -1,0 +1,48 @@
+name: CI
+
+on: [push]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+
+    steps:
+    - uses: actions/checkout@v3
+    # - name: Set up Redis
+    #   uses: zhulik/redis-action@1.1.0
+    - name: Install Ruby and gems
+      uses: ruby/setup-ruby@v1
+      with:
+        bundler-cache: true
+        ruby-version: 3.1.3
+    
+    - name: Configure sysctl limits
+      run: |
+        sudo swapoff -a
+        sudo sysctl -w vm.swappiness=1
+        sudo sysctl -w fs.file-max=262144
+        sudo sysctl -w vm.max_map_count=262144
+    - name: Setup DB, Run tests
+      run: |
+        bundle exec rspec
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Install Ruby and gems
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+          ruby-version: 3.1.3
+      # - name: Security audit dependencies
+      #  uses: andrewmcodes/bundler-audit-action@main
+      # - name: Security audit application code
+      #   uses: devmasx/brakeman-linter-action@v1.0.0
+      #   env:
+      #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      - name: Lint Ruby files
+        run: bundle exec rubocop --parallel
+      

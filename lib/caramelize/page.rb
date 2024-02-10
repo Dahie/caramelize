@@ -23,7 +23,7 @@ module Caramelize
       author[:name]
     end
 
-    def author
+    def author # rubocop:todo Lint/DuplicateMethods
       @author ||= { name: 'Caramelize', email: 'mail@example.com' }
     end
 

@@ -2,13 +2,15 @@
 
 require 'spec_helper'
 
-describe Caramelize::Wikka2Markdown do
+# rubocop:todo RSpec/SpecFilePathFormat
+describe Caramelize::Wikka2Markdown do # rubocop:todo RSpec/FilePath, RSpec/SpecFilePathFormat
+  # rubocop:enable RSpec/SpecFilePathFormat
   let(:filter) { described_class.new(body) }
 
   describe '#run' do
     subject { filter.run }
 
-    xcontext 'when keep line breaks' do
+    xcontext 'when keep line breaks' do # rubocop:todo RSpec/PendingWithoutReason
       let(:body) { "line1\nline2" }
 
       it { is_expected.to eq "line1  \nline2" }
@@ -180,7 +182,7 @@ describe Caramelize::Wikka2Markdown do
 
     context 'when code block' do
       let(:body) do
-        <<~EOS
+        <<~CPP
           Text before
 
           %%
@@ -195,10 +197,10 @@ describe Caramelize::Wikka2Markdown do
           ++stat[input];
           %%
 
-        EOS
+        CPP
       end
       let(:expected_result) do
-        <<~EOS
+        <<~CPP
           Text before
 
           ```
@@ -213,7 +215,7 @@ describe Caramelize::Wikka2Markdown do
           ++stat[input];
           ```
 
-        EOS
+        CPP
       end
 
       it { is_expected.to eq expected_result }
@@ -221,7 +223,7 @@ describe Caramelize::Wikka2Markdown do
 
     context 'when code block with language' do
       let(:body) do
-        <<~EOS
+        <<~CPP
           Text before
 
           %%(php)
@@ -236,10 +238,10 @@ describe Caramelize::Wikka2Markdown do
           ++stat[input];
           %%
 
-        EOS
+        CPP
       end
       let(:expected_result) do
-        <<~EOS
+        <<~CPP
           Text before
 
           ```php
@@ -254,7 +256,7 @@ describe Caramelize::Wikka2Markdown do
           ++stat[input];
           ```
 
-        EOS
+        CPP
       end
 
       it { is_expected.to eq expected_result }
