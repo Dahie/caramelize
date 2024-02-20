@@ -2,7 +2,7 @@
 
 [![Maintainability](https://api.codeclimate.com/v1/badges/7fe3ef34e09ba8133424/maintainability)](https://codeclimate.com/github/Dahie/caramelize/maintainability)
 
-Caramelize is a compact and flexible wiki content migration tool. It is intended for easily transfering content from otherwise rare supported legacy wikis. With caramelize you can create your own export configurations and migrate your data into a git-based [gollum](https://github.com/github/gollum)-wiki retaining all your history and gaining the most flexible access to your wiki content.
+Caramelize is a compact and flexible wiki content migration tool. It is intended for easi transfer of content from legacy wikis. With caramelize you can create your own export configurations and migrate your data into a git-based [gollum](https://github.com/github/gollum) wiki retaining all your history and gaining the most flexible access to your wiki content.
 
 In the future more target wikis may be added. For the moment migration is supported for [WikkaWiki](http://wikkawiki.org/) and [Redmine](http://www.redmine.org/)-Wiki.
 
@@ -58,7 +58,8 @@ Displays more verbose output to the command line.
 Caramelize comes with direct support for [WikkaWiki](http://wikkawiki.org/) and [Redmine](http://www.redmine.org/)-Wiki.
 More custom wikis can be supported by creating a suitable configuration file.
 
-Any imported wiki exports into a [gollum](https://github.com/github/gollum) git-repository. This is a wiki based around a git-repository. This gives you the flexibility of having all wiki pages exported as physical files, while keeping the history and having an easy and wide-supported way of access by using the wiki server gollum features.
+The wiki is exported to markdown files in a git-repository. This can be directly used as source for [gollum](https://github.com/github/gollum) wiki, [Otter Wiki](https://github.com/redimp/otterwiki), or if you don't care about the history even [Obsidian](https://obsidian.md/). 
+This gives you the flexibility of having all wiki pages exported as physical files, while keeping the history and having an easy and wide-supported way of access.
 
 Since wiki software may have special features, that are not common among other wikis, content migration may always have a loss of style or information. Caramelize tries to support the most common features.
 
@@ -82,39 +83,43 @@ Custom import allows you to import data from wikis that are not natively support
 
 For a custom wiki you need to create a `wiki` instance object, that receives the necessary database creditials.
 
-    wiki = Caramelize::InputWiki::Wiki.new(host: "localhost",
-                                          username: "user",
-                                          database: "database_name",
-                                          password: 'monkey',
-                                          markup: :wikka})
+```ruby
+wiki = Caramelize::InputWiki::Wiki.new(host: "localhost",
+                                    username: "user",
+                                    database: "database_name",
+                                    password: 'monkey',
+                                    markup: :wikka})
+```
 
 This example ignores custom markup conversion and assumes WikkaWiki-markup.
 
 Once the object is established we need to hook in a method that defines how revisions are read from the database and how they are processed.
 
-    wiki.instance_eval do
-    	def read_pages
-      		sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
-      		revisions, titles = [], []
-      		results = database.query(sql)
-      		results.each do |row|
-        		titles << row["tag"]
-        		author = authors[row["user"]]
-		        page = Page.new({id: row["id"],
-                            title:   row["tag"],
-                            body:    row["body"],
-                            markup:  'wikka',
-                            latest:  row["latest"] == "Y",
-                            time:    row["time"],
-                            message: row["note"],
-                            author:  author})
-       		 revisions << page
-      	end
-      # titles is the list of all unique page titles contained in the wiki
-      titles.uniq!
-      # revisions is the list of all revisions ordered by date
-      revisions
+```ruby
+wiki.instance_eval do
+    def read_pages
+        sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
+        revisions, titles = [], []
+        results = database.query(sql)
+        results.each do |row|
+            titles << row["tag"]
+            author = authors[row["user"]]
+            page = Page.new({id: row["id"],
+                        title:   row["tag"],
+                        body:    row["body"],
+                        markup:  'wikka',
+                        latest:  row["latest"] == "Y",
+                        time:    row["time"],
+                        message: row["note"],
+                        author:  author})
+            revisions << page
     end
+    # titles is the list of all unique page titles contained in the wiki
+    titles.uniq!
+    # revisions is the list of all revisions ordered by date
+    revisions
+end
+```
 
 In the end the `wiki` instance needs the `titles` and `revisions` filled.
 
@@ -155,4 +160,4 @@ to install the new gem right to your system.
 
 ## Copyright
 
-Copyright (c) 2011-2015 Daniel Senff. See LICENSE.md for further details.
+Copyright (c) 2011-2024 Daniel Senff. See LICENSE.md for further details.
