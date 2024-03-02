@@ -5,10 +5,10 @@ require 'ruby-progressbar'
 module Caramelize
   require 'caramelize/page'
   require 'caramelize/content_transferer'
-  require 'caramelize/database_connector'
   require 'caramelize/output_wiki/gollum'
+  require 'caramelize/input_wiki/media_wiki'
   require 'caramelize/input_wiki/redmine_wiki'
-  require 'caramelize/input_wiki/wikkawiki'
+  require 'caramelize/input_wiki/wikka_wiki'
 
   class ContentTransferer # rubocop:todo Metrics/ClassLength
     attr_reader :input_wiki, :options

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'caramelize/input_wiki/wiki'
 require 'caramelize/filters/swap_wiki_links'
 require 'caramelize/filters/remove_table_tab_line_endings'
 
@@ -12,8 +11,8 @@ module Caramelize
       def initialize(options = {})
         super(options)
         @options[:markup] = :textile
-        @options[:filters] << Caramelize::SwapWikiLinks
-        @options[:filters] << Caramelize::RemoveTableTabLineEndings
+        @options[:filters] << ::Caramelize::SwapWikiLinks
+        @options[:filters] << ::Caramelize::RemoveTableTabLineEndings
         @options[:create_namespace_overview] = true
       end
 
@@ -31,8 +30,7 @@ module Caramelize
       end
 
       def read_authors
-        results = database.query(authors_query)
-        results.each do |row|
+        database.query(authors_query).each do |row|
           authors[row['id']] = { id: row['id'],
                                  name: row['login'],
                                  email: row['mail'] }
