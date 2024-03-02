@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Caramelize
-  class Wikka2Markdown
+  # WikkaWiki formatting rules: http://docs.wikkawiki.org/FormattingRules
+  class WikkaToMarkdown
     attr_reader :source_body
 
     def initialize(source_body)
@@ -9,9 +10,6 @@ module Caramelize
     end
 
     def run
-      # TODO: images: ({{image)(url\=?)?(.*)(}})
-      # markdown: ![Tux, the Linux mascot](/assets/images/tux.png)
-
       replace_headlines
       replace_formatting
       replace_lists
@@ -19,6 +17,7 @@ module Caramelize
       replace_links
       replace_inline_code
       replace_code_block
+      replace_images
 
       target_body
     end
@@ -36,6 +35,7 @@ module Caramelize
       target_body.gsub!(%r{(//)(.*?)(//)}, '*\2*') # italic
       target_body.gsub!(/(__)(.*?)(__)/) { |_s| "<u>#{::Regexp.last_match(2)}</u>" } # underline
       target_body.gsub!(/(---)/, '  ') # forced linebreak
+      target_body.gsub!(/(^ )/, '    ') # preformatted line
     end
 
     def replace_lists
@@ -43,8 +43,7 @@ module Caramelize
       target_body.gsub!(/(~-\s?)(.*)/, '- \2')     # unordered list
       target_body.gsub!(/(    -\s?)(.*)/, '- \2')     # unordered list
 
-      target_body.gsub!(/(~1\)\s?)(.*)/, '1. \2')     # unordered list
-      # TODO ordered lists
+      target_body.gsub!(/(~1\)\s?)(.*)/, '1. \2')     # ordered list
     end
 
     def replace_wiki_links
@@ -64,6 +63,22 @@ module Caramelize
     def replace_code_block
       target_body.gsub!(/^%%\(?(\w+)\)?\s(.*?)%%\s?/m) { "```#{::Regexp.last_match(1)}\n#{::Regexp.last_match(2)}```\n" }
       target_body.gsub!(/^%%\s(.*?)%%\s?/m) { "```\n#{::Regexp.last_match(1)}```\n" }
+    end
+
+      def replace_images
+        # {{image class="center" alt="DVD logo" title="An image link" url="images/dvdvideo.gif" link="RecentChanges"}}
+        target_body.gsub!(/{{image\s(.*)}}/) do |match|
+          puts match.inspect
+          url = match[1].match(/url="([^"]*)"/)
+          link = match[1].match(/link="([^"]*)"/)
+          alt = match[1].match(/alt="([^"]*)"/)
+
+          return "![#{alt}](#{url})" if link.nil? || link.empty?
+
+          "[[<img src=\"#{url}\" alt=\"#{alt}\">]]"
+        end
+
+
     end
 
     def target_body

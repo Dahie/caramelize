@@ -17,7 +17,7 @@ module Caramelize
         super(options)
         @options[:markup] = :wikka
         @options[:filters] << ::Caramelize::AddNewlineToPageEnd
-        @options[:filters] << ::Caramelize::Wikka2Markdown
+        @options[:filters] << ::Caramelize::WikkaToMarkdown
         @options[:filters] << ::Caramelize::CamelCaseToWikiLinks
       end
 

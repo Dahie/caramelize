@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'caramelize/filters/add_newline_to_page_end'
+require 'caramelize/filters/mediawiki_to_markdown'
 
 module Caramelize
   module InputWiki
@@ -41,8 +42,9 @@ module Caramelize
 
       def initialize(options = {})
         super(options)
-        @options[:markup] = :mediawiki
+        @options[:markup] = :media_wiki
         @options[:filters] << Caramelize::AddNewlineToPageEnd
+        @options[:filters] << ::Caramelize::MediawikiToMarkdown
       end
 
       # after calling this action, titles and @revisions are expected to be filled
@@ -90,7 +92,7 @@ module Caramelize
           id: row['rev_id'],
           title: title_by_namespace(row),
           body: row['old_text'],
-          markup: :mediawiki,
+          markup: :media_wiki,
           latest: row['page_latest'] == row['rev_id'],
           time: Time.strptime(row['rev_timestamp'], '%Y%m%d%H%M%S'),
           message: row['comment_text'],

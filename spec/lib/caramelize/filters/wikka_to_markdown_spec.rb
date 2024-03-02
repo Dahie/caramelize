@@ -3,7 +3,7 @@
 require 'spec_helper'
 
 # rubocop:todo RSpec/SpecFilePathFormat
-describe Caramelize::Wikka2Markdown do # rubocop:todo RSpec/FilePath, RSpec/SpecFilePathFormat
+describe Caramelize::WikkaToMarkdown do # rubocop:todo RSpec/FilePath, RSpec/SpecFilePathFormat
   # rubocop:enable RSpec/SpecFilePathFormat
   let(:filter) { described_class.new(body) }
 
@@ -261,5 +261,32 @@ describe Caramelize::Wikka2Markdown do # rubocop:todo RSpec/FilePath, RSpec/Spec
 
       it { is_expected.to eq expected_result }
     end
+
+    context 'when image' do
+      context 'with link' do
+        let(:body) { '{{image class="center" alt="DVD logo" title="An image link" url="images/dvdvideo.gif" link="RecentChanges"}}' }
+
+        it { is_expected.to eq '[<img src="images/dvdvideo.gif" alt="DVD Logo">](RecentChanges]])' }
+      end
+
+      context 'with alt and with title' do
+        let(:body) { '{{image class="center" alt="DVD logo" title="An image link" url="images/dvdvideo.gif"}}' }
+
+        it { is_expected.to eq '![DVD Logo](images/dvdvideo.gif)' }
+      end
+
+      context 'without alt and with title' do
+        let(:body) { '{{image class="center" title="An image link" url="images/dvdvideo.gif"}}' }
+
+        it { is_expected.to eq '![](images/dvdvideo.gif)' }
+      end
+
+      context 'without alt and without title' do
+        let(:body) { '{{image class="center" url="images/dvdvideo.gif"}}' }
+
+        it { is_expected.to eq '![](images/dvdvideo.gif)' }
+      end
+    end
+
   end
 end
