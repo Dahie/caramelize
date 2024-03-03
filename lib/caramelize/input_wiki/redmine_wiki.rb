@@ -40,8 +40,7 @@ module Caramelize
 
       private
 
-      # rubocop:todo Metrics/MethodLength
-      def build_page(row_page) # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
+      def build_page(row_page)
         results_contents = database.query(single_page_query(row_page['id']))
 
         wiki = wikis.select { |row| row['id'] == row_page['wiki_id'] }.first
@@ -61,7 +60,6 @@ module Caramelize
           revisions << page
         end
       end
-      # rubocop:enable Metrics/MethodLength
 
       def add_projects_as_namespaces
         projects.each do |row_project|
@@ -103,7 +101,7 @@ module Caramelize
         @wikis ||= database.query(wikis_query)
       end
 
-      def build_properties(title, row_content) # rubocop:todo Metrics/MethodLength
+      def build_properties(title, row_content)
         author = authors.fetch(row_content['author_id'], nil)
         {
           id: row_content['id'],

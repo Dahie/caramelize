@@ -56,7 +56,7 @@ module Caramelize
         @pages ||= database.query(pages_query)
       end
 
-      def build_properties(row) # rubocop:todo Metrics/MethodLength
+      def build_properties(row)
         author = authors[row['user']]
         {
           id: row['id'],
