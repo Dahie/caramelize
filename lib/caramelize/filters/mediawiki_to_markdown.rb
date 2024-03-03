@@ -11,7 +11,7 @@ module Caramelize
     end
 
     def run
-      ::PandocRuby.convert(source_body.dup, from: :mediawiki, to: :markdown)
+      ::PandocRuby.convert(source_body.dup, { from: :mediawiki, to: :markdown }, 'atx-headings')
     end
   end
 end

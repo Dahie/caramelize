@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require 'caramelize/input_wiki/wikkawiki'
+require 'caramelize/input_wiki/media_wiki'
 require 'caramelize/input_wiki/redmine_wiki'
+require 'caramelize/input_wiki/wikka_wiki'
 
 ## Example caramelize configuration file
 
@@ -53,6 +54,14 @@ def predefined_wiki
   #      password: "root",
   #      database: "wikka" }
   # return Caramelize::InputWiki::WikkaWiki.new(options)
+  #
+  # For connection to a MediaWiki-Database use this Connector
+  # By default it converts to markdown
+  # options = { host: "localhost",
+  #      username: "root",
+  #      password: "root",
+  #      database: "my_wiki" }
+  # return Caramelize::InputWiki::MediaWiki.new(options)
 
   # For connection to a Redmine-Database use this Connector
   # Additional options:
