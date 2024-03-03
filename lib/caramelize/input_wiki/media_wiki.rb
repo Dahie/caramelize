@@ -59,7 +59,6 @@ module Caramelize
 
       def read_authors
         database.query(authors_query).each do |row|
-          puts row.inspect
           name = row['user_real_name'].empty? ? row['user_name'] : 'Anonymous'
           email = row['user_email'].empty? ? nil : row['user_email']
           authors[row['user_id']] = { name:, email: }

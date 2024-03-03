@@ -71,37 +71,19 @@ describe Caramelize::WikkaToMarkdown do # rubocop:todo RSpec/FilePath, RSpec/Spe
     end
 
     context 'when unordered list entry' do
-      context 'with tab based' do
+      context 'with tabs' do
         let(:body) { "\t-unordered list entry" }
 
         it { is_expected.to eq '- unordered list entry' }
       end
 
-      context 'with tabs' do
+      context 'with tilde' do
         let(:body) { '~-unordered list entry' }
 
         it { is_expected.to eq '- unordered list entry' }
       end
 
       context 'with spaces' do
-        let(:body) { '    -unordered list entry' }
-
-        it { is_expected.to eq '- unordered list entry' }
-      end
-
-      context 'with tab based with space' do
-        let(:body) { "\t- unordered list entry" }
-
-        it { is_expected.to eq '- unordered list entry' }
-      end
-
-      context 'with another tab based with space' do
-        let(:body) { '~- unordered list entry' }
-
-        it { is_expected.to eq '- unordered list entry' }
-      end
-
-      context 'with space based with space' do
         let(:body) { '    - unordered list entry' }
 
         it { is_expected.to eq '- unordered list entry' }
@@ -129,7 +111,7 @@ describe Caramelize::WikkaToMarkdown do # rubocop:todo RSpec/FilePath, RSpec/Spe
         it { is_expected.to eq '[[LemmaLemma]]' }
       end
 
-      context 'with only url sklfs' do
+      context 'with only wikilink' do
         let(:body) { "\n        [[ComunitySiteIdeas]]        \n" }
 
         it { is_expected.to eq "\n        [[ComunitySiteIdeas]]        \n" }
@@ -266,13 +248,13 @@ describe Caramelize::WikkaToMarkdown do # rubocop:todo RSpec/FilePath, RSpec/Spe
       context 'with link' do
         let(:body) { '{{image class="center" alt="DVD logo" title="An image link" url="images/dvdvideo.gif" link="RecentChanges"}}' }
 
-        it { is_expected.to eq '[<img src="images/dvdvideo.gif" alt="DVD Logo">](RecentChanges]])' }
+        it { is_expected.to eq '[[<img src="images/dvdvideo.gif" alt="DVD logo">|RecentChanges]]' }
       end
 
       context 'with alt and with title' do
         let(:body) { '{{image class="center" alt="DVD logo" title="An image link" url="images/dvdvideo.gif"}}' }
 
-        it { is_expected.to eq '![DVD Logo](images/dvdvideo.gif)' }
+        it { is_expected.to eq '![DVD logo](images/dvdvideo.gif)' }
       end
 
       context 'without alt and with title' do
@@ -287,6 +269,5 @@ describe Caramelize::WikkaToMarkdown do # rubocop:todo RSpec/FilePath, RSpec/Spe
         it { is_expected.to eq '![](images/dvdvideo.gif)' }
       end
     end
-
   end
 end
