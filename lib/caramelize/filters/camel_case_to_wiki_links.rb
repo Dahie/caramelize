@@ -18,8 +18,8 @@ module Caramelize
     private
 
     def format_link(link)
-      link.gsub!(' ', '_')
-      link.gsub!('.', '')
+      link.tr!(' ', '_')
+      link.delete!('.')
       "[[#{link}]]"
     end
   end

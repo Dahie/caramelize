@@ -24,7 +24,7 @@ module Caramelize
           build_page(row_page)
         end
         titles.uniq!
-        revisions.sort! { |a, b| a.time <=> b.time }
+        revisions.sort_by!(&:time)
 
         revisions
       end
@@ -43,12 +43,12 @@ module Caramelize
       def build_page(row_page)
         results_contents = database.query(single_page_query(row_page['id']))
 
-        wiki = wikis.select { |row| row['id'] == row_page['wiki_id'] }.first
+        wiki = wikis.find { |row| row['id'] == row_page['wiki_id'] }
 
         project_identifier = ''
 
         if wiki
-          project = projects.select { |row| row['id'] == wiki['project_id'] }.first
+          project = projects.find { |row| row['id'] == wiki['project_id'] }
           project_identifier = "#{project['identifier']}/"
         end
 
