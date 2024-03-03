@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'pandoc-ruby'
+require 'paru/pandoc'
 
 module Caramelize
   class MediawikiToMarkdown
@@ -11,7 +11,11 @@ module Caramelize
     end
 
     def run
-      ::PandocRuby.convert(source_body.dup, { from: :mediawiki, to: :markdown }, 'atx-headings')
+      Paru::Pandoc.new do
+        from 'mediawiki'
+        to 'markdown'
+        markdown_headings 'atx'
+      end << source_body.dup
     end
   end
 end
