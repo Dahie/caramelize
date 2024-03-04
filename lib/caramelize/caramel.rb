@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
-require 'caramelize/input_wiki/wikkawiki'
+require 'caramelize/input_wiki/media_wiki'
 require 'caramelize/input_wiki/redmine_wiki'
+require 'caramelize/input_wiki/wikka_wiki'
 
 ## Example caramelize configuration file
 
@@ -9,8 +10,7 @@ require 'caramelize/input_wiki/redmine_wiki'
 # not supported by default in this software
 
 # Note, if you want to activate this, you need to uncomment the line below.
-# rubocop:todo Metrics/MethodLength
-def customized_wiki # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
+def customized_wiki
   # This example is a reimplementation of the WikkaWiki-Connector.
   # To connect to WikkaWiki, I suggest to use the predefined Connector below.
   options = { host: 'localhost',
@@ -20,8 +20,7 @@ def customized_wiki # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
               markup: :wikka }
   wiki = Caramelize::InputWiki::Wiki.new(options)
   wiki.instance_eval do
-    # rubocop:todo Metrics/MethodLength
-    def read_pages # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
+    def read_pages
       sql = 'SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;'
       results = database.query(sql)
       results.each do |row|
@@ -41,12 +40,10 @@ def customized_wiki # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
       titles.uniq!
       revisions
     end
-    # rubocop:enable Metrics/MethodLength
   end
 
   wiki
 end
-# rubocop:enable Metrics/MethodLength
 
 # if you want to use one of the preset Wiki-Connectors uncomment the connector
 # and edit the database logins accordingly.
@@ -57,6 +54,14 @@ def predefined_wiki
   #      password: "root",
   #      database: "wikka" }
   # return Caramelize::InputWiki::WikkaWiki.new(options)
+  #
+  # For connection to a MediaWiki-Database use this Connector
+  # By default it converts to markdown
+  # options = { host: "localhost",
+  #      username: "root",
+  #      password: "root",
+  #      database: "my_wiki" }
+  # return Caramelize::InputWiki::MediaWiki.new(options)
 
   # For connection to a Redmine-Database use this Connector
   # Additional options:

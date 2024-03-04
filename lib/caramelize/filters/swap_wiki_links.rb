@@ -20,8 +20,8 @@ module Caramelize
 
     def format_link(label, link)
       link.downcase!
-      link.gsub!(' ', '_')
-      link.gsub!('.', '')
+      link.tr!(' ', '_')
+      link.delete!('.')
       "[[#{label}|#{link}]]"
     end
   end

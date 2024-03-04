@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'caramelize/database_connector'
 require 'caramelize/filters/add_newline_to_page_end'
 require 'caramelize/filters/camel_case_to_wiki_links'
 require 'caramelize/filters/wikka_to_markdown'
@@ -17,21 +16,18 @@ module Caramelize
       def initialize(options = {})
         super(options)
         @options[:markup] = :wikka
-        @options[:filters] << Caramelize::AddNewlineOnPageEnd
-        @options[:filters] << Caramelize::Wikka2Markdown
-        @options[:filters] << Caramelize::CamelCaseToWikiLinks
+        @options[:filters] << ::Caramelize::AddNewlineToPageEnd
+        @options[:filters] << ::Caramelize::WikkaToMarkdown
+        @options[:filters] << ::Caramelize::CamelCaseToWikiLinks
       end
 
       # after calling this action, titles and @revisions are expected to be filled
       def read_pages
         pages.each do |row|
           titles << row['tag']
-          page = Page.new(build_properties(row))
-          revisions << page
+          revisions << Page.new(build_properties(row))
         end
         titles.uniq!
-        # revisions.sort! { |a,b| a.time <=> b.time }
-
         revisions
       end
 
@@ -60,7 +56,7 @@ module Caramelize
         @pages ||= database.query(pages_query)
       end
 
-      def build_properties(row) # rubocop:todo Metrics/MethodLength
+      def build_properties(row)
         author = authors[row['user']]
         {
           id: row['id'],

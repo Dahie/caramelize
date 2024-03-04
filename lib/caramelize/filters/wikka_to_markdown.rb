@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Caramelize
-  class Wikka2Markdown
+  # WikkaWiki formatting rules: http://docs.wikkawiki.org/FormattingRules
+  class WikkaToMarkdown
     attr_reader :source_body
 
     def initialize(source_body)
@@ -9,9 +10,6 @@ module Caramelize
     end
 
     def run
-      # TODO: images: ({{image)(url\=?)?(.*)(}})
-      # markdown: ![Tux, the Linux mascot](/assets/images/tux.png)
-
       replace_headlines
       replace_formatting
       replace_lists
@@ -19,6 +17,7 @@ module Caramelize
       replace_links
       replace_inline_code
       replace_code_block
+      replace_images
 
       target_body
     end
@@ -43,8 +42,7 @@ module Caramelize
       target_body.gsub!(/(~-\s?)(.*)/, '- \2')     # unordered list
       target_body.gsub!(/(    -\s?)(.*)/, '- \2')     # unordered list
 
-      target_body.gsub!(/(~1\)\s?)(.*)/, '1. \2')     # unordered list
-      # TODO ordered lists
+      target_body.gsub!(/(~1\)\s?)(.*)/, '1. \2')     # ordered list
     end
 
     def replace_wiki_links
@@ -64,6 +62,17 @@ module Caramelize
     def replace_code_block
       target_body.gsub!(/^%%\(?(\w+)\)?\s(.*?)%%\s?/m) { "```#{::Regexp.last_match(1)}\n#{::Regexp.last_match(2)}```\n" }
       target_body.gsub!(/^%%\s(.*?)%%\s?/m) { "```\n#{::Regexp.last_match(1)}```\n" }
+    end
+
+    def replace_images
+      # {{image class="center" alt="DVD logo" title="An image link" url="images/dvdvideo.gif" link="RecentChanges"}}
+      target_body.gsub!(/{{image\s(.*)}}/) do |image_match|
+        url = image_match.match(/url="([^"]*)"/)[1]
+        link = image_match.match(/link="([^"]*)"/) && image_match.match(/link="([^"]*)"/)[1]
+        alt = image_match.match(/alt="([^"]*)"/) && image_match.match(/alt="([^"]*)"/)[1]
+
+        link.nil? ? "![#{alt}](#{url})" : "[[<img src=\"#{url}\" alt=\"#{alt}\">|#{link}]]"
+      end
     end
 
     def target_body

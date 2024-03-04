@@ -6,11 +6,11 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
-
     steps:
     - uses: actions/checkout@v3
-    # - name: Set up Redis
-    #   uses: zhulik/redis-action@1.1.0
+    - uses: r-lib/actions/setup-pandoc@v2
+      with:
+        pandoc-version: '3.1.11' 
     - name: Install Ruby and gems
       uses: ruby/setup-ruby@v1
       with:

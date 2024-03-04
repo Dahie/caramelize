@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require 'caramelize/input_wiki/wiki'
 require 'caramelize/filters/swap_wiki_links'
 require 'caramelize/filters/remove_table_tab_line_endings'
 
@@ -12,8 +11,8 @@ module Caramelize
       def initialize(options = {})
         super(options)
         @options[:markup] = :textile
-        @options[:filters] << Caramelize::SwapWikiLinks
-        @options[:filters] << Caramelize::RemoveTableTabLineEndings
+        @options[:filters] << ::Caramelize::SwapWikiLinks
+        @options[:filters] << ::Caramelize::RemoveTableTabLineEndings
         @options[:create_namespace_overview] = true
       end
 
@@ -25,14 +24,13 @@ module Caramelize
           build_page(row_page)
         end
         titles.uniq!
-        revisions.sort! { |a, b| a.time <=> b.time }
+        revisions.sort_by!(&:time)
 
         revisions
       end
 
       def read_authors
-        results = database.query(authors_query)
-        results.each do |row|
+        database.query(authors_query).each do |row|
           authors[row['id']] = { id: row['id'],
                                  name: row['login'],
                                  email: row['mail'] }
@@ -42,16 +40,15 @@ module Caramelize
 
       private
 
-      # rubocop:todo Metrics/MethodLength
-      def build_page(row_page) # rubocop:todo Metrics/AbcSize, Metrics/MethodLength
+      def build_page(row_page)
         results_contents = database.query(single_page_query(row_page['id']))
 
-        wiki = wikis.select { |row| row['id'] == row_page['wiki_id'] }.first
+        wiki = wikis.find { |row| row['id'] == row_page['wiki_id'] }
 
         project_identifier = ''
 
         if wiki
-          project = projects.select { |row| row['id'] == wiki['project_id'] }.first
+          project = projects.find { |row| row['id'] == wiki['project_id'] }
           project_identifier = "#{project['identifier']}/"
         end
 
@@ -63,7 +60,6 @@ module Caramelize
           revisions << page
         end
       end
-      # rubocop:enable Metrics/MethodLength
 
       def add_projects_as_namespaces
         projects.each do |row_project|
@@ -105,7 +101,7 @@ module Caramelize
         @wikis ||= database.query(wikis_query)
       end
 
-      def build_properties(title, row_content) # rubocop:todo Metrics/MethodLength
+      def build_properties(title, row_content)
         author = authors.fetch(row_content['author_id'], nil)
         {
           id: row_content['id'],

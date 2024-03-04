@@ -38,7 +38,7 @@ module Caramelize
       def commit_history(revisions, options = {}, &block)
         revisions.each_with_index do |page, index|
           # call debug output from outside
-          block.call(page, index) if block_given?
+          yield(page, index) if block
           commit_revision(page, options.fetch(:markup, :markdown))
         end
       end

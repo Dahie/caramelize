@@ -22,6 +22,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency('commander')
   spec.add_dependency('gollum-lib')
   spec.add_dependency('mysql2')
+  spec.add_dependency('paru')
   spec.add_dependency('ruby-progressbar')
 
   spec.metadata['rubygems_mfa_required'] = 'true'
