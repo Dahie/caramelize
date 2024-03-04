@@ -97,52 +97,62 @@ module Caramelize
     def migrate_markup_of_latest_revisions
       puts 'Convert latest revisions:' if verbose?
       input_wiki.latest_revisions.each do |revision|
-        if input_wiki.excluded_pages.include?(revision.title)
-          puts "Exclude Page: #{revision.title}" if verbose?
-          next
-        end
-
-        if verbose?
-          puts "Filter source: #{revision.title} #{revision.time}"
-        else
-          migrate_markup_progress_bar.increment
-        end
-
-        migrate_markup_of_revision(revision)
+        convert_markup_of_revision(revision)
       end
     end
 
     def commit_history
       output_wiki.commit_history(revisions, options) do |page, index|
-        if input_wiki.excluded_pages.include?(page.title)
-          puts "Exclude Page: #{page.title}" if verbose?
-          next
-        end
-
-        if verbose?
-          puts "(#{index + 1}/#{revisions_count}) #{page.time} #{page.title}"
-        else
-          commit_history_progress_bar.increment
-        end
+        commit_page(page, index)
       end
     end
 
-    def migrate_markup_of_revision(revision)
+    def commit_page(page, index)
+      if input_wiki.excluded_pages.include?(page.title)
+        puts "Exclude Page: #{page.title}" if verbose?
+        return
+      end
+
+      if verbose?
+        puts "(#{index + 1}/#{revisions_count}) #{page.time} #{page.title}"
+      else
+        commit_history_progress_bar.increment
+      end
+    end
+
+    def run_filter_processor_on_revision(revision)
       body_new = filter_processor.run(revision.body)
 
       return if body_new == revision.body
 
-      message = "Markup of '#{revision.title}' converted to #{target_markup}"
+      revision.message = "Markup of '#{revision.title}' converted to #{target_markup}"
 
-      # commit as latest page revision
-      output_wiki.commit_revision(build_revision_metadata(revision, body_new, message), options[:markup])
+      commit_as_latest_page(revision)
     end
 
-    def build_revision_metadata(revision, body_new, message)
+    def convert_markup_of_revision(revision)
+      if input_wiki.excluded_pages.include?(revision.title)
+        puts "Exclude Page: #{revision.title}" if verbose?
+        return
+      end
+
+      if verbose?
+        puts "Filter source: #{revision.title} #{revision.time}"
+      else
+        migrate_markup_progress_bar.increment
+      end
+
+      run_filter_processor_on_revision(revision)
+    end
+
+    def commit_as_latest_page(revision)
+      output_wiki.commit_revision(build_revision_metadata(revision, body_new), options[:markup])
+    end
+
+    def build_revision_metadata(revision, body_new)
       revision.body = body_new
       revision.author = { name: DEFAULT_AUTHOR_NAME, email: DEFAULT_AUTHOR_EMAIL }
-      revision.time = Time.now
-      revision.message = message
+      revision.time = Time.zone.now
 
       revision
     end

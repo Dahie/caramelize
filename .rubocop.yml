@@ -17,7 +17,6 @@ AllCops:
   TargetRubyVersion: 3.1
   SuggestExtensions: false
 
-
 Style/Documentation:
   Enabled: false
   StyleGuide: http://relaxed.ruby.style/#styledocumentation
