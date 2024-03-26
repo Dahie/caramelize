@@ -22,10 +22,9 @@ command :new do |c|
   c.example 'Create a fresh config file as "caramel.rb"', 'caramelize create'
   c.example 'Create a fresh config file as "config.rb"', 'caramelize create --config config.rb'
   c.action do |_args, options|
-    target_file || options.config || 'caramel.rb'
     options.default({ config: 'caramel.rb' })
-    FileUtils.cp("#{File.dirname(__FILE__)}/../lib/caramelize/#{target_file}",
-                 options.config)
+    FileUtils.cp("#{File.dirname(__FILE__)}/../lib/caramelize/caramel.rb",
+                  options.config)
     say "Created new configuration file: #{options.config}"
   end
 end
