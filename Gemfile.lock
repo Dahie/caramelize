@@ -76,7 +76,7 @@ GEM
     parser (3.3.5.0)
       ast (~> 2.4.1)
       racc
-    paru (1.4.0)
+    paru (1.4.1)
       csv (~> 3.3)
     pry (0.14.2)
       coderay (~> 1.1)
