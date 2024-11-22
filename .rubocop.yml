@@ -8,12 +8,12 @@ require:
 AllCops:
   NewCops: enable
   Exclude:
-    - 'vendor/**/*'
-    - 'spec/fixtures/**/*'
-    - 'tmp/**/*'
-    - '.git/**/*'
-    - 'bin/*'
-    - '*.cmlz'
+    - "vendor/**/*"
+    - "spec/fixtures/**/*"
+    - "tmp/**/*"
+    - ".git/**/*"
+    - "bin/*"
+    - "*.cmlz"
   TargetRubyVersion: 3.1
   SuggestExtensions: false
 

@@ -41,7 +41,7 @@ module Caramelize
       }.freeze
 
       def initialize(options = {})
-        super(options)
+        super
         @options[:markup] = :media_wiki
         @options[:filters] << Caramelize::AddNewlineToPageEnd
         @options[:filters] << ::Caramelize::MediawikiToMarkdown

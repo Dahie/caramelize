@@ -9,7 +9,7 @@ module Caramelize
       include DatabaseConnector
 
       def initialize(options = {})
-        super(options)
+        super
         @options[:markup] = :textile
         @options[:filters] << ::Caramelize::SwapWikiLinks
         @options[:filters] << ::Caramelize::RemoveTableTabLineEndings

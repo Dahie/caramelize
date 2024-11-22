@@ -2,9 +2,7 @@
 
 require 'spec_helper'
 
-# rubocop:todo RSpec/SpecFilePathFormat
-describe Caramelize::RemoveTableTabLineEndings do # rubocop:todo RSpec/FilePath, RSpec/SpecFilePathFormat
-  # rubocop:enable RSpec/SpecFilePathFormat
+describe Caramelize::RemoveTableTabLineEndings do # rubocop:todo RSpec/SpecFilePathFormat
   subject(:run) { filter.run }
 
   let(:filter) { described_class.new(body) }

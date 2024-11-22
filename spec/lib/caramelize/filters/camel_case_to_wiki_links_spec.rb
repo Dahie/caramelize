@@ -2,9 +2,7 @@
 
 require 'spec_helper'
 
-# rubocop:todo RSpec/SpecFilePathFormat
-describe Caramelize::CamelCaseToWikiLinks do # rubocop:todo RSpec/FilePath, RSpec/SpecFilePathFormat
-  # rubocop:enable RSpec/SpecFilePathFormat
+describe Caramelize::CamelCaseToWikiLinks do # rubocop:todo RSpec/SpecFilePathFormat
   describe '#run' do
     subject(:run) { filter.run }
 

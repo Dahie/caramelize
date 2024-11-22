@@ -14,7 +14,7 @@ module Caramelize
       FUNCTION_PAGES = %w[AdminBadWords AdminPages AdminUsers AdminSpamLog CategoryAdmin CategoryCategory CategoryWiki DatabaseInfo FormattingRules HighScores InterWiki MyChanges MyPages OrphanedPages OwnedPages PageIndex PasswordForgotten RecentChanges RecentlyCommented Sandbox SysInfo TableMarkup TableMarkupReference TextSearch TextSearchExpanded UserSettings WantedPages WikiCategory WikkaInstaller WikkaConfig WikkaDocumentation WikkaMenulets WikkaReleaseNotes].freeze
 
       def initialize(options = {})
-        super(options)
+        super
         @options[:markup] = :wikka
         @options[:filters] << ::Caramelize::AddNewlineToPageEnd
         @options[:filters] << ::Caramelize::WikkaToMarkdown
