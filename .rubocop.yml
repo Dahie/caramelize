@@ -14,7 +14,7 @@ AllCops:
     - ".git/**/*"
     - "bin/*"
     - "*.cmlz"
-  TargetRubyVersion: 3.1
+  TargetRubyVersion: 3.3
   SuggestExtensions: false
 
 Style/Documentation:
