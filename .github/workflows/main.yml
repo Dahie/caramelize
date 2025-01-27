@@ -15,7 +15,7 @@ jobs:
       uses: ruby/setup-ruby@v1
       with:
         bundler-cache: true
-        ruby-version: 3.3.4
+        ruby-version: 3.4.1
     
     - name: Configure sysctl limits
       run: |
@@ -36,7 +36,7 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           bundler-cache: true
-          ruby-version: 3.3.4
+          ruby-version: 3.4.1
       # - name: Security audit dependencies
       #  uses: andrewmcodes/bundler-audit-action@main
       # - name: Security audit application code
@@ -44,5 +44,5 @@ jobs:
       #   env:
       #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
       - name: Lint Ruby files
-        run: bundle exec rubocop --parallel
+        run: bundle exec standardrb
       
