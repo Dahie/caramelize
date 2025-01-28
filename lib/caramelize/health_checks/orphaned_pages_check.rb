@@ -33,7 +33,7 @@ module Caramelize
       end
 
       def page_paths
-        pages.map(&:path).map { |path| path.split('.').first }
+        pages.map(&:path).map { |path| path.split(".").first }
       end
 
       def check_pages

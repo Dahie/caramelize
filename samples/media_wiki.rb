@@ -4,10 +4,10 @@
 
 def input_wiki
   options = {
-    host: '0.0.0.0',
-    username: 'wikiuser',
-    password: 'example',
-    database: 'my_wiki',
+    host: "0.0.0.0",
+    username: "wikiuser",
+    password: "example",
+    database: "my_wiki",
     port: 63_645
   }
   Caramelize::InputWiki::MediaWiki.new(options)

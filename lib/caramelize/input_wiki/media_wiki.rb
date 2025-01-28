@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'caramelize/filters/add_newline_to_page_end'
-require 'caramelize/filters/mediawiki_to_markdown'
+require "caramelize/filters/add_newline_to_page_end"
+require "caramelize/filters/mediawiki_to_markdown"
 
 module Caramelize
   module InputWiki
@@ -20,7 +20,7 @@ module Caramelize
         JOIN text as t ON cn.content_address = CONCAT('tt:', t.old_id)
         ORDER BY r.rev_timestamp ASC;
       }
-      SQL_AUTHORS = 'SELECT user_id, user_name, user_real_name, user_email FROM user;'
+      SQL_AUTHORS = "SELECT user_id, user_name, user_real_name, user_email FROM user;"
       NAMESPACE_MAPPING = {
         0 => :NS_MAIN,
         1 => :NS_TALK,
@@ -50,7 +50,7 @@ module Caramelize
       # after calling this action, titles and @revisions are expected to be filled
       def read_pages
         pages.each do |row|
-          titles << row['page_title']
+          titles << row["page_title"]
           revisions << Page.new(build_properties(row))
         end
         titles.uniq!
@@ -59,9 +59,9 @@ module Caramelize
 
       def read_authors
         database.query(authors_query).each do |row|
-          name = row['user_real_name'].empty? ? row['user_name'] : 'Anonymous'
-          email = row['user_email'].empty? ? nil : row['user_email']
-          authors[row['user_id']] = { name:, email: }
+          name = row["user_real_name"].empty? ? row["user_name"] : "Anonymous"
+          email = row["user_email"].empty? ? nil : row["user_email"]
+          authors[row["user_id"]] = {name:, email:}
         end
 
         authors
@@ -86,24 +86,24 @@ module Caramelize
       end
 
       def build_properties(row)
-        author = authors[row['actor_user']] || { name: 'Anonymous', email: 'anonymous@example.com' }
+        author = authors[row["actor_user"]] || {name: "Anonymous", email: "anonymous@example.com"}
         {
-          id: row['rev_id'],
+          id: row["rev_id"],
           title: title_by_namespace(row),
-          body: row['old_text'],
+          body: row["old_text"],
           markup: :media_wiki,
-          latest: row['page_latest'] == row['rev_id'],
-          time: Time.strptime(row['rev_timestamp'], '%Y%m%d%H%M%S'),
-          message: row['comment_text'],
+          latest: row["page_latest"] == row["rev_id"],
+          time: Time.strptime(row["rev_timestamp"], "%Y%m%d%H%M%S"),
+          message: row["comment_text"],
           author:
         }
       end
 
       def title_by_namespace(row)
-        return row['page_title'] if namespace_matches?(row['page_namespace'], :NS_MAIN)
-        return "#{row['page_title']}_Discussion" if namespace_matches?(row['page_namespace'], :NS_TALK)
+        return row["page_title"] if namespace_matches?(row["page_namespace"], :NS_MAIN)
+        return "#{row["page_title"]}_Discussion" if namespace_matches?(row["page_namespace"], :NS_TALK)
 
-        row['page_title']
+        row["page_title"]
       end
 
       def namespace_matches?(namespace_id, expected_namespace)

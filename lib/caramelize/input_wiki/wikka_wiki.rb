@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-require 'caramelize/filters/add_newline_to_page_end'
-require 'caramelize/filters/camel_case_to_wiki_links'
-require 'caramelize/filters/wikka_to_markdown'
+require "caramelize/filters/add_newline_to_page_end"
+require "caramelize/filters/camel_case_to_wiki_links"
+require "caramelize/filters/wikka_to_markdown"
 
 module Caramelize
   module InputWiki
     class WikkaWiki < Wiki
       include DatabaseConnector
 
-      SQL_PAGES = 'SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;'
-      SQL_AUTHORS = 'SELECT name, email FROM wikka_users;'
+      SQL_PAGES = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
+      SQL_AUTHORS = "SELECT name, email FROM wikka_users;"
       FUNCTION_PAGES = %w[AdminBadWords AdminPages AdminUsers AdminSpamLog CategoryAdmin CategoryCategory CategoryWiki DatabaseInfo FormattingRules HighScores InterWiki MyChanges MyPages OrphanedPages OwnedPages PageIndex PasswordForgotten RecentChanges RecentlyCommented Sandbox SysInfo TableMarkup TableMarkupReference TextSearch TextSearchExpanded UserSettings WantedPages WikiCategory WikkaInstaller WikkaConfig WikkaDocumentation WikkaMenulets WikkaReleaseNotes].freeze
 
       def initialize(options = {})
@@ -24,7 +24,7 @@ module Caramelize
       # after calling this action, titles and @revisions are expected to be filled
       def read_pages
         pages.each do |row|
-          titles << row['tag']
+          titles << row["tag"]
           revisions << Page.new(build_properties(row))
         end
         titles.uniq!
@@ -34,7 +34,7 @@ module Caramelize
       def read_authors
         results = database.query(authors_query)
         results.each do |row|
-          authors[row['name']] = { name: row['name'], email: row['email'] }
+          authors[row["name"]] = {name: row["name"], email: row["email"]}
         end
       end
 
@@ -57,15 +57,15 @@ module Caramelize
       end
 
       def build_properties(row)
-        author = authors[row['user']]
+        author = authors[row["user"]]
         {
-          id: row['id'],
-          title: row['tag'],
-          body: row['body'],
+          id: row["id"],
+          title: row["tag"],
+          body: row["body"],
           markup: :wikka,
-          latest: row['latest'] == 'Y',
-          time: row['time'],
-          message: row['note'],
+          latest: row["latest"] == "Y",
+          time: row["time"],
+          message: row["note"],
           author:
         }
       end

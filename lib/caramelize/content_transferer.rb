@@ -1,27 +1,27 @@
 # frozen_string_literal: true
 
-require 'ruby-progressbar'
+require "ruby-progressbar"
 
 module Caramelize
-  require 'caramelize/page'
-  require 'caramelize/content_transferer'
-  require 'caramelize/output_wiki/gollum'
-  require 'caramelize/input_wiki/media_wiki'
-  require 'caramelize/input_wiki/redmine_wiki'
-  require 'caramelize/input_wiki/wikka_wiki'
+  require "caramelize/page"
+  require "caramelize/content_transferer"
+  require "caramelize/output_wiki/gollum"
+  require "caramelize/input_wiki/media_wiki"
+  require "caramelize/input_wiki/redmine_wiki"
+  require "caramelize/input_wiki/wikka_wiki"
 
   class ContentTransferer
     attr_reader :input_wiki, :options
 
-    DEFAULT_GOLLUM_HOME_TITLE = 'Home'
-    DEFAULT_AUTHOR_NAME = 'Caramelize'
-    DEFAULT_AUTHOR_EMAIL = 'caramelize@example.com'
+    DEFAULT_GOLLUM_HOME_TITLE = "Home"
+    DEFAULT_AUTHOR_NAME = "Caramelize"
+    DEFAULT_AUTHOR_EMAIL = "caramelize@example.com"
 
     def initialize(input_wiki, options)
       @input_wiki = input_wiki
       @options = options
 
-      options[:default_author] = options.fetch(:default_author, 'Caramelize')
+      options[:default_author] = options.fetch(:default_author, "Caramelize")
       options[:markup] = target_markup
     end
 
@@ -78,24 +78,24 @@ module Caramelize
     end
 
     def create_overview_page_of_namespaces
-      puts 'Create Namespace Overview' if verbose?
+      puts "Create Namespace Overview" if verbose?
       output_wiki.commit_namespace_overview(input_wiki.namespaces)
     end
 
     def migrate_markup_progress_bar
       @migrate_markup_progress_bar ||=
-        ProgressBar.create(title: 'Markup filters',
-                           total: latest_revisions_count)
+        ProgressBar.create(title: "Markup filters",
+          total: latest_revisions_count)
     end
 
     def commit_history_progress_bar
       @commit_history_progress_bar ||=
-        ProgressBar.create(title: 'Revisions',
-                           total: revisions_count)
+        ProgressBar.create(title: "Revisions",
+          total: revisions_count)
     end
 
     def migrate_markup_of_latest_revisions
-      puts 'Convert latest revisions:' if verbose?
+      puts "Convert latest revisions:" if verbose?
       input_wiki.latest_revisions.each do |revision|
         convert_markup_of_revision(revision)
       end
@@ -151,7 +151,7 @@ module Caramelize
 
     def build_revision_metadata(revision, body_new)
       revision.body = body_new
-      revision.author = { name: DEFAULT_AUTHOR_NAME, email: DEFAULT_AUTHOR_EMAIL }
+      revision.author = {name: DEFAULT_AUTHOR_NAME, email: DEFAULT_AUTHOR_EMAIL}
       revision.time = Time.zone.now
 
       revision

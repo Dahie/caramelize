@@ -13,10 +13,10 @@ module Caramelize
           "* [[#{namespace[:name]}|#{namespace[:identifier]}/wiki]]"
         end.prepend(HEADLINE).join("  \n")
 
-        Page.new(title: 'Home',
-                 body:,
-                 message: 'Create Namespace Overview',
-                 latest: true)
+        Page.new(title: "Home",
+          body:,
+          message: "Create Namespace Overview",
+          latest: true)
       end
     end
   end

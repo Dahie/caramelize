@@ -34,7 +34,7 @@ module Caramelize
       target_body.gsub!(/(\*\*)(.*?)(\*\*)/) { |_s| "**#{::Regexp.last_match(2)}**" } # bold
       target_body.gsub!(%r{(//)(.*?)(//)}, '*\2*') # italic
       target_body.gsub!(/(__)(.*?)(__)/) { |_s| "<u>#{::Regexp.last_match(2)}</u>" } # underline
-      target_body.gsub!(/(---)/, '  ') # forced linebreak
+      target_body.gsub!(/(---)/, "  ") # forced linebreak
     end
 
     def replace_lists
@@ -51,7 +51,7 @@ module Caramelize
 
     def replace_links
       target_body.gsub!(/\[{2}((\w+):\S[^| ]*)[| ](.*)\]{2}/,
-                        '[\3](\1)')
+        '[\3](\1)')
       target_body.gsub!(/\[{2}((\w+):.*)\]{2}/, '<\1>')
     end
 

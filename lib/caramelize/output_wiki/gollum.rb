@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'gollum-lib'
+require "gollum-lib"
 
 module Caramelize
   module OutputWiki
@@ -31,7 +31,7 @@ module Caramelize
 
       def rename_page(page_title, new_title)
         gollum_page = gollum.page(page_title)
-        gollum.rename_page(gollum_page, new_title, { message: 'Rename home page' })
+        gollum.rename_page(gollum_page, new_title, {message: "Rename home page"})
       end
 
       # Commit all revisions of the given history into this gollum-wiki-repository.
@@ -67,7 +67,7 @@ module Caramelize
       end
 
       def gollum
-        @gollum ||= ::Gollum::Wiki.new(wiki_path, { repo_is_bare: true, ref: 'main' })
+        @gollum ||= ::Gollum::Wiki.new(wiki_path, {repo_is_bare: true, ref: "main"})
       end
 
       def initialize_repository
