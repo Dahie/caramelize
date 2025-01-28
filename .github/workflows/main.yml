@@ -43,6 +43,8 @@ jobs:
       #   uses: devmasx/brakeman-linter-action@v1.0.0
       #   env:
       #     GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
-      - name: Lint Ruby files
-        run: bundle exec standardrb
+      - name: standardrb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: amoeba/standardrb-action@v2
       
