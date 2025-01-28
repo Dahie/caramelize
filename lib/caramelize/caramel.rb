@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
-require 'caramelize/input_wiki/media_wiki'
-require 'caramelize/input_wiki/redmine_wiki'
-require 'caramelize/input_wiki/wikka_wiki'
+require "caramelize/input_wiki/media_wiki"
+require "caramelize/input_wiki/redmine_wiki"
+require "caramelize/input_wiki/wikka_wiki"
 
 ## Example caramelize configuration file
 
@@ -13,27 +13,27 @@ require 'caramelize/input_wiki/wikka_wiki'
 def customized_wiki
   # This example is a reimplementation of the WikkaWiki-Connector.
   # To connect to WikkaWiki, I suggest to use the predefined Connector below.
-  options = { host: 'localhost',
-              username: 'user',
-              database: 'database_name',
-              password: 'Picard-Delta-5',
-              markup: :wikka }
+  options = {host: "localhost",
+             username: "user",
+             database: "database_name",
+             password: "Picard-Delta-5",
+             markup: :wikka}
   wiki = Caramelize::InputWiki::Wiki.new(options)
   wiki.instance_eval do
     def read_pages
-      sql = 'SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;'
+      sql = "SELECT id, tag, body, time, latest, user, note FROM wikka_pages ORDER BY time;"
       results = database.query(sql)
       results.each do |row|
-        titles << row['tag']
-        author = @authors[row['user']]
-        properties = { id: row['id'],
-                       title: row['tag'],
-                       body: row['body'],
-                       markup: 'wikka',
-                       latest: row['latest'] == 'Y',
-                       time: row['time'],
-                       message: row['note'],
-                       author: }
+        titles << row["tag"]
+        author = @authors[row["user"]]
+        properties = {id: row["id"],
+                      title: row["tag"],
+                      body: row["body"],
+                      markup: "wikka",
+                      latest: row["latest"] == "Y",
+                      time: row["time"],
+                      message: row["note"],
+                      author:}
         page = Page.new(properties)
         revisions << page
       end
@@ -66,10 +66,10 @@ def predefined_wiki
   # For connection to a Redmine-Database use this Connector
   # Additional options:
   # :create_namespace_overview => true/false (Default: true)  -  Creates a new wikipage at /home as root page for Gollum wiki
-  options = { host: 'localhost',
-              username: 'root',
-              password: 'root',
-              database: 'redmine_development' }
+  options = {host: "localhost",
+             username: "root",
+             password: "root",
+             database: "redmine_development"}
   Caramelize::InputWiki::RedmineWiki.new(options)
 end
 

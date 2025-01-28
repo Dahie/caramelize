@@ -5,14 +5,14 @@ module Caramelize
     attr_accessor :title, :body, :id, :markup, :latest, :time, :message, :author
 
     def initialize(page = {})
-      @id =      page[:id]
-      @title =   page.fetch(:title, '')
-      @body =    page.fetch(:body, '')
-      @syntax =  page[:markup]
-      @latest =  page[:latest] || false
-      @time =    page.fetch(:time, Time.now)
-      @message = page.fetch(:message, '')
-      @author =  page[:author]
+      @id = page[:id]
+      @title = page.fetch(:title, "")
+      @body = page.fetch(:body, "")
+      @syntax = page[:markup]
+      @latest = page[:latest] || false
+      @time = page.fetch(:time, Time.now)
+      @message = page.fetch(:message, "")
+      @author = page[:author]
     end
 
     def author_email
@@ -24,7 +24,7 @@ module Caramelize
     end
 
     def author # rubocop:todo Lint/DuplicateMethods
-      @author ||= { name: 'Caramelize', email: 'mail@example.com' }
+      @author ||= {name: "Caramelize", email: "mail@example.com"}
     end
 
     def latest?
@@ -32,13 +32,13 @@ module Caramelize
     end
 
     def path
-      return @title unless @title.index('/')
+      return @title unless @title.index("/")
 
       "#{title_pieces.first}/#{title_pieces.last.downcase}"
     end
 
     def title_pieces
-      @title.split('/')
+      @title.split("/")
     end
 
     def set_latest

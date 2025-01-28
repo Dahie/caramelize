@@ -17,7 +17,7 @@ module Caramelize
         # new array only containing pages by this name sorted by time asc
         # this does not support renamed pages
         revisions.select { |revision| revision.title == title }
-                 .sort_by(&:time)
+          .sort_by(&:time)
       end
 
       # return an empty array in case this action was not overridden

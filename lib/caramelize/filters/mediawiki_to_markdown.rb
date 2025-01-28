@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'paru/pandoc'
+require "paru/pandoc"
 
 module Caramelize
   class MediawikiToMarkdown
@@ -12,9 +12,9 @@ module Caramelize
 
     def run
       Paru::Pandoc.new do
-        from 'mediawiki'
-        to 'markdown'
-        markdown_headings 'atx'
+        from "mediawiki"
+        to "markdown"
+        markdown_headings "atx"
       end << source_body.dup
     end
   end

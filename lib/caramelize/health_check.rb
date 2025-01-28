@@ -17,7 +17,7 @@ module Caramelize
     private
 
     def gollum
-      @gollum ||= ::Gollum::Wiki.new(wiki_path, { ref: 'main' })
+      @gollum ||= ::Gollum::Wiki.new(wiki_path, {ref: "main"})
     end
   end
 end

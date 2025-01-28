@@ -12,12 +12,12 @@ module Caramelize
       def intra_wiki_links
         gollum_page.text_data.scan(/\[\[(.+\|)?(\S+)\]\]/).map do |match|
           link = match[1]
-          filename == path ? link : [filename, link].join('/')
+          (filename == path) ? link : [filename, link].join("/")
         end.uniq
       end
 
       def filename
-        path.split('/').first
+        path.split("/").first
       end
 
       def path

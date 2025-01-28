@@ -10,13 +10,13 @@ module Caramelize
       end
 
       def check
-        puts 'Home.md missing' unless has_home_page?
+        puts "Home.md missing" unless has_home_page?
       end
 
       private
 
       def has_home_page? # rubocop:todo Naming/PredicateName
-        gollum.file('Home')
+        gollum.file("Home")
       end
     end
   end
