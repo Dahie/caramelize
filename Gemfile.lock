@@ -63,7 +63,7 @@ GEM
     parser (3.3.8.0)
       ast (~> 2.4.1)
       racc
-    paru (1.4.2)
+    paru (1.5.1)
       csv (~> 3.3)
     prism (1.4.0)
     psych (5.2.6)
