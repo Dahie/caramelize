@@ -64,14 +64,14 @@ GEM
       racc
     paru (1.5.1)
       csv (~> 3.3)
-    prism (1.5.1)
+    prism (1.6.0)
     psych (5.2.6)
       date
       stringio
     racc (1.8.1)
     rainbow (3.1.1)
     rake (13.3.0)
-    rbs (3.9.5)
+    rbs (3.6.1)
       logger
     rdoc (6.15.0)
       erb
@@ -110,7 +110,7 @@ GEM
       lint_roller (~> 1.1)
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.38.0, < 2.0)
-    ruby-lsp (0.26.1)
+    ruby-lsp (0.26.2)
       language_server-protocol (~> 3.17.0)
       prism (>= 1.2, < 2.0)
       rbs (>= 3, < 5)
