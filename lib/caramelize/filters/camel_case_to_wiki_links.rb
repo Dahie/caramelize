@@ -10,7 +10,7 @@ module Caramelize
     def run
       migrated_body = @body.dup
 
-      migrated_body.gsub!(/([^\[\|\w\S])([A-Z]\w+[A-Z]\w+)([^\]])/) { "#{::Regexp.last_match(1)}#{format_link(::Regexp.last_match(2))}#{::Regexp.last_match(3)}" }
+      migrated_body.gsub!(/([^\[|\w\S])([A-Z]\w+[A-Z]\w+)([^\]])/) { "#{::Regexp.last_match(1)}#{format_link(::Regexp.last_match(2))}#{::Regexp.last_match(3)}" }
 
       migrated_body
     end
